@@ -1,0 +1,24 @@
+{
+	"name": "@focus-learn-flow/source",
+	"version": "0.0.0",
+	"license": "MIT",
+	"scripts": {
+		"lint": "eslint ./backend/**/src/**",
+		"lint:fix": "eslint ./backend/**/src/** --fix"
+	},
+	"private": true,
+	"devDependencies": {
+		"@nx/js": "19.8.0",
+		"@nx/workspace": "19.8.0",
+		"@typescript-eslint/eslint-plugin": "^8.7.0",
+		"@typescript-eslint/parser": "^8.7.0",
+		"eslint": "^8.57.1",
+		"eslint-config-prettier": "^9.1.0",
+		"nx": "19.8.0",
+		"prettier": "^3.3.3",
+		"typescript": "^5.6.2"
+	},
+	"workspaces": [
+		"backend/*"
+	]
+}

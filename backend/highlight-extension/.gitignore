@@ -1,0 +1,9 @@
+/node_modules
+/.vscode
+/dist
+prisma/migrations
+
+host-key.pem
+host.pem
+.env.dev
+.env.test
