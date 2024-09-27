@@ -1,10 +1,11 @@
 {
-	"name": "@focus-learn-flow/source",
+	"name": "myre",
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
 		"lint": "eslint ./backend/**/src/**",
-		"lint:fix": "eslint ./backend/**/src/** --fix"
+		"lint:fix": "eslint ./backend/**/src/** --fix",
+		"format": "prettier --write \"backend/**/src/**\" \"backend/**/test/**\""
 	},
 	"private": true,
 	"devDependencies": {

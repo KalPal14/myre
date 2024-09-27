@@ -1,0 +1,20 @@
+{
+   "compilerOptions": {
+      "target": "ES2021",
+      "module": "Node16",
+      "declaration": true,
+      "removeComments": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "incremental": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "strictPropertyInitialization": false,
+      "forceConsistentCasingInFileNames": false,
+   },
+   "exclude": [
+      "node_modules"
+   ]
+}

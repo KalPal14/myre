@@ -2,13 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
-    "esModuleInterop": true,
+    "baseUrl": "./",
   },
   "include": [
     "src/**/*",
