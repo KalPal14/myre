@@ -1,4 +1,4 @@
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { RIGHT_USER, WRONG_USER } from './users';
 

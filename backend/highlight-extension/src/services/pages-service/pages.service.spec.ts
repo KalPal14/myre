@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { PagesServise } from './pages.service';
 import { IPagesServise } from './pages.service.interface';

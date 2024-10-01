@@ -1,4 +1,4 @@
-import { HighlightModel } from '@prisma/client';
+import { HighlightModel } from '@orm/client';
 
 import { IJwtPayload } from '@/common/types/jwt-payload.interface';
 import { CreateHighlightDto } from '@/dto/highlights/create-highlight.dto';

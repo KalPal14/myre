@@ -23,7 +23,8 @@
 		"studio-db:test": "dotenv -e .env.test npx prisma studio"
 	},
 	"prisma": {
-		"seed": "ts-node prisma/seed"
+		"seed": "ts-node orm/seed",
+		"schema": "orm/schema.prisma"
 	},
 	"author": "",
 	"license": "ISC",

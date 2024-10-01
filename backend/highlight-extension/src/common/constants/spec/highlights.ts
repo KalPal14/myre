@@ -1,4 +1,4 @@
-import { HighlightModel } from '@prisma/client';
+import { HighlightModel } from '@orm/client';
 
 import { RIGHT_PAGE, WRONG_PAGE } from './pages';
 import { RIGHT_START_NODE, RIGHT_END_NODE, UPDATED_END_NODE } from './nodes';

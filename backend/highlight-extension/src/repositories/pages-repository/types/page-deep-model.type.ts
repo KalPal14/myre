@@ -1,4 +1,4 @@
-import { HighlightModel, PageModel } from '@prisma/client';
+import { HighlightModel, PageModel } from '@orm/client';
 
 export type TPageDeepModel = PageModel & {
 	highlights?: HighlightModel[];

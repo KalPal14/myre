@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 
 import { UsersService } from './users.service';
 import { IUsersService } from './users.service.interface';

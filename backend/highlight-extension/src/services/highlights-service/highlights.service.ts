@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { HighlightModel, PageModel } from '@prisma/client';
+import { HighlightModel, PageModel } from '@orm/client';
 import { intersectionBy } from 'lodash';
 
 import { INodesService } from '../nodes-service/nodes.service.interface';

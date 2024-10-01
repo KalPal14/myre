@@ -1,4 +1,4 @@
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { TPageDeepModel } from './types/page-deep-model.type';
 

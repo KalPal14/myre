@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { IPagesRepository } from './pages.repository.interface';
 import { TPageDeepModel } from './types/page-deep-model.type';

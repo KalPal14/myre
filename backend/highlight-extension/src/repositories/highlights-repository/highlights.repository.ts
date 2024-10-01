@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { HighlightModel } from '@prisma/client';
+import { HighlightModel } from '@orm/client';
 
 import { IHighlightsRepository } from './highlights.repository.interface';
 import { THighlightDeepModel } from './types/highlight-deep-model.type';

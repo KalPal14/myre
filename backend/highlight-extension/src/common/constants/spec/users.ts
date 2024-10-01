@@ -1,4 +1,4 @@
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 
 import { random } from '../../../utils/helper-functions/random.helper';
 

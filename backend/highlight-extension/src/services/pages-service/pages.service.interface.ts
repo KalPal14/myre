@@ -1,4 +1,4 @@
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { TPageShortInfo } from './types/page-short-info.type';
 import { TPageAllInfo } from './types/page-all-info.type';

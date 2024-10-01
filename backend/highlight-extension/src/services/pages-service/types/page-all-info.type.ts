@@ -1,4 +1,4 @@
-import { PageModel } from '@prisma/client';
+import { PageModel } from '@orm/client';
 
 import { THighlightDeepModel } from '@/repositories/highlights-repository/types/highlight-deep-model.type';
 

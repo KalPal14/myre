@@ -1,4 +1,4 @@
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 
 import { IJwtPayload } from '@/common/types/jwt-payload.interface';
 import { ChangeEmailDto } from '@/dto/users/change-email.dto';

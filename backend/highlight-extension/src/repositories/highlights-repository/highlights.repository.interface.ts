@@ -1,4 +1,4 @@
-import { HighlightModel } from '@prisma/client';
+import { HighlightModel } from '@orm/client';
 
 import { THighlightDeepModel } from './types/highlight-deep-model.type';
 

@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 
 import { IUsersService } from './users.service.interface';
 

@@ -1,4 +1,4 @@
-import { NodeModel } from '@prisma/client';
+import { NodeModel } from '@orm/client';
 
 export const RIGHT_START_NODE: NodeModel = {
 	id: 1,

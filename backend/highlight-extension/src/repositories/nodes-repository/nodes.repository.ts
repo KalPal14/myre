@@ -1,4 +1,4 @@
-import { NodeModel } from '@prisma/client';
+import { NodeModel } from '@orm/client';
 import { inject, injectable } from 'inversify';
 
 import { INodesRepository } from './nodes.repository.interface';

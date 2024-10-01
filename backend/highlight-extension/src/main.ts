@@ -25,5 +25,5 @@ export async function bootstrap(port?: number): Promise<App> {
 }
 
 if (!process.env.IS_RUN_E2E) {
-	bootstrap();
+	bootstrap(8001);
 }

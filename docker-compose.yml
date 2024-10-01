@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  highlight-extension-dev-db:
+    container_name: highlight-extension-dev-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=highlight-extension-dev
+    ports:
+      - "5433:5432"
+  highlight-extension-test-db:
+    container_name: highlight-extension-test-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=highlight-extension-test
+    ports:
+      - "5434:5432"
+
+  iam-dev-db:
+    container_name: iam-dev-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=iam-dev
+    ports:
+      - "5435:5432"
+  iam-test-db:
+    container_name: iam-test-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=iam-test
+    ports:
+      - "5436:5432"

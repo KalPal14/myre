@@ -1,4 +1,4 @@
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 import { IsOptional, Validate } from 'class-validator';
 
 import { IsColors } from '@/utils/dto-validation-rules/is-colors';

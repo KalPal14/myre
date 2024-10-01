@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { NodeModel } from '@prisma/client';
+import { NodeModel } from '@orm/client';
 
 import { INodesService } from './nodes.service.interface';
 

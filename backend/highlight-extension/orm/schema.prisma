@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserModel {
+  id                Int         @id @default(autoincrement())
+  username          String      @unique
+  email             String      @unique
+  password          String
+  passwordUpdatedAt DateTime?
+  pages             PageModel[]
+  colors            String[]
+}
+
+model PageModel {
+  id         Int              @id @default(autoincrement())
+  user       UserModel        @relation(fields: [userId], references: [id])
+  userId     Int
+  url        String
+  highlights HighlightModel[]
+}
+
+model HighlightModel {
+  id               Int       @id @default(autoincrement())
+  page             PageModel @relation(fields: [pageId], references: [id])
+  pageId           Int
+  order            Int
+  startContainer   NodeModel @relation(fields: [startContainerId], references: [id], name: "startContainer")
+  startContainerId Int       @unique
+  endContainer     NodeModel @relation(fields: [endContainerId], references: [id], name: "endContainer")
+  endContainerId   Int       @unique
+  startOffset      Int
+  endOffset        Int
+  text             String
+  color            String
+  note             String?
+}
+
+model NodeModel {
+  id                      Int             @id @default(autoincrement())
+  startContainerHighlight HighlightModel? @relation("startContainer")
+  endContainerHighlight   HighlightModel? @relation("endContainer")
+  text                    String
+  indexNumber             Int
+  sameElementsAmount      Int
+}

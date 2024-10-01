@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { NodeModel } from '@prisma/client';
+import { NodeModel } from '@orm/client';
 
 import { NodesService } from './nodes.service';
 import { INodesService } from './nodes.service.interface';

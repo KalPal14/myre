@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { sign } from 'jsonwebtoken';
-import { UserModel } from '@prisma/client';
+import { UserModel } from '@orm/client';
 
 import { BaseController } from '../base-controller/base.controller';
 import { TController } from '../common/types/controller.type';

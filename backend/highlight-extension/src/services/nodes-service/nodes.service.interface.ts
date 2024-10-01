@@ -1,4 +1,4 @@
-import { NodeModel } from '@prisma/client';
+import { NodeModel } from '@orm/client';
 
 import { INode } from '@/entities/node-entity/node.entity.interface';
 
