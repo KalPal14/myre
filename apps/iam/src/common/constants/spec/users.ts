@@ -1,7 +1,8 @@
-import { random } from '../../../utils/helper-functions/random.helper';
+import { IJwtPayload } from '~libs/express-core';
 
 import { UserModel } from '~/iam/prisma/client';
-import { IJwtPayload } from '~libs/express-core';
+
+import { random } from '../../../utils/helper-functions/random.helper';
 
 type TExtendedUserModel = UserModel & {
 	passwordHash: string;

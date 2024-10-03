@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { intersectionBy } from 'lodash';
-import { HighlightModel, PageModel } from '~/highlight-extension/prisma/client';
 
 import { IJwtPayload } from '~libs/express-core';
 
+import { HighlightModel, PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { Highlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity';
 import { CreateHighlightDto } from '~/highlight-extension/dto/highlights/create-highlight.dto';

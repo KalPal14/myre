@@ -1,10 +1,11 @@
 import { inject, injectable } from 'inversify';
 
+import { IPrismaService } from '~libs/express-core';
+
 import { HighlightModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
-import { IPrismaService } from '~/highlight-extension/utils/services/prisma-service/prisma.service.interface';
 import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
 import { IBatchPayload } from '~/highlight-extension/common/types/batch-payload.interface';
 

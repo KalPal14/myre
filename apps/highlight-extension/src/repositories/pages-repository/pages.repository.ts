@@ -1,9 +1,10 @@
 import { inject, injectable } from 'inversify';
 
+import { IPrismaService } from '~libs/express-core';
+
 import { PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IPage } from '~/highlight-extension/entities/page-entity/page.entity.interface';
-import { IPrismaService } from '~/highlight-extension/utils/services/prisma-service/prisma.service.interface';
 
 import { TPageDeepModel } from './types/page-deep-model.type';
 import { IPagesRepository } from './pages.repository.interface';

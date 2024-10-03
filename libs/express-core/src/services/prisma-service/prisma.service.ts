@@ -1,20 +1,17 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
+import { PrismaClient } from '@prisma/client';
 
-import { ILogger } from '~libs/express-core';
-
-import { TYPES } from '~/iam/common/constants/types';
-import { PrismaClient } from '~/iam/prisma/client';
+import { ILogger, EXPRESS_CORE_TYPES } from '~libs/express-core';
 
 import { IPrismaService } from './prisma.service.interface';
 
 @injectable()
 export class PrismaService implements IPrismaService {
-	_client: PrismaClient;
-
-	constructor(@inject(TYPES.LoggerService) private loggerService: ILogger) {
-		this._client = new PrismaClient();
-	}
+	constructor(
+		@inject(EXPRESS_CORE_TYPES.PrismaClient) private _client: PrismaClient,
+		@inject(EXPRESS_CORE_TYPES.LoggerService) private loggerService: ILogger
+	) {}
 
 	get client(): PrismaClient {
 		return this._client;

@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
 	testRegex: 'e2e-spec.ts',
 	coverageDirectory: 'coverage_e2e',
 	moduleNameMapper: {
-		'^~/highlight-extension/prisma(.*)$': '<rootDir>/prisma/$1',
+		'^~/highlight-extension/prisma/(.*)$': '<rootDir>/prisma/$1',
 		'^~/highlight-extension/(.*)$': '<rootDir>/src/$1',
 		'^~libs/express-core': '<rootDir>/../../libs/express-core/src',
 	},

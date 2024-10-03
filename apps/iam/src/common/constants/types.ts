@@ -4,7 +4,6 @@ export const TYPES = {
 	...EXPRESS_CORE_TYPES,
 
 	App: Symbol('App'),
-	PrismaService: Symbol('PrismaService'),
 
 	UsersController: Symbol('UsersController'),
 	UsersService: Symbol('UsersService'),

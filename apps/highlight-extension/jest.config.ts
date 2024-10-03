@@ -6,6 +6,7 @@ const config: Config.InitialOptions = {
 	testRegex: 'spec.ts',
 	coverageDirectory: 'coverage_unit',
 	moduleNameMapper: {
+		'^~/highlight-extension/prisma/(.*)$': '<rootDir>/prisma/$1',
 		'^~/highlight-extension/(.*)$': '<rootDir>/src/$1',
 		'^~libs/express-core': '<rootDir>/../../libs/express-core/src',
 	},

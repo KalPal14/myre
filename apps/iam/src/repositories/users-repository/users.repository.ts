@@ -1,13 +1,14 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { IUsersRepository } from './users.repository.interface';
+import { IPrismaService } from '~libs/express-core';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
 import { User } from '~/iam/entities/user-entity/user.entity';
 import { IUser } from '~/iam/entities/user-entity/user.entity.interface';
-import { IPrismaService } from '~/iam/utils/services/prisma-service/prisma.service.interface';
+
+import { IUsersRepository } from './users.repository.interface';
 
 @injectable()
 export class UsersRepository implements IUsersRepository {

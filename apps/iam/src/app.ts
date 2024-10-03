@@ -8,12 +8,17 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
+import {
+	ILogger,
+	IExceptionFilter,
+	IConfigService,
+	JwtAuthMiddleware,
+	IPrismaService,
+} from '~libs/express-core';
 
 import { USERS_ROUTER_PATH } from '~/iam/common/constants/routes/users';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
-import { IPrismaService } from '~/iam/utils/services/prisma-service/prisma.service.interface';
 
 @injectable()
 export default class App {

@@ -1,9 +1,10 @@
 import { inject, injectable } from 'inversify';
 
+import { IPrismaService } from '~libs/express-core';
+
 import { NodeModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { INode } from '~/highlight-extension/entities/node-entity/node.entity.interface';
-import { IPrismaService } from '~/highlight-extension/utils/services/prisma-service/prisma.service.interface';
 
 import { INodesRepository } from './nodes.repository.interface';
 

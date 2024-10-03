@@ -1,7 +1,6 @@
-import { UserModel } from '~/highlight-extension/prisma/client';
-
 import { IJwtPayload } from '~libs/express-core';
 
+import { UserModel } from '~/highlight-extension/prisma/client';
 import { ChangeEmailDto } from '~/highlight-extension/dto/users/change-email.dto';
 import { ChangePasswordDto } from '~/highlight-extension/dto/users/change-password.dto';
 import { ChangeUsernameDto } from '~/highlight-extension/dto/users/change-username.dto';

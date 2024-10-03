@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { sign } from 'jsonwebtoken';
-import { UserModel } from '~/highlight-extension/prisma/client';
 
 import {
 	IConfigService,
@@ -13,6 +12,7 @@ import {
 	ValidateMiddleware,
 } from '~libs/express-core';
 
+import { UserModel } from '~/highlight-extension/prisma/client';
 import { USERS_PATH } from '~/highlight-extension/common/constants/routes/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { TEmail } from '~/highlight-extension/common/types/email.type';

@@ -1,7 +1,6 @@
-import { PageModel } from '~/highlight-extension/prisma/client';
-
 import { IJwtPayload } from '~libs/express-core';
 
+import { PageModel } from '~/highlight-extension/prisma/client';
 import { UpdatePageDto } from '~/highlight-extension/dto/pages/update-page.dto';
 
 import { TPageShortInfo } from './types/page-short-info.type';

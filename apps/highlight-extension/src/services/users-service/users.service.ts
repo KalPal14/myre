@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
-import { UserModel } from '~/highlight-extension/prisma/client';
 
 import { IConfigService, HTTPError, IJwtPayload } from '~libs/express-core';
 
+import { UserModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { ChangeEmailDto } from '~/highlight-extension/dto/users/change-email.dto';
 import { ChangePasswordDto } from '~/highlight-extension/dto/users/change-password.dto';

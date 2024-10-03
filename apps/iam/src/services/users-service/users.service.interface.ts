@@ -1,5 +1,6 @@
-import { UserModel } from '~/iam/prisma/client';
 import { IJwtPayload } from '~libs/express-core';
+
+import { UserModel } from '~/iam/prisma/client';
 import { ChangeEmailDto } from '~/iam/dto/users/change-email.dto';
 import { ChangePasswordDto } from '~/iam/dto/users/change-password.dto';
 import { ChangeUsernameDto } from '~/iam/dto/users/change-username.dto';

@@ -1,6 +1,6 @@
-import { UserModel } from '~/highlight-extension/prisma/client';
-
 import { IJwtPayload } from '~libs/express-core';
+
+import { UserModel } from '~/highlight-extension/prisma/client';
 
 import { random } from '../../../utils/helper-functions/random.helper';
 

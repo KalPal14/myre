@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
+import { IPrismaService } from '~libs/express-core';
+
 import { UserModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { User } from '~/highlight-extension/entities/user-entity/user.entity';
 import { IUser } from '~/highlight-extension/entities/user-entity/user.entity.interface';
-import { IPrismaService } from '~/highlight-extension/utils/services/prisma-service/prisma.service.interface';
 
 import { IUsersRepository } from './users.repository.interface';
 

@@ -8,12 +8,17 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import { ILogger, IConfigService, IExceptionFilter, JwtAuthMiddleware } from '~libs/express-core';
+import {
+	ILogger,
+	IConfigService,
+	IExceptionFilter,
+	JwtAuthMiddleware,
+	IPrismaService,
+} from '~libs/express-core';
 
 import { HIGHLIGHTS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IUsersController } from '~/highlight-extension/controllers/users-controller/users.controller.interface';
-import { IPrismaService } from '~/highlight-extension/utils/services/prisma-service/prisma.service.interface';
 import { IHighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller.interface';
 import { USERS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/users';
 

@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
-import { IConfigService } from '~libs/express-core';
+
+import { IConfigService, HTTPError } from '~libs/express-core';
 
 import { UserModel } from '~/highlight-extension/prisma/client';
 import {
@@ -12,7 +13,6 @@ import {
 } from '~/highlight-extension/common/constants/spec/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IUser } from '~/highlight-extension/entities/user-entity/user.entity.interface';
-import { HTTPError } from '~libs/express-core';
 import { IUsersRepository } from '~/highlight-extension/repositories/users-repository/users.repository.interface';
 
 import { IUsersService } from './users.service.interface';

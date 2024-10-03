@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { PageModel } from '~/highlight-extension/prisma/client';
 
 import { IJwtPayload } from '~libs/express-core';
 
+import { PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { Page } from '~/highlight-extension/entities/page-entity/page.entity';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';

@@ -3,9 +3,9 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"lint": "eslint \"./{backend,libs}/**/{src,test}/**\"",
-		"lint:fix": "eslint \"./{backend,libs}/**/{src,test}/**\" --fix",
-		"format": "prettier --write \"./{backend,libs}/**/{src,test}/**\""
+		"lint": "eslint \"./{apps,libs}/*/{src,test}/**\"",
+		"lint:fix": "eslint \"./{apps,libs}/*/{src,test}/**\" --fix",
+		"format": "prettier --write \"./{apps,libs}/*/{src,test}/**\""
 	},
 	"private": true,
 	"devDependencies": {
