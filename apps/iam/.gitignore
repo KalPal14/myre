@@ -1,0 +1,11 @@
+/node_modules
+/dist
+
+prisma/client
+prisma/migrations
+
+host-key.pem
+host.pem
+
+.env.dev
+.env.test

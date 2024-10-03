@@ -65,7 +65,18 @@
 					"object",
 					"type"
 				],
-				"newlines-between": "always"
+				"newlines-between": "always",
+				"pathGroups": [
+					{
+						"pattern": "~/**",
+						"group": "internal"
+					},
+					{
+						"pattern": "~libs/**",
+						"group": "internal",
+						"position": "before"
+					}
+				]
 			}
 		],
 		"import/no-unresolved": "off",

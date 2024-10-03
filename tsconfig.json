@@ -13,6 +13,25 @@
       "strict": true,
       "strictPropertyInitialization": false,
       "forceConsistentCasingInFileNames": false,
+      "baseUrl": "./",
+      "paths": {
+         // apps
+         "~/highlight-extension/*": [
+            "apps/highlight-extension/src/*",
+            "apps/highlight-extension/*"
+         ],
+         "~/iam/*": [
+            "apps/iam/src/*",
+            "apps/iam/*"
+         ],
+         // libs
+         "~libs/express-core": [
+            "libs/express-core/src"
+         ],
+         "~libs/express-core/*": [
+            "libs/express-core/src/*"
+         ],
+      }
    },
    "exclude": [
       "node_modules"
