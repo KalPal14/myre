@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsc"
+		"build": "tsc && tsc-alias"
 	},
 	"dependencies": {
 		"dotenv": "^16.3.1",
