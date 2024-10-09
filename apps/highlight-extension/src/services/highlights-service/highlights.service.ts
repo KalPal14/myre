@@ -2,16 +2,18 @@ import { inject, injectable } from 'inversify';
 import { intersectionBy } from 'lodash';
 
 import { IJwtPayload } from '~libs/express-core';
+import {
+	CreateHighlightDto,
+	UpdateHighlightDto,
+	IndividualUpdateHighlightsDto,
+} from '~libs/dto/highlight-extension';
 
 import { HighlightModel, PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { Highlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity';
-import { CreateHighlightDto } from '~/highlight-extension/dto/highlights/create-highlight.dto';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
 
 import { IPagesServise } from '../pages-service/pages.service.interface';
 import { INodesService } from '../nodes-service/nodes.service.interface';

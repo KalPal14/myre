@@ -19,7 +19,7 @@ export * from './services/config-service/config.service.interface';
 export * from './services/logger-service/logger.service';
 export * from './services/logger-service/logger.service.interface';
 export * from './services/prisma-service/prisma.service';
-export * from './services/prisma-service/prisma.service.interface';
+export * from './services/prisma-service/base-prisma.service.interface';
 
 // types
 export * from './types/controller.type';

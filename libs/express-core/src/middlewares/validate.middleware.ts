@@ -20,7 +20,11 @@ export class ValidateMiddleware implements IMiddleware {
 
 	execute(req: Request, res: Response, next: NextFunction): void {
 		const instance = plainToClass(this.classToValidate, req[this.validateMode]);
-		validate(instance).then((errors) => {
+		validate(instance, {
+			skipMissingProperties: false,
+			whitelist: true,
+			validationError: { target: false },
+		}).then((errors) => {
 			if (errors.length > 0) {
 				const errorsMsg = this.constructErrorsMsg(errors);
 				res.status(422).send(errorsMsg);
@@ -30,11 +34,23 @@ export class ValidateMiddleware implements IMiddleware {
 		});
 	}
 
-	private constructErrorsMsg(errors: ValidationError[]): IErrMsg[] {
-		return errors.map((err) => ({
-			property: err.property,
-			value: err.value || 'undefined',
-			errors: Object.values(err.constraints || {}),
-		}));
+	private constructErrorsMsg(
+		errors: ValidationError[],
+		parentProperties: string[] = []
+	): IErrMsg[] {
+		return errors
+			.map((err) => {
+				if (err.children?.length) {
+					return this.constructErrorsMsg(err.children, [...parentProperties, err.property]);
+				}
+				return {
+					property: parentProperties.length
+						? `${parentProperties.join('.')}.${err.property}`
+						: err.property,
+					value: err.value || 'undefined',
+					errors: Object.values(err.constraints || {}),
+				};
+			})
+			.flat();
 	}
 }

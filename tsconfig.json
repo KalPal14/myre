@@ -31,6 +31,15 @@
          "~libs/express-core/*": [
             "libs/express-core/src/*"
          ],
+         "~libs/dto/*": [
+            "libs/dto/src/*"
+         ],
+         "~libs/common/*": [
+            "libs/common/src/*"
+         ],
+         "~libs/common": [
+            "libs/common/src"
+         ],
       }
    },
    "exclude": [

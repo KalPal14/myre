@@ -8,17 +8,13 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import {
-	ILogger,
-	IExceptionFilter,
-	IConfigService,
-	JwtAuthMiddleware,
-	IPrismaService,
-} from '~libs/express-core';
+import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
 
 import { USERS_ROUTER_PATH } from '~/iam/common/constants/routes/users';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
+
+import { TPrismaService } from './common/types/prisma-service.interface';
 
 @injectable()
 export default class App {
@@ -30,7 +26,7 @@ export default class App {
 		@inject(TYPES.LoggerService) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
-		@inject(TYPES.PrismaService) private prismaService: IPrismaService,
+		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.ConfigService) private configService: IConfigService
 	) {
 		this.app = express();

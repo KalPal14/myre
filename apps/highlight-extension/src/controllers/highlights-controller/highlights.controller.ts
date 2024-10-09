@@ -7,14 +7,16 @@ import {
 	TController,
 	BaseController,
 } from '~libs/express-core';
+import {
+	GetHighlightsDto,
+	CreateHighlightDto,
+	UpdateHighlightDto,
+	IndividualUpdateHighlightsDto,
+} from '~libs/dto/highlight-extension';
 
 import { HIGHLIGHTS_PATH } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { CreateHighlightDto } from '~/highlight-extension/dto/highlights/create-highlight.dto';
-import { GetHighlightsDto } from '~/highlight-extension/dto/highlights/get-highlights.dto';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { IHighlightsService } from '~/highlight-extension/services/highlights-service/highlights.service.interface';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
 
 import { IHighlightsController } from './highlights.controller.interface';
 

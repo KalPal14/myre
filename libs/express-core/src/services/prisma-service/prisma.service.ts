@@ -4,16 +4,18 @@ import { PrismaClient } from '@prisma/client';
 
 import { ILogger, EXPRESS_CORE_TYPES } from '~libs/express-core';
 
-import { IPrismaService } from './prisma.service.interface';
+import { IBasePrismaService } from './base-prisma.service.interface';
 
 @injectable()
-export class PrismaService implements IPrismaService {
+export class PrismaService<GeneratedPrismaClient = PrismaClient>
+	implements IBasePrismaService<GeneratedPrismaClient>
+{
 	constructor(
 		@inject(EXPRESS_CORE_TYPES.PrismaClient) private _client: PrismaClient,
 		@inject(EXPRESS_CORE_TYPES.LoggerService) private loggerService: ILogger
 	) {}
 
-	get client(): PrismaClient {
+	get client(): GeneratedPrismaClient {
 		return this._client;
 	}
 

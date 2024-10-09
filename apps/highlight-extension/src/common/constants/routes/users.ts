@@ -1,4 +1,4 @@
-import { createRoutesFullPath } from '~/highlight-extension/utils/helper-functions/create-routes-full-path/create-routes-full-path.helper';
+import { createRoutesFullPath } from '~libs/common';
 
 export const USERS_ROUTER_PATH = '/users';
 

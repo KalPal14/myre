@@ -1,16 +1,15 @@
 import { inject, injectable } from 'inversify';
 
-import { IPrismaService } from '~libs/express-core';
-
 import { NodeModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { INode } from '~/highlight-extension/entities/node-entity/node.entity.interface';
+import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
 
 import { INodesRepository } from './nodes.repository.interface';
 
 @injectable()
 export class NodesRepository implements INodesRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: IPrismaService) {}
+	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
 	async create({ text, indexNumber, sameElementsAmount }: INode): Promise<NodeModel> {
 		return await this.prismaService.client.nodeModel.create({

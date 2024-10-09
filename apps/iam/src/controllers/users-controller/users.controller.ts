@@ -11,18 +11,19 @@ import {
 	TController,
 	BaseController,
 } from '~libs/express-core';
+import { hideEmail, TEmail } from '~libs/common';
+import {
+	ChangeEmailDto,
+	ChangePasswordDto,
+	ChangeUsernameDto,
+	UsersLoginDto,
+	UsersRegisterDto,
+} from '~libs/dto/iam';
 
 import { UserModel } from '~/iam/prisma/client';
 import { USERS_PATH } from '~/iam/common/constants/routes/users';
 import { TYPES } from '~/iam/common/constants/types';
-import { TEmail } from '~/iam/common/types/email.type';
-import { ChangeEmailDto } from '~/iam/dto/users/change-email.dto';
-import { ChangePasswordDto } from '~/iam/dto/users/change-password.dto';
-import { ChangeUsernameDto } from '~/iam/dto/users/change-username.dto';
-import { UsersLoginDto } from '~/iam/dto/users/users-login.dto';
-import { UsersRegisterDto } from '~/iam/dto/users/users-register.dto';
 import { IUsersService } from '~/iam/services/users-service/users.service.interface';
-import { hideEmail } from '~/iam/utils/helper-functions/hide-email/hide-email.helper';
 
 import IUserInfo from './types/user-info.interface';
 import { IUsersController } from './users.controller.interface';

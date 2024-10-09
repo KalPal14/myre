@@ -11,19 +11,20 @@ import {
 	BaseController,
 	ValidateMiddleware,
 } from '~libs/express-core';
+import { TEmail, hideEmail } from '~libs/common';
+import {
+	ChangeEmailDto,
+	ChangePasswordDto,
+	ChangeUsernameDto,
+	UpdateUserDto,
+	UsersLoginDto,
+	UsersRegisterDto,
+} from '~libs/dto/highlight-extension';
 
 import { UserModel } from '~/highlight-extension/prisma/client';
 import { USERS_PATH } from '~/highlight-extension/common/constants/routes/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { TEmail } from '~/highlight-extension/common/types/email.type';
-import { ChangeEmailDto } from '~/highlight-extension/dto/users/change-email.dto';
-import { ChangePasswordDto } from '~/highlight-extension/dto/users/change-password.dto';
-import { ChangeUsernameDto } from '~/highlight-extension/dto/users/change-username.dto';
-import { UpdateUserDto } from '~/highlight-extension/dto/users/update-user.dto';
-import { UsersLoginDto } from '~/highlight-extension/dto/users/users-login.dto';
-import { UsersRegisterDto } from '~/highlight-extension/dto/users/users-register.dto';
 import { IUsersService } from '~/highlight-extension/services/users-service/users.service.interface';
-import { hideEmail } from '~/highlight-extension/utils/helper-functions/hide-email/hide-email.helper';
 
 import IUserInfo from './types/user-info.interface';
 import { IUsersController } from './users.controller.interface';

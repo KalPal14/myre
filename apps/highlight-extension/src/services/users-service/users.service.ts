@@ -2,15 +2,17 @@ import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
 import { IConfigService, HTTPError, IJwtPayload } from '~libs/express-core';
+import {
+	ChangeEmailDto,
+	ChangePasswordDto,
+	ChangeUsernameDto,
+	UpdateUserDto,
+	UsersLoginDto,
+	UsersRegisterDto,
+} from '~libs/dto/highlight-extension';
 
 import { UserModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { ChangeEmailDto } from '~/highlight-extension/dto/users/change-email.dto';
-import { ChangePasswordDto } from '~/highlight-extension/dto/users/change-password.dto';
-import { ChangeUsernameDto } from '~/highlight-extension/dto/users/change-username.dto';
-import { UpdateUserDto } from '~/highlight-extension/dto/users/update-user.dto';
-import { UsersLoginDto } from '~/highlight-extension/dto/users/users-login.dto';
-import { UsersRegisterDto } from '~/highlight-extension/dto/users/users-register.dto';
 import { User } from '~/highlight-extension/entities/user-entity/user.entity';
 import { IUsersRepository } from '~/highlight-extension/repositories/users-repository/users.repository.interface';
 

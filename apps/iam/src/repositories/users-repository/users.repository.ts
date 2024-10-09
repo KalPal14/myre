@@ -1,18 +1,17 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { IPrismaService } from '~libs/express-core';
-
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
 import { User } from '~/iam/entities/user-entity/user.entity';
 import { IUser } from '~/iam/entities/user-entity/user.entity.interface';
+import { TPrismaService } from '~/iam/common/types/prisma-service.interface';
 
 import { IUsersRepository } from './users.repository.interface';
 
 @injectable()
 export class UsersRepository implements IUsersRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: IPrismaService) {}
+	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
 	async findByEmail(email: string): Promise<UserModel | null> {
 		return await this.prismaService.client.userModel.findFirst({

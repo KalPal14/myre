@@ -7,12 +7,11 @@ import {
 	TController,
 	BaseController,
 } from '~libs/express-core';
+import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import { PAGES_PATH } from '~/highlight-extension/common/constants/routes/pages';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { GetPageDto } from '~/highlight-extension/dto/pages/get-page.dto';
 import { IPagesServise } from '~/highlight-extension/services/pages-service/pages.service.interface';
-import { UpdatePageDto } from '~/highlight-extension/dto/pages/update-page.dto';
 
 import { IPagesController } from './pages.controller.interface';
 

@@ -1,17 +1,16 @@
 import { inject, injectable } from 'inversify';
 
-import { IPrismaService } from '~libs/express-core';
-
 import { PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IPage } from '~/highlight-extension/entities/page-entity/page.entity.interface';
+import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
 
 import { TPageDeepModel } from './types/page-deep-model.type';
 import { IPagesRepository } from './pages.repository.interface';
 
 @injectable()
 export class PagesRepository implements IPagesRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: IPrismaService) {}
+	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
 	async create({ userId, url }: IPage): Promise<PageModel> {
 		return await this.prismaService.client.pageModel.create({

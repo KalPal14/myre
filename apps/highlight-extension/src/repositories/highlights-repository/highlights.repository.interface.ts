@@ -1,8 +1,8 @@
+import { IBatchPayload } from '~libs/common';
+import { UpdateHighlightDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
+
 import { HighlightModel } from '~/highlight-extension/prisma/client';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
-import { IBatchPayload } from '~/highlight-extension/common/types/batch-payload.interface';
 
 import { THighlightDeepModel } from './types/highlight-deep-model.type';
 

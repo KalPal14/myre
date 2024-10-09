@@ -8,13 +8,7 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import {
-	ILogger,
-	IConfigService,
-	IExceptionFilter,
-	JwtAuthMiddleware,
-	IPrismaService,
-} from '~libs/express-core';
+import { ILogger, IConfigService, IExceptionFilter, JwtAuthMiddleware } from '~libs/express-core';
 
 import { HIGHLIGHTS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
@@ -24,6 +18,7 @@ import { USERS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes
 
 import { PAGES_ROUTER_PATH } from './common/constants/routes/pages';
 import { IPagesController } from './controllers/pages-controller/pages.controller.interface';
+import { TPrismaService } from './common/types/prisma-service.interface';
 
 @injectable()
 export default class App {
@@ -35,7 +30,7 @@ export default class App {
 		@inject(TYPES.LoggerService) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
-		@inject(TYPES.PrismaService) private prismaService: IPrismaService,
+		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.HighlightsController) private highlightsController: IHighlightsController,
 		@inject(TYPES.PagesController) private pagesController: IPagesController

@@ -1,12 +1,13 @@
 import { Router } from 'express';
 
 import { TController } from '~libs/express-core';
-
-import { ChangeEmailDto } from '~/iam/dto/users/change-email.dto';
-import { ChangePasswordDto } from '~/iam/dto/users/change-password.dto';
-import { ChangeUsernameDto } from '~/iam/dto/users/change-username.dto';
-import { UsersLoginDto } from '~/iam/dto/users/users-login.dto';
-import { UsersRegisterDto } from '~/iam/dto/users/users-register.dto';
+import {
+	ChangeEmailDto,
+	ChangePasswordDto,
+	ChangeUsernameDto,
+	UsersLoginDto,
+	UsersRegisterDto,
+} from '~libs/dto/iam';
 
 export interface IUsersController {
 	router: Router;

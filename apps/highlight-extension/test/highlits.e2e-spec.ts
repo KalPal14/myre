@@ -297,8 +297,7 @@ describe('Highlits', () => {
 					{
 						id: WRONG_HIGHLIGHT.id,
 						payload: {
-							text: `new text`,
-							unexistingProperty: true,
+							order: 'text',
 						},
 					},
 				],

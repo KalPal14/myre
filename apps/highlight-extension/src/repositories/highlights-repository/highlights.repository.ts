@@ -1,20 +1,19 @@
 import { inject, injectable } from 'inversify';
 
-import { IPrismaService } from '~libs/express-core';
+import { UpdateHighlightDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
+import { IBatchPayload } from '~libs/common';
 
 import { HighlightModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
-import { IBatchPayload } from '~/highlight-extension/common/types/batch-payload.interface';
+import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
 
 import { THighlightDeepModel } from './types/highlight-deep-model.type';
 import { IHighlightsRepository } from './highlights.repository.interface';
 
 @injectable()
 export class HighlightsRepository implements IHighlightsRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: IPrismaService) {}
+	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
 	async create(highlight: IHighlight): Promise<THighlightDeepModel> {
 		return await this.prismaService.client.highlightModel.create({

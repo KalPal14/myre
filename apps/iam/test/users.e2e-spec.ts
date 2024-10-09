@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import request from 'supertest';
 
+import { hideEmail } from '~libs/common';
+
 import { bootstrap } from '~/iam/main';
 import App from '~/iam/app';
 import {
@@ -12,7 +14,6 @@ import {
 	UPDATED_USER,
 } from '~/iam/common/constants/spec/users';
 import { USERS_FULL_PATH } from '~/iam/common/constants/routes/users';
-import { hideEmail } from '~/iam/utils/helper-functions/hide-email/hide-email.helper';
 
 let application: App;
 

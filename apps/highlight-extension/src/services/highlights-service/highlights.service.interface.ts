@@ -1,10 +1,12 @@
 import { IJwtPayload } from '~libs/express-core';
+import {
+	CreateHighlightDto,
+	UpdateHighlightDto,
+	IndividualUpdateHighlightsDto,
+} from '~libs/dto/highlight-extension';
 
 import { HighlightModel } from '~/highlight-extension/prisma/client';
-import { CreateHighlightDto } from '~/highlight-extension/dto/highlights/create-highlight.dto';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
 import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
 
 export interface IHighlightsService {
 	getHighlights: (ids: number[]) => Promise<THighlightDeepModel[]>;

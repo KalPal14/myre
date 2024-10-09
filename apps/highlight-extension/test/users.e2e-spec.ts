@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import request from 'supertest';
 
+import { TEmail, hideEmail } from '~libs/common';
+
 import { bootstrap } from '~/highlight-extension/main';
 import App from '~/highlight-extension/app';
 import {
@@ -12,8 +14,6 @@ import {
 	UPDATED_USER,
 } from '~/highlight-extension/common/constants/spec/users';
 import { USERS_FULL_PATH } from '~/highlight-extension/common/constants/routes/users';
-import { hideEmail } from '~/highlight-extension/utils/helper-functions/hide-email/hide-email.helper';
-import { TEmail } from '~/highlight-extension/common/types/email.type';
 
 let application: App;
 

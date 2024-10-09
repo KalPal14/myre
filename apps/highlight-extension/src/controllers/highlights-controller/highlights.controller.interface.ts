@@ -1,11 +1,12 @@
 import { Router } from 'express';
 
+import {
+	GetHighlightsDto,
+	CreateHighlightDto,
+	UpdateHighlightDto,
+	IndividualUpdateHighlightsDto,
+} from '~libs/dto/highlight-extension';
 import { TController } from '~libs/express-core';
-
-import { CreateHighlightDto } from '~/highlight-extension/dto/highlights/create-highlight.dto';
-import { GetHighlightsDto } from '~/highlight-extension/dto/highlights/get-highlights.dto';
-import { UpdateHighlightDto } from '~/highlight-extension/dto/highlights/update-highlight.dto';
-import { IndividualUpdateHighlightsDto } from '~/highlight-extension/dto/highlights/individual-update-highlights.dto';
 
 export interface IHighlightsController {
 	router: Router;
