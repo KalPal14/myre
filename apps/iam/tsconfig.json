@@ -9,5 +9,6 @@
     "test/**/*",
     "prisma/seed/**/*",
     "prisma/client/**/*",
+    "../../global-types/*"
   ],
 }

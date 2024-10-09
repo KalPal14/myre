@@ -6,5 +6,6 @@
   },
   "include": [
     "src/**/*",
+    "../../global-types/*"
   ],
 }
