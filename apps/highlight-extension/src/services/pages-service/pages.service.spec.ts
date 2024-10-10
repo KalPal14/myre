@@ -14,9 +14,11 @@ import {
 } from '~/highlight-extension/common/constants/spec/pages';
 import { RIGHT_USER_JWT, RIGHT_USER } from '~/highlight-extension/common/constants/spec/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { IPage } from '~/highlight-extension/entities/page-entity/page.entity.interface';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
+import { Page } from '~/highlight-extension/domain/page/page';
+import { IPageFactory } from '~/highlight-extension/domain/page/factory/page-factory.interface';
+import { PageFactory } from '~/highlight-extension/domain/page/factory/page.factory';
 
 import { IPagesServise } from './pages.service.interface';
 import { PagesServise } from './pages.service';
@@ -51,6 +53,7 @@ beforeAll(() => {
 		.bind<IHighlightsRepository>(TYPES.HighlightsRepository)
 		.toConstantValue(highlightsRepositoryMock);
 	container.bind<IPagesServise>(TYPES.PagesServise).to(PagesServise);
+	container.bind<IPageFactory>(TYPES.PageFactory).to(PageFactory);
 
 	pagesRepository = container.get<IPagesRepository>(TYPES.PagesRepository);
 	highlightsRepository = container.get<IHighlightsRepository>(TYPES.HighlightsRepository);
@@ -61,7 +64,7 @@ describe('Pages Servise', () => {
 	it('create page - success', async () => {
 		pagesRepository.findByUrl = jest.fn().mockReturnValue(null);
 		pagesRepository.create = jest.fn().mockImplementation(
-			(page: IPage): PageModel => ({
+			(page: Page): PageModel => ({
 				id: RIGHT_PAGE.id,
 				userId: page.userId,
 				url: page.url,
@@ -80,7 +83,7 @@ describe('Pages Servise', () => {
 	it('create page - wrong: this user already has a page with the same url', async () => {
 		pagesRepository.findByUrl = jest.fn().mockReturnValue(RIGHT_PAGE);
 		pagesRepository.create = jest.fn().mockImplementation(
-			(page: IPage): PageModel => ({
+			(page: Page): PageModel => ({
 				id: RIGHT_PAGE.id,
 				userId: page.userId,
 				url: page.url,

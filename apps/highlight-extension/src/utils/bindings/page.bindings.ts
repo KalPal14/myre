@@ -3,6 +3,8 @@ import { ContainerModule, interfaces } from 'inversify';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { PagesController } from '~/highlight-extension/controllers/pages-controller/pages.controller';
 import { IPagesController } from '~/highlight-extension/controllers/pages-controller/pages.controller.interface';
+import { IPageFactory } from '~/highlight-extension/domain/page/factory/page-factory.interface';
+import { PageFactory } from '~/highlight-extension/domain/page/factory/page.factory';
 import { PagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
 import { PagesServise } from '~/highlight-extension/services/pages-service/pages.service';
@@ -12,4 +14,5 @@ export const pageBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IPagesRepository>(TYPES.PagesRepository).to(PagesRepository);
 	bind<IPagesServise>(TYPES.PagesServise).to(PagesServise);
 	bind<IPagesController>(TYPES.PagesController).to(PagesController);
+	bind<IPageFactory>(TYPES.PageFactory).to(PageFactory);
 });

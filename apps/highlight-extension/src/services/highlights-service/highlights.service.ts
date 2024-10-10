@@ -10,10 +10,10 @@ import {
 
 import { HighlightModel, PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { Highlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
+import { IHighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight-factory.interface';
 
 import { IPagesServise } from '../pages-service/pages.service.interface';
 import { INodesService } from '../nodes-service/nodes.service.interface';
@@ -24,6 +24,7 @@ import { IHighlightsService } from './highlights.service.interface';
 export class HighlightsService implements IHighlightsService {
 	constructor(
 		@inject(TYPES.HighlightsRepository) private highlightsRepository: IHighlightsRepository,
+		@inject(TYPES.HighlightFactory) private highlightFactory: IHighlightFactory,
 		@inject(TYPES.PagesRepository) private pagesRepository: IPagesRepository,
 		@inject(TYPES.PagesServise) private pagesServise: IPagesServise,
 		@inject(TYPES.NodesService) private nodesService: INodesService
@@ -37,8 +38,7 @@ export class HighlightsService implements IHighlightsService {
 		createHighlightDto: CreateHighlightDto,
 		user: IJwtPayload
 	): Promise<THighlightDeepModel> {
-		const { pageUrl, startContainer, endContainer, startOffset, endOffset, text, note, color } =
-			createHighlightDto;
+		const { pageUrl, startContainer, endContainer } = createHighlightDto;
 
 		let existingPage = await this.pagesRepository.findByUrl(pageUrl, user.id);
 		if (!existingPage) {
@@ -52,20 +52,13 @@ export class HighlightsService implements IHighlightsService {
 		const startNode = await this.nodesService.createNode(startContainer);
 		const endNode = await this.nodesService.createNode(endContainer);
 
-		const newHighlight = new Highlight(
-			existingPage.id,
-			startNode.id,
-			endNode.id,
-			startOffset,
-			endOffset,
-			text,
-			color,
-			{
-				note,
-				pageHighlightsCount: pageHighlights?.length,
-			}
-		).getData();
-
+		const newHighlight = this.highlightFactory.create({
+			...createHighlightDto,
+			pageId: existingPage.id,
+			startContainerId: startNode.id,
+			endContainerId: endNode.id,
+			pageHighlightsCount: pageHighlights?.length,
+		});
 		return await this.highlightsRepository.create(newHighlight);
 	}
 

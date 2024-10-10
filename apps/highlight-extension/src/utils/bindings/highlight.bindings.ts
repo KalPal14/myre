@@ -3,6 +3,8 @@ import { ContainerModule, interfaces } from 'inversify';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { HighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller';
 import { IHighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller.interface';
+import { IHighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight-factory.interface';
+import { HighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight.factory';
 import { HighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { HighlightsService } from '~/highlight-extension/services/highlights-service/highlights.service';
@@ -12,4 +14,5 @@ export const highlightBindings = new ContainerModule((bind: interfaces.Bind) => 
 	bind<IHighlightsController>(TYPES.HighlightsController).to(HighlightsController);
 	bind<IHighlightsRepository>(TYPES.HighlightsRepository).to(HighlightsRepository);
 	bind<IHighlightsService>(TYPES.HighlightsService).to(HighlightsService);
+	bind<IHighlightFactory>(TYPES.HighlightFactory).to(HighlightFactory);
 });

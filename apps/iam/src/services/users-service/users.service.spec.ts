@@ -12,8 +12,10 @@ import {
 	UPDATED_USER,
 } from '~/iam/common/constants/spec/users';
 import { TYPES } from '~/iam/common/constants/types';
-import { IUser } from '~/iam/entities/user-entity/user.entity.interface';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
+import { User } from '~/iam/domain/user/user';
+import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
+import { UserFactory } from '~/iam/domain/user/factory/user.factory';
 
 import { IUsersService } from './users.service.interface';
 import { UsersService } from './users.service';
@@ -36,6 +38,7 @@ let usersRepository: IUsersRepository;
 
 beforeAll(() => {
 	container.bind<IUsersService>(TYPES.UsersService).to(UsersService);
+	container.bind<IUserFactory>(TYPES.UserFactory).to(UserFactory);
 	container.bind<IUsersRepository>(TYPES.UsersRepository).toConstantValue(usersRepositoryMock);
 	container.bind<IConfigService>(TYPES.ConfigService).toConstantValue(configServiceMock);
 
@@ -48,7 +51,7 @@ describe('Users Service', () => {
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(null);
 		usersRepositoryMock.findByUsername = jest.fn().mockReturnValue(null);
 		usersRepositoryMock.create = jest.fn().mockImplementation(
-			(user: IUser): UserModel => ({
+			(user: User): UserModel => ({
 				id: RIGHT_USER.id,
 				email: user.email,
 				username: user.username,
@@ -75,7 +78,7 @@ describe('Users Service', () => {
 		usersRepositoryMock.findByEmail = jest.fn().mockImplementation((user) => user);
 		usersRepositoryMock.findByUsername = jest.fn().mockReturnValue(null);
 		usersRepositoryMock.create = jest.fn().mockImplementation(
-			(user: IUser): UserModel => ({
+			(user: User): UserModel => ({
 				id: RIGHT_USER.id,
 				email: user.email,
 				username: user.username,
@@ -97,7 +100,7 @@ describe('Users Service', () => {
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(null);
 		usersRepositoryMock.findByUsername = jest.fn().mockImplementation((user) => user);
 		usersRepositoryMock.create = jest.fn().mockImplementation(
-			(user: IUser): UserModel => ({
+			(user: User): UserModel => ({
 				id: RIGHT_USER.id,
 				email: user.email,
 				username: user.username,
@@ -190,7 +193,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(USER);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -218,7 +221,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(USER);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -239,7 +242,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(USER);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -260,7 +263,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(null);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -280,7 +283,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(null);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -300,7 +303,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByEmail = jest.fn().mockReturnValue(UPDATED_USER);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -320,7 +323,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByUsername = jest.fn().mockReturnValue(null);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -340,7 +343,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByUsername = jest.fn().mockReturnValue(null);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})
@@ -360,7 +363,7 @@ describe('Users Service', () => {
 		const { passwordHash: _, ...USER } = { ...RIGHT_USER, password: RIGHT_USER.passwordHash };
 		usersRepositoryMock.findByUsername = jest.fn().mockReturnValue(UPDATED_USER);
 		usersRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<IUser>): UserModel => ({
+			(id: number, payload: Partial<User>): UserModel => ({
 				...USER,
 				...payload,
 			})

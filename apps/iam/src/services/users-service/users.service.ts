@@ -12,8 +12,8 @@ import {
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
-import { User } from '~/iam/entities/user-entity/user.entity';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
+import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
 
 import { IUsersService } from './users.service.interface';
 
@@ -21,6 +21,7 @@ import { IUsersService } from './users.service.interface';
 export class UsersService implements IUsersService {
 	constructor(
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
+		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
 		@inject(TYPES.ConfigService) private configService: IConfigService
 	) {}
 
@@ -28,10 +29,8 @@ export class UsersService implements IUsersService {
 		return await this.usersRepository.findById(id);
 	}
 
-	async createUser({ username, email, password }: UsersRegisterDto): Promise<UserModel | Error> {
-		const newUser = new User(username, email);
-		const salt = this.configService.get('SALT');
-		await newUser.setPassword(password, Number(salt));
+	async createUser(userDto: UsersRegisterDto): Promise<UserModel | Error> {
+		const newUser = await this.userFactory.create(userDto);
 
 		let existingUser = await this.usersRepository.findByEmail(newUser.email);
 		if (existingUser) {
@@ -42,7 +41,7 @@ export class UsersService implements IUsersService {
 			return new HTTPError(422, 'User with this username already exists');
 		}
 
-		return await this.usersRepository.create(newUser.getData());
+		return await this.usersRepository.create(newUser);
 	}
 
 	async validateUser({ userIdentifier, password }: UsersLoginDto): Promise<UserModel | Error> {
@@ -60,12 +59,7 @@ export class UsersService implements IUsersService {
 			}
 		}
 
-		const user = new User(
-			existingUser.username,
-			existingUser.email,
-			existingUser.passwordUpdatedAt,
-			existingUser.password
-		);
+		const user = this.userFactory.createWithHashPassword(existingUser);
 		const isPasswordTrue = await user.comperePassword(password);
 		if (!isPasswordTrue) {
 			return new HTTPError(422, 'Incorrect password');
@@ -85,7 +79,7 @@ export class UsersService implements IUsersService {
 			return Error('The new password cannot be the same as the old one');
 		}
 
-		const user = new User(validatedUser.username, validatedUser.email);
+		const user = this.userFactory.createWithHashPassword(validatedUser);
 		const salt = this.configService.get('SALT');
 		await user.setPassword(newPassword, Number(salt));
 		return await this.usersRepository.update(id, {

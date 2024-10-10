@@ -1,9 +1,9 @@
 import { NodeModel } from '~/highlight-extension/prisma/client';
-import { INode } from '~/highlight-extension/entities/node-entity/node.entity.interface';
+import { Node } from '~/highlight-extension/domain/node/node';
 
 export interface INodesRepository {
-	create: (node: INode) => Promise<NodeModel>;
-	update: (id: number, payload: Partial<INode>) => Promise<NodeModel>;
+	create: (node: Node) => Promise<NodeModel>;
+	update: (id: number, payload: Partial<Node>) => Promise<NodeModel>;
 	findById: (id: number) => Promise<NodeModel | null>;
 	delete: (id: number) => Promise<NodeModel>;
 }

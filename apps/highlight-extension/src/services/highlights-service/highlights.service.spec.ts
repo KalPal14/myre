@@ -14,10 +14,12 @@ import {
 import { RIGHT_PAGE } from '~/highlight-extension/common/constants/spec/pages';
 import { RIGHT_USER_JWT } from '~/highlight-extension/common/constants/spec/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
+import { Highlight } from '~/highlight-extension/domain/highlight/highlight';
+import { IHighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight-factory.interface';
+import { HighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight.factory';
 
 import { IPagesServise } from '../pages-service/pages.service.interface';
 import { INodesService } from '../nodes-service/nodes.service.interface';
@@ -71,6 +73,7 @@ beforeAll(() => {
 		.toConstantValue(highlightsRepositoryMock);
 	container.bind<INodesService>(TYPES.NodesService).toConstantValue(nodesServiseMock);
 	container.bind<IHighlightsService>(TYPES.HighlightsService).to(HighlightsService);
+	container.bind<IHighlightFactory>(TYPES.HighlightFactory).to(HighlightFactory);
 
 	pagesRepository = container.get<IPagesRepository>(TYPES.PagesRepository);
 	pagesServise = container.get<IPagesServise>(TYPES.PagesServise);
@@ -86,7 +89,7 @@ describe('Highlights Service', () => {
 		pagesRepository.findByUrl = jest.fn().mockReturnValue(null);
 		pagesServise.createPage = jest.fn().mockReturnValue(RIGHT_PAGE);
 		highlightsRepository.create = jest.fn().mockImplementation(
-			(highlight: IHighlight): THighlightDeepModel => ({
+			(highlight: Highlight): THighlightDeepModel => ({
 				id: RIGHT_HIGHLIGHT.id,
 				...highlight,
 				startContainer: RIGHT_START_NODE,
@@ -126,7 +129,7 @@ describe('Highlights Service', () => {
 		pagesRepository.findByUrl = jest.fn().mockReturnValue(RIGHT_PAGE);
 		pagesServise.createPage = jest.fn().mockReturnValue(Error);
 		highlightsRepository.create = jest.fn().mockImplementation(
-			(highlight: IHighlight): THighlightDeepModel => ({
+			(highlight: Highlight): THighlightDeepModel => ({
 				id: RIGHT_HIGHLIGHT.id,
 				...highlight,
 				startContainer: RIGHT_START_NODE,

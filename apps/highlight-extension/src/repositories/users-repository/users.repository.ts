@@ -3,8 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import { UserModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { User } from '~/highlight-extension/entities/user-entity/user.entity';
-import { IUser } from '~/highlight-extension/entities/user-entity/user.entity.interface';
+import { User } from '~/highlight-extension/domain/user/user';
 import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
 
 import { IUsersRepository } from './users.repository.interface';
@@ -37,7 +36,7 @@ export class UsersRepository implements IUsersRepository {
 		});
 	}
 
-	async create({ email, username, password }: IUser): Promise<UserModel> {
+	async create({ email, username, password }: User): Promise<UserModel> {
 		return this.prismaService.client.userModel.create({
 			data: {
 				email,

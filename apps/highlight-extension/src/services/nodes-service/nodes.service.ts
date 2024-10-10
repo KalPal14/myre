@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { NodeModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { INode } from '~/highlight-extension/entities/node-entity/node.entity.interface';
+import { Node } from '~/highlight-extension/domain/node/node';
 import { INodesRepository } from '~/highlight-extension/repositories/nodes-repository/nodes.repository.interface';
 
 import { INodesService } from './nodes.service.interface';
@@ -15,11 +15,11 @@ export class NodesService implements INodesService {
 		return await this.nodesRepository.findById(id);
 	}
 
-	async createNode(nodeData: INode): Promise<NodeModel> {
+	async createNode(nodeData: Node): Promise<NodeModel> {
 		return await this.nodesRepository.create(nodeData);
 	}
 
-	async updateNode(id: number, payload: Partial<INode>): Promise<NodeModel | Error> {
+	async updateNode(id: number, payload: Partial<Node>): Promise<NodeModel | Error> {
 		const existingNode = await this.nodesRepository.findById(id);
 		if (!existingNode) {
 			return Error('There is no node with this ID');

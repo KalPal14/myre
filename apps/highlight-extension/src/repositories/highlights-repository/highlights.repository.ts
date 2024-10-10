@@ -5,8 +5,8 @@ import { IBatchPayload } from '~libs/common';
 
 import { HighlightModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
 import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
+import { Highlight } from '~/highlight-extension/domain/highlight/highlight';
 
 import { THighlightDeepModel } from './types/highlight-deep-model.type';
 import { IHighlightsRepository } from './highlights.repository.interface';
@@ -15,7 +15,7 @@ import { IHighlightsRepository } from './highlights.repository.interface';
 export class HighlightsRepository implements IHighlightsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async create(highlight: IHighlight): Promise<THighlightDeepModel> {
+	async create(highlight: Highlight): Promise<THighlightDeepModel> {
 		return await this.prismaService.client.highlightModel.create({
 			data: highlight,
 			include: {

@@ -8,4 +8,5 @@ export const TYPES = {
 	UsersController: Symbol('UsersController'),
 	UsersService: Symbol('UsersService'),
 	UsersRepository: Symbol('UsersRepository'),
+	UserFactory: Symbol('UserFactory'),
 };

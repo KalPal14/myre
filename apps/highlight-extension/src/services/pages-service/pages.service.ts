@@ -5,9 +5,9 @@ import { UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import { PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { Page } from '~/highlight-extension/entities/page-entity/page.entity';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
+import { IPageFactory } from '~/highlight-extension/domain/page/factory/page-factory.interface';
 
 import { TPageShortInfo } from './types/page-short-info.type';
 import { TPageAllInfo } from './types/page-all-info.type';
@@ -17,6 +17,7 @@ import { IPagesServise } from './pages.service.interface';
 export class PagesServise implements IPagesServise {
 	constructor(
 		@inject(TYPES.PagesRepository) private pagesRepository: IPagesRepository,
+		@inject(TYPES.PageFactory) private pageFactory: IPageFactory,
 		@inject(TYPES.HighlightsRepository) private highlightsRepository: IHighlightsRepository
 	) {}
 
@@ -26,7 +27,7 @@ export class PagesServise implements IPagesServise {
 			return Error('This page already exists');
 		}
 
-		const newPage = new Page(id, pageUrl).getData();
+		const newPage = this.pageFactory.create({ userId: id, url: pageUrl });
 		return await this.pagesRepository.create(newPage);
 	}
 

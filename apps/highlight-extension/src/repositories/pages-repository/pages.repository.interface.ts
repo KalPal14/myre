@@ -1,11 +1,11 @@
 import { PageModel } from '~/highlight-extension/prisma/client';
-import { IPage } from '~/highlight-extension/entities/page-entity/page.entity.interface';
+import { Page } from '~/highlight-extension/domain/page/page';
 
 import { TPageDeepModel } from './types/page-deep-model.type';
 
 export interface IPagesRepository {
-	create: (page: IPage) => Promise<PageModel>;
-	update: (id: number, payload: Pick<IPage, 'url'>) => Promise<PageModel>;
+	create: (page: Page) => Promise<PageModel>;
+	update: (id: number, payload: Pick<Page, 'url'>) => Promise<PageModel>;
 	findByUrl: (
 		url: string,
 		userId: number,

@@ -2,8 +2,8 @@ import { inject, injectable } from 'inversify';
 
 import { PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { IPage } from '~/highlight-extension/entities/page-entity/page.entity.interface';
 import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
+import { Page } from '~/highlight-extension/domain/page/page';
 
 import { TPageDeepModel } from './types/page-deep-model.type';
 import { IPagesRepository } from './pages.repository.interface';
@@ -12,7 +12,7 @@ import { IPagesRepository } from './pages.repository.interface';
 export class PagesRepository implements IPagesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async create({ userId, url }: IPage): Promise<PageModel> {
+	async create({ userId, url }: Page): Promise<PageModel> {
 		return await this.prismaService.client.pageModel.create({
 			data: {
 				userId,
@@ -21,7 +21,7 @@ export class PagesRepository implements IPagesRepository {
 		});
 	}
 
-	async update(id: number, { url }: Pick<IPage, 'url'>): Promise<PageModel> {
+	async update(id: number, { url }: Pick<Page, 'url'>): Promise<PageModel> {
 		return await this.prismaService.client.pageModel.update({
 			where: { id },
 			data: {

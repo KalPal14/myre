@@ -2,12 +2,12 @@ import { IBatchPayload } from '~libs/common';
 import { UpdateHighlightDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
 
 import { HighlightModel } from '~/highlight-extension/prisma/client';
-import { IHighlight } from '~/highlight-extension/entities/highlight-entity/highlight.entity.interface';
+import { Highlight } from '~/highlight-extension/domain/highlight/highlight';
 
 import { THighlightDeepModel } from './types/highlight-deep-model.type';
 
 export interface IHighlightsRepository {
-	create: (highlight: IHighlight) => Promise<THighlightDeepModel>;
+	create: (highlight: Highlight) => Promise<THighlightDeepModel>;
 	update: (
 		id: number,
 		payload: Omit<UpdateHighlightDto, 'startContainer' | 'endContainer'>

@@ -8,8 +8,10 @@ import {
 	WRONG_NODE,
 } from '~/highlight-extension/common/constants/spec/nodes';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { INode } from '~/highlight-extension/entities/node-entity/node.entity.interface';
+import { Node } from '~/highlight-extension/domain/node/node';
 import { INodesRepository } from '~/highlight-extension/repositories/nodes-repository/nodes.repository.interface';
+import { INodeFactory } from '~/highlight-extension/domain/node/factory/node-factory.interface';
+import { NodeFactory } from '~/highlight-extension/domain/node/factory/node.factory';
 
 import { INodesService } from './nodes.service.interface';
 import { NodesService } from './nodes.service';
@@ -28,6 +30,7 @@ let nodesService: INodesService;
 beforeAll(() => {
 	container.bind<INodesRepository>(TYPES.NodesRepository).toConstantValue(nodesRepositoryMock);
 	container.bind<INodesService>(TYPES.NodesService).to(NodesService);
+	container.bind<INodeFactory>(TYPES.NodeFactory).to(NodeFactory);
 
 	nodesRepository = container.get<INodesRepository>(TYPES.NodesRepository);
 	nodesService = container.get<INodesService>(TYPES.NodesService);
@@ -37,7 +40,7 @@ describe('Nodes Service', () => {
 	it('update node - success', async () => {
 		nodesRepository.findById = jest.fn().mockReturnValue(RIGHT_END_NODE);
 		nodesRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<INode>): NodeModel => ({
+			(id: number, payload: Partial<Node>): NodeModel => ({
 				...RIGHT_END_NODE,
 				...payload,
 			})
@@ -56,7 +59,7 @@ describe('Nodes Service', () => {
 	it('update node - wrong: there is no node with this id', async () => {
 		nodesRepository.findById = jest.fn().mockReturnValue(null);
 		nodesRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<INode>): NodeModel => ({
+			(id: number, payload: Partial<Node>): NodeModel => ({
 				...RIGHT_END_NODE,
 				...payload,
 			})
