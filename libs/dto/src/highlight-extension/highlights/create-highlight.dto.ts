@@ -6,6 +6,9 @@ import { IsColor } from '~libs/common/index';
 import { ContainerDto } from './common/container.dto';
 
 export class CreateHighlightDto {
+	@IsNumber({}, { message: 'This field must contain a number' })
+	workspaceId: number;
+
 	@IsUrl({}, { message: 'The pageUrl field must contain a valid link to the page' })
 	pageUrl: string;
 

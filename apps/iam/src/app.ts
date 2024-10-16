@@ -19,7 +19,6 @@ import { TPrismaService } from './common/types/prisma-service.interface';
 @injectable()
 export default class App {
 	app: Express;
-	port: number;
 	server: Server;
 
 	constructor(
@@ -30,7 +29,6 @@ export default class App {
 		@inject(TYPES.ConfigService) private configService: IConfigService
 	) {
 		this.app = express();
-		this.port = 8000;
 	}
 
 	useMiddleware(): void {
@@ -60,11 +58,14 @@ export default class App {
 		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
 	}
 
-	async init(port?: number): Promise<void> {
+	async init(mode: 'test' | 'dev' | 'prod', port?: number): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptions();
 		await this.prismaService.connect();
+
+		if (mode === 'test') return;
+
 		this.server = createServer(
 			{
 				key: readFileSync('host-key.pem'),
@@ -72,12 +73,8 @@ export default class App {
 			},
 			this.app
 		);
-		this.server.listen(port || this.port, () => {
-			this.logger.log(`The server is running on port ${port || this.port}`);
+		this.server.listen(port, () => {
+			this.logger.log(`The server is running on port ${port}`);
 		});
-	}
-
-	close(): void {
-		this.server.close();
 	}
 }

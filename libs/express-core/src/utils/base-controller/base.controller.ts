@@ -3,7 +3,6 @@ import { Response, Router } from 'express';
 import { injectable } from 'inversify';
 
 import { TController } from '~libs/express-core/types/controller.type';
-import { HTTPError } from '~libs/express-core/exceptions/http-error.class';
 
 import { IRouteController } from './types/route.interface';
 
@@ -38,8 +37,8 @@ export abstract class BaseController {
 			const handler: TController = async (req, res, next) => {
 				try {
 					await route.func.bind(this)(req, res, next);
-				} catch {
-					next(new HTTPError(500, 'Unexpected error'));
+				} catch (err) {
+					next(err);
 				}
 			};
 			const pipeline = middlewares ? [...middlewares, handler] : handler;

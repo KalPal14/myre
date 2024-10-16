@@ -7,6 +7,6 @@ import { IPageFactory, IPageFactoryCreateArgs } from './page-factory.interface';
 @injectable()
 export class PageFactory implements IPageFactory {
 	create(pageData: IPageFactoryCreateArgs): Page {
-		return new Page(pageData.userId, pageData.url, pageData.highlights);
+		return new Page(pageData.workspaceId, pageData.url, pageData.highlights);
 	}
 }

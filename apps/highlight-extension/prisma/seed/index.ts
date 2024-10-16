@@ -1,14 +1,14 @@
 import { PrismaClient } from '../client';
 
-import { usersSeed } from './users.seed';
 import { pagesSeed } from './pages.seed';
 import { highlightsSeed } from './highlights.seed';
 import { nodesSeed } from './nodes.seed';
+import { workspacesSeed } from './workspaces.seed';
 
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
-	await usersSeed(prisma);
+	await workspacesSeed(prisma);
 	await pagesSeed(prisma);
 	await nodesSeed(prisma);
 	await highlightsSeed(prisma);

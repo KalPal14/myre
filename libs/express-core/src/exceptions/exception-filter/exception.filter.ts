@@ -20,6 +20,6 @@ export class ExceptionFilter implements IExceptionFilter {
 			return;
 		}
 		this.loggerService.err(err.message);
-		res.status(500).send({ err: err.message });
+		res.status(500).send({ err: 'Unexpected error' });
 	}
 }

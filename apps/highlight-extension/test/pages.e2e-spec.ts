@@ -2,9 +2,8 @@ import 'reflect-metadata';
 import request from 'supertest';
 
 import { bootstrap } from '~/highlight-extension/main';
-import App from '~/highlight-extension/app';
-import { USERS_FULL_PATH } from '~/highlight-extension/common/constants/routes/users';
-import { RIGHT_USER } from '~/highlight-extension/common/constants/spec/users';
+import { USERS_FULL_PATH } from '~/iam/common/constants/routes/users';
+import { RIGHT_USER } from '~/iam/common/constants/spec/users';
 import { PAGES_FULL_PATH } from '~/highlight-extension/common/constants/routes/pages';
 import {
 	RIGHT_PAGE,
@@ -17,14 +16,21 @@ import {
 	RIGHT_START_NODE,
 	RIGHT_END_NODE,
 } from '~/highlight-extension/common/constants/spec/nodes';
+import { WORKSPACE_MODEL } from '~/highlight-extension/common/constants/spec/workspaces';
+import { bootstrap as iamBootstrap } from '~/iam/main';
 
-let application: App;
+import type { Express } from 'express';
+
+let app: Express;
 let jwt: string;
 
 beforeAll(async () => {
-	application = await bootstrap(8053);
+	const application = await bootstrap('test');
+	app = application.app;
 
-	const loginRes = await request(application.app).post(USERS_FULL_PATH.login).send({
+	const { app: iamApp } = await iamBootstrap('test');
+
+	const loginRes = await request(iamApp).post(USERS_FULL_PATH.login).send({
 		userIdentifier: RIGHT_USER.username,
 		password: RIGHT_USER.password,
 	});
@@ -35,9 +41,10 @@ describe('Pages', () => {
 	it('update page - success', async () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
-		const createdHighlightRes = await request(application.app)
+		const createdHighlightRes = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: 'https://example.com/',
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -49,7 +56,7 @@ describe('Pages', () => {
 			.set('Authorization', `Bearer ${jwt}`);
 		const pageId = createdHighlightRes.body.pageId;
 
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(PAGES_FULL_PATH.updatePage.replace(':id', pageId))
 			.send({
 				url: UPDATED_PAGE.url,
@@ -62,7 +69,7 @@ describe('Pages', () => {
 	});
 
 	it('get page info - success', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.get(PAGES_FULL_PATH.getPage)
 			.query({
 				url: RIGHT_PAGE.url,
@@ -71,14 +78,14 @@ describe('Pages', () => {
 
 		expect(res.statusCode).toBe(200);
 		expect(res.body.id).toBe(RIGHT_PAGE.id);
-		expect(res.body.userId).toBe(RIGHT_PAGE.userId);
+		expect(res.body.workspaceId).toBe(RIGHT_PAGE.workspaceId);
 		expect(res.body.highlights.length).not.toBe(0);
 		expect(res.body.highlights[0].startContainer.id).toBeDefined();
 		expect(res.body.highlights[0].endContainer.id).toBeDefined();
 	});
 
 	it('get page info - wrong: trying to get a non-existent page', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.get(PAGES_FULL_PATH.getPage)
 			.query({
 				url: WRONG_PAGE.url,
@@ -92,15 +99,11 @@ describe('Pages', () => {
 	});
 
 	it('get page info - wrong: not authorizede', async () => {
-		const res = await request(application.app).get(PAGES_FULL_PATH.getPage).send({
+		const res = await request(app).get(PAGES_FULL_PATH.getPage).send({
 			url: RIGHT_PAGE.url,
 		});
 
 		expect(res.statusCode).toBe(401);
 		expect(res.body.err).toBeDefined();
 	});
-});
-
-afterAll(() => {
-	application.close();
 });

@@ -1,4 +1,3 @@
-import { IJwtPayload } from '~libs/express-core';
 import {
 	CreateHighlightDto,
 	UpdateHighlightDto,
@@ -10,10 +9,7 @@ import { THighlightDeepModel } from '~/highlight-extension/repositories/highligh
 
 export interface IHighlightsService {
 	getHighlights: (ids: number[]) => Promise<THighlightDeepModel[]>;
-	createHighlight: (
-		highlightData: CreateHighlightDto,
-		user: IJwtPayload
-	) => Promise<THighlightDeepModel>;
+	createHighlight: (highlightData: CreateHighlightDto) => Promise<THighlightDeepModel>;
 	updateHighlight: (
 		id: number,
 		payload: UpdateHighlightDto

@@ -12,7 +12,6 @@ import {
 	UPDATED_END_NODE,
 } from '~/highlight-extension/common/constants/spec/nodes';
 import { RIGHT_PAGE } from '~/highlight-extension/common/constants/spec/pages';
-import { RIGHT_USER_JWT } from '~/highlight-extension/common/constants/spec/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
@@ -20,6 +19,7 @@ import { IPagesRepository } from '~/highlight-extension/repositories/pages-repos
 import { Highlight } from '~/highlight-extension/domain/highlight/highlight';
 import { IHighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight-factory.interface';
 import { HighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight.factory';
+import { WORKSPACE_MODEL } from '~/highlight-extension/common/constants/spec/workspaces';
 
 import { IPagesServise } from '../pages-service/pages.service.interface';
 import { INodesService } from '../nodes-service/nodes.service.interface';
@@ -102,18 +102,16 @@ describe('Highlights Service', () => {
 			.mockReturnValueOnce(RIGHT_END_NODE);
 		const createNodeSpy = jest.spyOn(nodesServise, 'createNode');
 
-		const result = await highlightsService.createHighlight(
-			{
-				pageUrl: RIGHT_PAGE.url,
-				startContainer: START_NODE,
-				endContainer: END_NODE,
-				startOffset: RIGHT_HIGHLIGHT.startOffset,
-				endOffset: RIGHT_HIGHLIGHT.endOffset,
-				text: RIGHT_HIGHLIGHT.text,
-				color: RIGHT_HIGHLIGHT.color,
-			},
-			RIGHT_USER_JWT
-		);
+		const result = await highlightsService.createHighlight({
+			workspaceId: WORKSPACE_MODEL.id,
+			pageUrl: RIGHT_PAGE.url,
+			startContainer: START_NODE,
+			endContainer: END_NODE,
+			startOffset: RIGHT_HIGHLIGHT.startOffset,
+			endOffset: RIGHT_HIGHLIGHT.endOffset,
+			text: RIGHT_HIGHLIGHT.text,
+			color: RIGHT_HIGHLIGHT.color,
+		});
 
 		expect(createNodeSpy).toHaveBeenCalledTimes(2);
 		expect(result).toEqual({
@@ -142,19 +140,17 @@ describe('Highlights Service', () => {
 			.mockReturnValueOnce(RIGHT_END_NODE);
 		const createNodeSpy = jest.spyOn(nodesServise, 'createNode');
 
-		const result = await highlightsService.createHighlight(
-			{
-				pageUrl: RIGHT_PAGE.url,
-				startContainer: START_NODE,
-				endContainer: END_NODE,
-				startOffset: RIGHT_HIGHLIGHT.startOffset,
-				endOffset: RIGHT_HIGHLIGHT.endOffset,
-				text: RIGHT_HIGHLIGHT.text,
-				color: RIGHT_HIGHLIGHT.color,
-				note: RIGHT_HIGHLIGHT.note as string,
-			},
-			RIGHT_USER_JWT
-		);
+		const result = await highlightsService.createHighlight({
+			workspaceId: WORKSPACE_MODEL.id,
+			pageUrl: RIGHT_PAGE.url,
+			startContainer: START_NODE,
+			endContainer: END_NODE,
+			startOffset: RIGHT_HIGHLIGHT.startOffset,
+			endOffset: RIGHT_HIGHLIGHT.endOffset,
+			text: RIGHT_HIGHLIGHT.text,
+			color: RIGHT_HIGHLIGHT.color,
+			note: RIGHT_HIGHLIGHT.note as string,
+		});
 
 		expect(createNodeSpy).toHaveBeenCalledTimes(2);
 		expect(result).toEqual({

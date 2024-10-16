@@ -12,23 +12,22 @@ import { ILogger, IConfigService, IExceptionFilter, JwtAuthMiddleware } from '~l
 
 import { HIGHLIGHTS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
-import { IUsersController } from '~/highlight-extension/controllers/users-controller/users.controller.interface';
+import { IWorkspacesController } from '~/highlight-extension/controllers/workspaces-controller/workspaces.controller.interface';
 import { IHighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller.interface';
-import { USERS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/users';
 
 import { PAGES_ROUTER_PATH } from './common/constants/routes/pages';
 import { IPagesController } from './controllers/pages-controller/pages.controller.interface';
 import { TPrismaService } from './common/types/prisma-service.interface';
+import { WORKSPACES_BASE_ROUTE } from './common/constants/routes/workspaces';
 
 @injectable()
 export default class App {
 	app: Express;
-	port: number;
 	server: Server;
 
 	constructor(
 		@inject(TYPES.LoggerService) private logger: ILogger,
-		@inject(TYPES.UsersController) private usersController: IUsersController,
+		@inject(TYPES.WorkspacesController) private usersController: IWorkspacesController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
@@ -36,7 +35,6 @@ export default class App {
 		@inject(TYPES.PagesController) private pagesController: IPagesController
 	) {
 		this.app = express();
-		this.port = 8000;
 	}
 
 	useMiddleware(): void {
@@ -59,7 +57,7 @@ export default class App {
 	}
 
 	useRoutes(): void {
-		this.app.use(USERS_ROUTER_PATH, this.usersController.router);
+		this.app.use(WORKSPACES_BASE_ROUTE, this.usersController.router);
 		this.app.use(HIGHLIGHTS_ROUTER_PATH, this.highlightsController.router);
 		this.app.use(PAGES_ROUTER_PATH, this.pagesController.router);
 	}
@@ -68,11 +66,14 @@ export default class App {
 		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
 	}
 
-	async init(port?: number): Promise<void> {
+	async init(mode: 'test' | 'dev' | 'prod', port?: number): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptions();
 		await this.prismaService.connect();
+
+		if (mode == 'test') return;
+
 		this.server = createServer(
 			{
 				key: readFileSync('host-key.pem'),
@@ -80,12 +81,8 @@ export default class App {
 			},
 			this.app
 		);
-		this.server.listen(port || this.port, () => {
-			this.logger.log(`The server is running on port ${port || this.port}`);
+		this.server.listen(port, () => {
+			this.logger.log(`The server is running on port ${port}`);
 		});
-	}
-
-	close(): void {
-		this.server.close();
 	}
 }

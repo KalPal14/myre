@@ -1,6 +1,6 @@
 export class Page {
 	constructor(
-		readonly userId: number,
+		readonly workspaceId: number,
 		readonly url: string,
 		readonly highlights: number[] = []
 	) {}

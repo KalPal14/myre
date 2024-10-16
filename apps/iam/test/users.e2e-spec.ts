@@ -18,7 +18,7 @@ import { USERS_FULL_PATH } from '~/iam/common/constants/routes/users';
 let application: App;
 
 beforeAll(async () => {
-	application = await bootstrap(8054);
+	application = await bootstrap('test');
 });
 
 describe('Users', () => {
@@ -212,8 +212,4 @@ describe('Users', () => {
 			passwordUpdatedAt: NEW_USER.passwordUpdatedAt,
 		});
 	});
-});
-
-afterAll(() => {
-	application.close();
 });

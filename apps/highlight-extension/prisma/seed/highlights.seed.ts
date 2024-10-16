@@ -4,7 +4,7 @@ import { RIGHT_HIGHLIGHT } from '../../src/common/constants/spec/highlights';
 import { RIGHT_END_NODE, RIGHT_START_NODE } from '../../src/common/constants/spec/nodes';
 
 export async function highlightsSeed(prisma: PrismaClient): Promise<void> {
-	const highlight1 = await prisma.highlightModel.upsert({
+	await prisma.highlightModel.upsert({
 		where: { id: RIGHT_HIGHLIGHT.id },
 		update: {},
 		create: {
@@ -19,5 +19,4 @@ export async function highlightsSeed(prisma: PrismaClient): Promise<void> {
 			note: RIGHT_HIGHLIGHT.note,
 		},
 	});
-	console.log({ highlight1 });
 }

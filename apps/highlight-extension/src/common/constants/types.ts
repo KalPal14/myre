@@ -5,10 +5,10 @@ export const TYPES = {
 
 	App: Symbol('App'),
 
-	UsersController: Symbol('UsersController'),
-	UsersService: Symbol('UsersService'),
-	UsersRepository: Symbol('UsersRepository'),
-	UserFactory: Symbol('UserFactory'),
+	WorkspacesController: Symbol('WorkspacesController'),
+	WorkspacesService: Symbol('WorkspacesService'),
+	WorkspacesRepository: Symbol('WorkspacesRepository'),
+	WorkspaceFactory: Symbol('WorkspaceFactory'),
 
 	PagesController: Symbol('PagesController'),
 	PagesServise: Symbol('PagesServise'),

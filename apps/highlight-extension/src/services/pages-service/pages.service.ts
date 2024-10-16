@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { IJwtPayload } from '~libs/express-core';
+import { HTTPError } from '~libs/express-core';
 import { UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import { PageModel } from '~/highlight-extension/prisma/client';
@@ -21,13 +21,13 @@ export class PagesServise implements IPagesServise {
 		@inject(TYPES.HighlightsRepository) private highlightsRepository: IHighlightsRepository
 	) {}
 
-	async createPage(pageUrl: string, { id }: IJwtPayload): Promise<PageModel | Error> {
-		const existingPage = await this.pagesRepository.findByUrl(pageUrl, id);
+	async createPage(pageUrl: string, workspaceId: number): Promise<PageModel | Error> {
+		const existingPage = await this.pagesRepository.findByUrl(pageUrl, workspaceId);
 		if (existingPage) {
-			return Error('This page already exists');
+			throw new HTTPError(422, 'This page already exists');
 		}
 
-		const newPage = this.pageFactory.create({ userId: id, url: pageUrl });
+		const newPage = this.pageFactory.create({ workspaceId, url: pageUrl });
 		return await this.pagesRepository.create(newPage);
 	}
 
@@ -82,11 +82,11 @@ export class PagesServise implements IPagesServise {
 
 	async getPagesInfo(userId: number): Promise<TPageShortInfo[]> {
 		const pages = await this.pagesRepository.findAll(userId, true);
-		return pages.map(({ id, userId, url, highlights = [] }) => {
+		return pages.map(({ id, workspaceId, url, highlights = [] }) => {
 			const highlightsWithNote = highlights.filter(({ note }) => note);
 			return {
 				id,
-				userId,
+				workspaceId,
 				url,
 				highlightsCount: highlights.length,
 				notesCount: highlightsWithNote.length,

@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import request from 'supertest';
 
 import { bootstrap } from '~/highlight-extension/main';
-import App from '~/highlight-extension/app';
 import { HIGHLIGHTS_FULL_PATH } from '~/highlight-extension/common/constants/routes/highlights';
 import { RIGHT_PAGE, INVALID_PAGE } from '~/highlight-extension/common/constants/spec/pages';
 import {
@@ -10,21 +9,28 @@ import {
 	UPDATED_HIGHLIGHT,
 	WRONG_HIGHLIGHT,
 } from '~/highlight-extension/common/constants/spec/highlights';
-import { USERS_FULL_PATH } from '~/highlight-extension/common/constants/routes/users';
-import { RIGHT_USER } from '~/highlight-extension/common/constants/spec/users';
+import { USERS_FULL_PATH } from '~/iam/common/constants/routes/users';
+import { RIGHT_USER } from '~/iam/common/constants/spec/users';
 import {
 	RIGHT_END_NODE,
 	RIGHT_START_NODE,
 	UPDATED_END_NODE,
 } from '~/highlight-extension/common/constants/spec/nodes';
+import { WORKSPACE_MODEL } from '~/highlight-extension/common/constants/spec/workspaces';
+import { bootstrap as iamBootstrap } from '~/iam/main';
 
-let application: App;
+import type { Express } from 'express';
+
+let app: Express;
 let jwt: string;
 
 beforeAll(async () => {
-	application = await bootstrap(8051);
+	const application = await bootstrap('test');
+	app = application.app;
 
-	const loginRes = await request(application.app).post(USERS_FULL_PATH.login).send({
+	const { app: iamApp } = await iamBootstrap('test');
+
+	const loginRes = await request(iamApp).post(USERS_FULL_PATH.login).send({
 		userIdentifier: RIGHT_USER.username,
 		password: RIGHT_USER.password,
 	});
@@ -33,7 +39,7 @@ beforeAll(async () => {
 
 describe('Highlits', () => {
 	it('create highlight - wrong: unauthorized user', async () => {
-		const res = await request(application.app).post(HIGHLIGHTS_FULL_PATH.create).send({
+		const res = await request(app).post(HIGHLIGHTS_FULL_PATH.create).send({
 			pageUrl: RIGHT_PAGE.url,
 			text: RIGHT_HIGHLIGHT.text,
 			color: RIGHT_HIGHLIGHT.color,
@@ -43,7 +49,7 @@ describe('Highlits', () => {
 	});
 
 	it('create highlight - wrong: incorrect input data format', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -58,10 +64,11 @@ describe('Highlits', () => {
 	it('create highlight - success: for an existing page', async () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
-		const res = await request(application.app)
+		const res = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -79,7 +86,7 @@ describe('Highlits', () => {
 	});
 
 	it('get highlights - wrong: ID list not specified', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.get(HIGHLIGHTS_FULL_PATH.get)
 			.set('Authorization', `Bearer ${jwt}`);
 
@@ -88,7 +95,7 @@ describe('Highlits', () => {
 	});
 
 	it('get highlights - success: ID of a non-existent highlights was sent', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.get(HIGHLIGHTS_FULL_PATH.get)
 			.set('Authorization', `Bearer ${jwt}`)
 			.query({
@@ -102,10 +109,11 @@ describe('Highlits', () => {
 	it('get highlights - success', async () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
-		const newHighlight1 = await request(application.app)
+		const newHighlight1 = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -114,10 +122,11 @@ describe('Highlits', () => {
 				text: RIGHT_HIGHLIGHT.text,
 				color: RIGHT_HIGHLIGHT.color,
 			});
-		const newHighlight2 = await request(application.app)
+		const newHighlight2 = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -127,7 +136,7 @@ describe('Highlits', () => {
 				color: RIGHT_HIGHLIGHT.color,
 			});
 
-		const res = await request(application.app)
+		const res = await request(app)
 			.get(HIGHLIGHTS_FULL_PATH.get)
 			.set('Authorization', `Bearer ${jwt}`)
 			.query({
@@ -142,10 +151,11 @@ describe('Highlits', () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
 		const { id: _upendid, ...UPDATE_NODE_DATA } = UPDATED_END_NODE;
-		const createHighlightRes = await request(application.app)
+		const createHighlightRes = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -156,7 +166,7 @@ describe('Highlits', () => {
 			});
 		const highlightId = createHighlightRes.body.id;
 
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(HIGHLIGHTS_FULL_PATH.update.replace(':id', highlightId.toString()))
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -185,7 +195,7 @@ describe('Highlits', () => {
 	});
 
 	it('update highlight - wrong: update a non-existent highlight', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(HIGHLIGHTS_FULL_PATH.update.replace(':id', WRONG_HIGHLIGHT.id!.toString()))
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -202,10 +212,11 @@ describe('Highlits', () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
 		const { id: _upendid, ..._ } = UPDATED_END_NODE;
-		const createHighlightRes1 = await request(application.app)
+		const createHighlightRes1 = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -214,10 +225,11 @@ describe('Highlits', () => {
 				text: RIGHT_HIGHLIGHT.text,
 				color: RIGHT_HIGHLIGHT.color,
 			});
-		const createHighlightRes2 = await request(application.app)
+		const createHighlightRes2 = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -230,7 +242,7 @@ describe('Highlits', () => {
 		const highlightId2 = createHighlightRes2.body.id;
 		const unexistingHighlightId = highlightId1 * highlightId2;
 
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(HIGHLIGHTS_FULL_PATH.individualUpdateMany)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -270,7 +282,7 @@ describe('Highlits', () => {
 	});
 
 	it('individual update highlights - success: try to update unexisting only', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(HIGHLIGHTS_FULL_PATH.individualUpdateMany)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -289,7 +301,7 @@ describe('Highlits', () => {
 	});
 
 	it('individual update highlights - wrong: wrong request body', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.patch(HIGHLIGHTS_FULL_PATH.individualUpdateMany)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
@@ -309,10 +321,11 @@ describe('Highlits', () => {
 	it('delete highlight - success', async () => {
 		const { id: _stid, ...START_NODE } = RIGHT_START_NODE;
 		const { id: _endid, ...END_NODE } = RIGHT_END_NODE;
-		const createHighlightRes = await request(application.app)
+		const createHighlightRes = await request(app)
 			.post(HIGHLIGHTS_FULL_PATH.create)
 			.set('Authorization', `Bearer ${jwt}`)
 			.send({
+				workspaceId: WORKSPACE_MODEL.id,
 				pageUrl: RIGHT_PAGE.url,
 				startContainer: START_NODE,
 				endContainer: END_NODE,
@@ -322,7 +335,7 @@ describe('Highlits', () => {
 				color: RIGHT_HIGHLIGHT.color,
 			});
 		const highlightId = createHighlightRes.body.id;
-		const res = await request(application.app)
+		const res = await request(app)
 			.delete(HIGHLIGHTS_FULL_PATH.delete.replace(':id', highlightId.toString()))
 			.set('Authorization', `Bearer ${jwt}`);
 
@@ -331,15 +344,11 @@ describe('Highlits', () => {
 	});
 
 	it('delete highlight - wrong: non-existent highlight', async () => {
-		const res = await request(application.app)
+		const res = await request(app)
 			.delete(HIGHLIGHTS_FULL_PATH.delete.replace(':id', WRONG_HIGHLIGHT.id!.toString()))
 			.set('Authorization', `Bearer ${jwt}`);
 
 		expect(res.statusCode).toBe(422);
 		expect(res.body.err).toBe('There is no highlight with this ID');
 	});
-});
-
-afterAll(() => {
-	application.close();
 });

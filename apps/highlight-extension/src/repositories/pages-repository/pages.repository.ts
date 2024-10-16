@@ -12,10 +12,10 @@ import { IPagesRepository } from './pages.repository.interface';
 export class PagesRepository implements IPagesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async create({ userId, url }: Page): Promise<PageModel> {
+	async create({ workspaceId, url }: Page): Promise<PageModel> {
 		return await this.prismaService.client.pageModel.create({
 			data: {
-				userId,
+				workspaceId,
 				url,
 			},
 		});
@@ -32,12 +32,12 @@ export class PagesRepository implements IPagesRepository {
 
 	async findByUrl(
 		url: string,
-		userId: number,
+		workspaceId: number,
 		includeHighlights: boolean = false
 	): Promise<TPageDeepModel | null> {
 		return await this.prismaService.client.pageModel.findFirst({
 			where: {
-				userId,
+				workspaceId,
 				url,
 			},
 			include: {
@@ -54,10 +54,13 @@ export class PagesRepository implements IPagesRepository {
 		});
 	}
 
-	async findAll(userId: number, includeHighlights: boolean = false): Promise<TPageDeepModel[]> {
+	async findAll(
+		workspaceId: number,
+		includeHighlights: boolean = false
+	): Promise<TPageDeepModel[]> {
 		return await this.prismaService.client.pageModel.findMany({
 			where: {
-				userId,
+				workspaceId,
 			},
 			orderBy: { id: 'asc' },
 			include: {

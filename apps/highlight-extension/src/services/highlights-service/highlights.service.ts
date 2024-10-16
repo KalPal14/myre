@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { intersectionBy } from 'lodash';
 
-import { IJwtPayload } from '~libs/express-core';
 import {
 	CreateHighlightDto,
 	UpdateHighlightDto,
@@ -34,17 +33,14 @@ export class HighlightsService implements IHighlightsService {
 		return await this.highlightsRepository.findAllByIds(ids);
 	}
 
-	async createHighlight(
-		createHighlightDto: CreateHighlightDto,
-		user: IJwtPayload
-	): Promise<THighlightDeepModel> {
-		const { pageUrl, startContainer, endContainer } = createHighlightDto;
+	async createHighlight(createHighlightDto: CreateHighlightDto): Promise<THighlightDeepModel> {
+		const { pageUrl, startContainer, endContainer, workspaceId } = createHighlightDto;
 
-		let existingPage = await this.pagesRepository.findByUrl(pageUrl, user.id);
+		let existingPage = await this.pagesRepository.findByUrl(pageUrl, workspaceId);
 		if (!existingPage) {
 			existingPage = (await this.pagesServise.createPage(
 				createHighlightDto.pageUrl,
-				user
+				workspaceId
 			)) as PageModel;
 		}
 		const pageHighlights = await this.highlightsRepository.findAllByPageId(existingPage.id);

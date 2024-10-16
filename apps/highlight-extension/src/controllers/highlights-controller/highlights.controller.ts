@@ -67,8 +67,8 @@ export class HighlightsController extends BaseController implements IHighlightsC
 		this.ok(res, result);
 	};
 
-	createHighlight: TController<null, CreateHighlightDto> = async ({ body, user }, res, next) => {
-		const result = await this.highlightsService.createHighlight(body, user);
+	createHighlight: TController<null, CreateHighlightDto> = async ({ body }, res, next) => {
+		const result = await this.highlightsService.createHighlight(body);
 
 		if (result instanceof Error) {
 			return next(new HTTPError(422, result.message));

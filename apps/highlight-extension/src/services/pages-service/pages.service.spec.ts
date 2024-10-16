@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import { PageModel } from 'apps/highlight-extension/prisma/client';
 
+import { HTTPError } from '~libs/express-core';
+
 import { RIGHT_HIGHLIGHT } from '~/highlight-extension/common/constants/spec/highlights';
 import {
 	RIGHT_START_NODE,
@@ -12,13 +14,13 @@ import {
 	UPDATED_PAGE,
 	WRONG_PAGE,
 } from '~/highlight-extension/common/constants/spec/pages';
-import { RIGHT_USER_JWT, RIGHT_USER } from '~/highlight-extension/common/constants/spec/users';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
 import { Page } from '~/highlight-extension/domain/page/page';
 import { IPageFactory } from '~/highlight-extension/domain/page/factory/page-factory.interface';
 import { PageFactory } from '~/highlight-extension/domain/page/factory/page.factory';
+import { WORKSPACE_MODEL } from '~/highlight-extension/common/constants/spec/workspaces';
 
 import { IPagesServise } from './pages.service.interface';
 import { PagesServise } from './pages.service';
@@ -66,17 +68,17 @@ describe('Pages Servise', () => {
 		pagesRepository.create = jest.fn().mockImplementation(
 			(page: Page): PageModel => ({
 				id: RIGHT_PAGE.id,
-				userId: page.userId,
+				workspaceId: page.workspaceId,
 				url: page.url,
 			})
 		);
 
-		const result = await pagesServise.createPage(RIGHT_PAGE.url, RIGHT_USER_JWT);
+		const result = await pagesServise.createPage(RIGHT_PAGE.url, WORKSPACE_MODEL.id);
 
 		expect(result).not.toBeInstanceOf(Error);
 		if (result instanceof Error) return;
 		expect(result.id).toBe(RIGHT_PAGE.id);
-		expect(result.userId).toBe(RIGHT_PAGE.userId);
+		expect(result.workspaceId).toBe(RIGHT_PAGE.workspaceId);
 		expect(result.url).toBe(RIGHT_PAGE.url);
 	});
 
@@ -85,14 +87,16 @@ describe('Pages Servise', () => {
 		pagesRepository.create = jest.fn().mockImplementation(
 			(page: Page): PageModel => ({
 				id: RIGHT_PAGE.id,
-				userId: page.userId,
+				workspaceId: page.workspaceId,
 				url: page.url,
 			})
 		);
 
-		const result = await pagesServise.createPage(RIGHT_PAGE.url, RIGHT_USER_JWT);
-
-		expect(result).toBeInstanceOf(Error);
+		try {
+			await pagesServise.createPage(RIGHT_PAGE.url, WORKSPACE_MODEL.id);
+		} catch (err: any) {
+			expect(err).toBeInstanceOf(HTTPError);
+		}
 	});
 
 	it('update page - success', async () => {
@@ -100,7 +104,7 @@ describe('Pages Servise', () => {
 		pagesRepositoryMock.findByUrl = jest.fn().mockReturnValue(null);
 		const updateSpy = jest.spyOn(pagesRepositoryMock, 'update');
 
-		await pagesServise.updatePage(RIGHT_USER.id, RIGHT_PAGE.id, { url: UPDATED_PAGE.url });
+		await pagesServise.updatePage(WORKSPACE_MODEL.id, RIGHT_PAGE.id, { url: UPDATED_PAGE.url });
 
 		expect(updateSpy).toHaveBeenCalledWith(RIGHT_PAGE.id, { url: UPDATED_PAGE.url });
 	});
@@ -124,7 +128,7 @@ describe('Pages Servise', () => {
 		const deletePageSpy = jest.spyOn(pagesRepositoryMock, 'delete');
 		const updatePageSpy = jest.spyOn(pagesRepositoryMock, 'update');
 
-		await pagesServise.updatePage(RIGHT_USER.id, RIGHT_PAGE.id, { url: UPDATED_PAGE.url });
+		await pagesServise.updatePage(WORKSPACE_MODEL.id, RIGHT_PAGE.id, { url: UPDATED_PAGE.url });
 
 		expect(individualUpdateManyHighlightsSpy).toHaveBeenCalledWith({
 			highlights: [{ id: RIGHT_HIGHLIGHT.id + 2, payload: { order: 3 } }],
@@ -158,7 +162,7 @@ describe('Pages Servise', () => {
 			},
 		]);
 
-		const result = await pagesServise.getPageInfo(RIGHT_PAGE.url, RIGHT_PAGE.userId);
+		const result = await pagesServise.getPageInfo(RIGHT_PAGE.url, RIGHT_PAGE.workspaceId);
 
 		expect(result).toEqual({
 			...RIGHT_PAGE,
@@ -176,7 +180,7 @@ describe('Pages Servise', () => {
 		pagesRepository.findByUrl = jest.fn().mockReturnValue(null);
 		highlightsRepository.findAllByPageId = jest.fn().mockReturnValue(null);
 
-		const result = await pagesServise.getPageInfo(WRONG_PAGE.url!, WRONG_PAGE.userId!);
+		const result = await pagesServise.getPageInfo(WRONG_PAGE.url!, WRONG_PAGE.workspaceId!);
 
 		expect(result).toBe(null);
 	});
@@ -184,7 +188,7 @@ describe('Pages Servise', () => {
 	it('get pages info - success: user without highlights', async () => {
 		pagesRepository.findAll = jest.fn().mockReturnValue([]);
 
-		const result = await pagesServise.getPagesInfo(RIGHT_USER.id);
+		const result = await pagesServise.getPagesInfo(WORKSPACE_MODEL.id);
 
 		expect(result).toHaveLength(0);
 	});
@@ -207,19 +211,19 @@ describe('Pages Servise', () => {
 			},
 		]);
 
-		const result = await pagesServise.getPagesInfo(RIGHT_USER.id);
+		const result = await pagesServise.getPagesInfo(WORKSPACE_MODEL.id);
 
 		expect(result).toHaveLength(2);
 		expect(result[0]).toEqual({
 			id: RIGHT_PAGE.id,
-			userId: RIGHT_PAGE.userId,
+			workspaceId: RIGHT_PAGE.workspaceId,
 			url: RIGHT_PAGE.url,
 			highlightsCount: 2,
 			notesCount: 1,
 		});
 		expect(result[1]).toEqual({
 			id: RIGHT_PAGE.id,
-			userId: RIGHT_PAGE.userId,
+			workspaceId: RIGHT_PAGE.workspaceId,
 			url: RIGHT_PAGE.url,
 			highlightsCount: 1,
 			notesCount: 1,

@@ -8,10 +8,6 @@ export * from './highlights/update-highlight.dto';
 export * from './pages/get-page.dto';
 export * from './pages/update-page.dto';
 
-// users
-export * from './users/change-email.dto';
-export * from './users/change-password.dto';
-export * from './users/change-username.dto';
-export * from './users/users-login.dto';
-export * from './users/users-register.dto';
-export * from './users/update-user.dto';
+// workspace
+export * from './workspaces/create-workspace.dto';
+export * from './workspaces/update-workspace.dto';

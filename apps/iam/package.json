@@ -24,7 +24,7 @@
 		"studio-db:test": "dotenv -e .env.test npx prisma studio"
 	},
 	"prisma": {
-		"seed": "ts-node prisma/seed"
+		"seed": "ts-node --files -r tsconfig-paths/register prisma/seed"
 	},
 	"author": "",
 	"license": "ISC",

@@ -8,25 +8,23 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("H_EXT_DATABASE_URL")
 }
 
-model UserModel {
-  id                Int         @id @default(autoincrement())
-  username          String      @unique
-  email             String      @unique
-  password          String
-  passwordUpdatedAt DateTime?
-  pages             PageModel[]
-  colors            String[]
+model WorkspaceModel {
+  id      Int         @id @default(autoincrement())
+  ownerId Int
+  name    String
+  colors  String[]
+  pages   PageModel[]
 }
 
 model PageModel {
-  id         Int              @id @default(autoincrement())
-  user       UserModel        @relation(fields: [userId], references: [id])
-  userId     Int
-  url        String
-  highlights HighlightModel[]
+  id          Int              @id @default(autoincrement())
+  workspace   WorkspaceModel   @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+  url         String
+  highlights  HighlightModel[]
 }
 
 model HighlightModel {

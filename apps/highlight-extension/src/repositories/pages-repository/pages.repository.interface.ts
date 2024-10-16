@@ -8,10 +8,10 @@ export interface IPagesRepository {
 	update: (id: number, payload: Pick<Page, 'url'>) => Promise<PageModel>;
 	findByUrl: (
 		url: string,
-		userId: number,
+		workspaceId: number,
 		includeHighlights?: boolean
 	) => Promise<TPageDeepModel | null>;
 	findById: (id: number) => Promise<PageModel | null>;
-	findAll: (userId: number, includeHighlights?: boolean) => Promise<TPageDeepModel[]>;
+	findAll: (workspaceId: number, includeHighlights?: boolean) => Promise<TPageDeepModel[]>;
 	delete: (id: number) => Promise<PageModel>;
 }
