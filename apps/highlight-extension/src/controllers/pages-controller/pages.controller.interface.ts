@@ -6,7 +6,7 @@ import { TController } from '~libs/express-core';
 export interface IPagesController {
 	router: Router;
 
-	getPage: TController<null, null, GetPageDto>;
-	getPages: TController;
-	updatePage: TController<{ id: string }, UpdatePageDto>;
+	getFullInfo: TController<null, null, GetPageDto>;
+	getPagesShortInfo: TController;
+	update: TController<{ id: string }, UpdatePageDto>;
 }

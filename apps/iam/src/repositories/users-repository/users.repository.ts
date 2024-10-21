@@ -12,42 +12,20 @@ import { IUsersRepository } from './users.repository.interface';
 export class UsersRepository implements IUsersRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async findByEmail(email: string): Promise<UserModel | null> {
-		return await this.prismaService.client.userModel.findFirst({
-			where: {
-				email,
-			},
+	findBy(findData: Partial<UserModel>): Promise<UserModel | null> {
+		return this.prismaService.client.userModel.findFirst({
+			where: findData,
 		});
 	}
 
-	async findByUsername(username: string): Promise<UserModel | null> {
-		return await this.prismaService.client.userModel.findFirst({
-			where: {
-				username,
-			},
-		});
-	}
-
-	async findById(id: number): Promise<UserModel | null> {
-		return await this.prismaService.client.userModel.findFirst({
-			where: {
-				id,
-			},
-		});
-	}
-
-	async create({ email, username, password }: User): Promise<UserModel> {
+	create(user: User): Promise<UserModel> {
 		return this.prismaService.client.userModel.create({
-			data: {
-				email,
-				username,
-				password,
-			},
+			data: user,
 		});
 	}
 
-	async update(id: number, payload: Partial<User>): Promise<UserModel> {
-		return await this.prismaService.client.userModel.update({
+	update(id: number, payload: Partial<User>): Promise<UserModel> {
+		return this.prismaService.client.userModel.update({
 			where: { id },
 			data: payload,
 		});

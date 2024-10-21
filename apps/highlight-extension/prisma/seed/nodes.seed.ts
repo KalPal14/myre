@@ -1,24 +1,21 @@
 import { PrismaClient } from '~/highlight-extension/prisma/client';
 
-import { RIGHT_START_NODE, RIGHT_END_NODE } from '../../src/common/constants/spec/nodes';
+import {
+	START_NODE_MODEL,
+	END_NODE_MODEL,
+	START_NODE,
+	END_NODE,
+} from '../../src/common/constants/spec/nodes';
 
 export async function nodesSeed(prisma: PrismaClient): Promise<void> {
 	await prisma.nodeModel.upsert({
-		where: { id: RIGHT_START_NODE.id },
+		where: { id: START_NODE_MODEL.id },
 		update: {},
-		create: {
-			text: RIGHT_START_NODE.text,
-			indexNumber: RIGHT_START_NODE.indexNumber,
-			sameElementsAmount: RIGHT_START_NODE.sameElementsAmount,
-		},
+		create: START_NODE,
 	});
 	await prisma.nodeModel.upsert({
-		where: { id: RIGHT_END_NODE.id },
+		where: { id: END_NODE_MODEL.id },
 		update: {},
-		create: {
-			text: RIGHT_END_NODE.text,
-			indexNumber: RIGHT_END_NODE.indexNumber,
-			sameElementsAmount: RIGHT_END_NODE.sameElementsAmount,
-		},
+		create: END_NODE,
 	});
 }

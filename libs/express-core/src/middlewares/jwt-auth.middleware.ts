@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload, VerifyErrors, verify } from 'jsonwebtoken';
 
-import { IJwtPayload } from '~libs/express-core/types/jwt-payload.interface';
+import { IJwtPayload } from '~libs/common';
 
 import { IMiddleware } from './common/types/middleware.interface';
 

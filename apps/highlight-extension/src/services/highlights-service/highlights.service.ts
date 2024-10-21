@@ -6,11 +6,11 @@ import {
 	UpdateHighlightDto,
 	IndividualUpdateHighlightsDto,
 } from '~libs/dto/highlight-extension';
+import { HTTPError } from '~libs/express-core';
 
-import { HighlightModel, PageModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';
-import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
+import { IHighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.interface';
 import { IPagesRepository } from '~/highlight-extension/repositories/pages-repository/pages.repository.interface';
 import { IHighlightFactory } from '~/highlight-extension/domain/highlight/factory/highlight-factory.interface';
 
@@ -29,78 +29,71 @@ export class HighlightsService implements IHighlightsService {
 		@inject(TYPES.NodesService) private nodesService: INodesService
 	) {}
 
-	async getHighlights(ids: number[]): Promise<THighlightDeepModel[]> {
-		return await this.highlightsRepository.findAllByIds(ids);
+	async get(id: number): Promise<IHighlightDeepModel> {
+		const highlight = await this.highlightsRepository.deepFindBy({ id });
+		if (!highlight) {
+			throw new HTTPError(404, `highlight #${id} not found`);
+		}
+
+		return highlight;
 	}
 
-	async createHighlight(createHighlightDto: CreateHighlightDto): Promise<THighlightDeepModel> {
+	getMany(ids: number[]): Promise<IHighlightDeepModel[]> {
+		return this.highlightsRepository.deepFindManyIn({ id: ids });
+	}
+
+	async create(createHighlightDto: CreateHighlightDto): Promise<IHighlightDeepModel> {
 		const { pageUrl, startContainer, endContainer, workspaceId } = createHighlightDto;
 
-		let existingPage = await this.pagesRepository.findByUrl(pageUrl, workspaceId);
-		if (!existingPage) {
-			existingPage = (await this.pagesServise.createPage(
-				createHighlightDto.pageUrl,
-				workspaceId
-			)) as PageModel;
+		let page = await this.pagesRepository.findBy({ url: pageUrl, workspaceId });
+		if (!page) {
+			page = await this.pagesServise.create({ url: pageUrl, workspaceId });
 		}
-		const pageHighlights = await this.highlightsRepository.findAllByPageId(existingPage.id);
 
-		const startNode = await this.nodesService.createNode(startContainer);
-		const endNode = await this.nodesService.createNode(endContainer);
+		const pageHighlights = await this.highlightsRepository.findManyBy({ id: page.id });
+
+		const startNode = await this.nodesService.create(startContainer);
+		const endNode = await this.nodesService.create(endContainer);
 
 		const newHighlight = this.highlightFactory.create({
 			...createHighlightDto,
-			pageId: existingPage.id,
+			pageId: page.id,
 			startContainerId: startNode.id,
 			endContainerId: endNode.id,
-			pageHighlightsCount: pageHighlights?.length,
+			pageHighlightsCount: pageHighlights.length,
 		});
-		return await this.highlightsRepository.create(newHighlight);
+		return this.highlightsRepository.create(newHighlight);
 	}
 
-	async updateHighlight(
-		id: number,
-		payload: UpdateHighlightDto
-	): Promise<THighlightDeepModel | Error> {
-		const existingHighlight = await this.highlightsRepository.findById(id);
-		if (!existingHighlight) {
-			return Error('There is no highlight with this ID');
-		}
-
-		const { startContainer, endContainer, ...rest } = payload;
+	async update(id: number, payload: UpdateHighlightDto): Promise<IHighlightDeepModel> {
+		const existingHighlight = await this.get(id);
+		const { startContainer, endContainer, ...restPayload } = payload;
 
 		if (startContainer) {
-			await this.nodesService.updateNode(existingHighlight.startContainerId, startContainer);
+			await this.nodesService.update(existingHighlight.startContainerId, startContainer);
 		}
 		if (endContainer) {
-			await this.nodesService.updateNode(existingHighlight.endContainerId, endContainer);
+			await this.nodesService.update(existingHighlight.endContainerId, endContainer);
 		}
-		if (Object.keys(rest).length) {
-			return await this.highlightsRepository.update(id, rest);
-		}
-		return existingHighlight;
+
+		return this.highlightsRepository.update(id, restPayload);
 	}
 
-	async individualUpdateHighlights(
-		data: IndividualUpdateHighlightsDto
-	): Promise<THighlightDeepModel[]> {
+	async individualUpdateMany(data: IndividualUpdateHighlightsDto): Promise<IHighlightDeepModel[]> {
 		const ids = data.highlights.map(({ id }) => id);
-		const existingHighlights = await this.highlightsRepository.findAllByIds(ids);
+		const existingHighlights = await this.highlightsRepository.deepFindManyIn({ id: ids });
 		const filteredHighlights = intersectionBy(data.highlights, existingHighlights, 'id');
-		return await this.highlightsRepository.individualUpdateMany({
+		return this.highlightsRepository.individualUpdateMany({
 			highlights: filteredHighlights,
 		});
 	}
 
-	async deleteHighlight(id: number): Promise<HighlightModel | Error> {
-		const existingHighlight = await this.highlightsRepository.findById(id);
-		if (!existingHighlight) {
-			return Error('There is no highlight with this ID');
-		}
+	async delete(id: number): Promise<IHighlightDeepModel> {
+		const existingHighlight = await this.get(id);
 
 		const highlight = await this.highlightsRepository.delete(id);
-		await this.nodesService.deleteNode(existingHighlight.startContainerId);
-		await this.nodesService.deleteNode(existingHighlight.endContainerId);
-		return highlight;
+		const startContainer = await this.nodesService.delete(existingHighlight.startContainerId);
+		const endContainer = await this.nodesService.delete(existingHighlight.endContainerId);
+		return { ...highlight, startContainer, endContainer };
 	}
 }

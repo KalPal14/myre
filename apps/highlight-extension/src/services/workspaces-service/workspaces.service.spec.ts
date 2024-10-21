@@ -48,7 +48,7 @@ beforeEach(() => {
 
 describe('UsersService', () => {
 	describe('get workspace', () => {
-		describe('pass the existing workspace ID ', () => {
+		describe('pass existing workspace ID ', () => {
 			it('return workspace', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(WORKSPACE_MODEL);
 
@@ -58,7 +58,7 @@ describe('UsersService', () => {
 			});
 		});
 
-		describe('pass the ID of a non-existing workspace', () => {
+		describe('pass ID of non-existing workspace', () => {
 			it('throw an error', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(null);
 
@@ -66,35 +66,40 @@ describe('UsersService', () => {
 					await workspacesService.get(WORKSPACE_MODEL.id);
 				} catch (err: any) {
 					expect(err).toBeInstanceOf(HTTPError);
-					expect(err.message).toBe(`highlight #${WORKSPACE_MODEL.id} not found`);
+					expect(err.message).toBe(`workspace #${WORKSPACE_MODEL.id} not found`);
 				}
 			});
 		});
 	});
 
 	describe('get all workspaces owned by the user', () => {
-		it('return list of workspaces', async () => {
-			const workspaces: WorkspaceModel[] = [WORKSPACE_MODEL, WORKSPACE_MODEL];
-			workspacesRepository.findManyBy = jest.fn().mockReturnValue(workspaces);
+		describe('pass correct owner id', () => {
+			it('return list of workspaces', async () => {
+				const id = 1;
+				const workspaces: WorkspaceModel[] = [WORKSPACE_MODEL, WORKSPACE_MODEL];
+				workspacesRepository.findManyBy = jest.fn().mockReturnValue(workspaces);
 
-			const result = await workspacesService.getAllOwners(1);
+				const result = await workspacesService.getAllOwners(id);
 
-			expect(result).toBe(workspaces);
+				expect(result).toBe(workspaces);
+			});
 		});
 	});
 
 	describe('create workspace', () => {
-		it('return workspace', async () => {
-			workspacesRepository.create = jest
-				.fn()
-				.mockImplementation((workspace) => ({ id: WORKSPACE_MODEL.id, ...workspace }));
+		describe('pass correct workspace data', () => {
+			it('return created workspace', async () => {
+				workspacesRepository.create = jest
+					.fn()
+					.mockImplementation((workspace) => ({ id: WORKSPACE_MODEL.id, ...workspace }));
 
-			const result = await workspacesService.create(WORKSPACE.ownerId, CREATE_WORKSPACE_DTO);
+				const result = await workspacesService.create(WORKSPACE.ownerId, CREATE_WORKSPACE_DTO);
 
-			expect(result).toEqual({
-				id: WORKSPACE_MODEL.id,
-				ownerId: WORKSPACE.ownerId,
-				...CREATE_WORKSPACE_DTO,
+				expect(result).toEqual({
+					id: WORKSPACE_MODEL.id,
+					ownerId: WORKSPACE.ownerId,
+					...CREATE_WORKSPACE_DTO,
+				});
 			});
 		});
 	});
@@ -102,8 +107,8 @@ describe('UsersService', () => {
 	describe('update workspace', () => {
 		const DTO: UpdateWorkspaceDto = { name: 'new name', colors: ['#fff'] };
 
-		describe('pass the existing workspace ID ', () => {
-			it('return workspace', async () => {
+		describe('pass existing workspace ID', () => {
+			it('return updated workspace', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(WORKSPACE_MODEL);
 				workspacesRepository.update = jest
 					.fn()
@@ -115,7 +120,7 @@ describe('UsersService', () => {
 			});
 		});
 
-		describe('pass the ID of a non-existing workspace', () => {
+		describe('pass ID of non-existing workspace', () => {
 			it('throw an error', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(null);
 				const updateSpy = jest.spyOn(workspacesRepository, 'update');
@@ -124,7 +129,7 @@ describe('UsersService', () => {
 					await workspacesService.update(WORKSPACE_MODEL.id, DTO);
 				} catch (err: any) {
 					expect(err).toBeInstanceOf(HTTPError);
-					expect(err.message).toBe(`highlight #${WORKSPACE_MODEL.id} not found`);
+					expect(err.message).toBe(`workspace #${WORKSPACE_MODEL.id} not found`);
 					expect(updateSpy).not.toHaveBeenCalled();
 				}
 			});
@@ -132,8 +137,8 @@ describe('UsersService', () => {
 	});
 
 	describe('delete workspace', () => {
-		describe('pass the existing workspace ID ', () => {
-			it('return workspace', async () => {
+		describe('pass existing workspace ID', () => {
+			it('return deleted workspace', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(WORKSPACE_MODEL);
 				workspacesRepository.delete = jest.fn().mockReturnValue(WORKSPACE_MODEL);
 
@@ -143,7 +148,7 @@ describe('UsersService', () => {
 			});
 		});
 
-		describe('pass the ID of a non-existing workspace', () => {
+		describe('pass ID of non-existing workspace', () => {
 			it('throw an error', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(null);
 				const deleteSpy = jest.spyOn(workspacesRepository, 'delete');
@@ -152,7 +157,7 @@ describe('UsersService', () => {
 					await workspacesService.delete(WORKSPACE_MODEL.id);
 				} catch (err: any) {
 					expect(err).toBeInstanceOf(HTTPError);
-					expect(err.message).toBe(`highlight #${WORKSPACE_MODEL.id} not found`);
+					expect(err.message).toBe(`workspace #${WORKSPACE_MODEL.id} not found`);
 					expect(deleteSpy).not.toHaveBeenCalled();
 				}
 			});

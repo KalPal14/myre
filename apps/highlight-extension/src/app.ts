@@ -10,12 +10,12 @@ import cookieParser from 'cookie-parser';
 
 import { ILogger, IConfigService, IExceptionFilter, JwtAuthMiddleware } from '~libs/express-core';
 
-import { HIGHLIGHTS_ROUTER_PATH } from '~/highlight-extension/common/constants/routes/highlights';
+import { HIGHLIGHTS_BASE_ROUTE } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesController } from '~/highlight-extension/controllers/workspaces-controller/workspaces.controller.interface';
 import { IHighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller.interface';
 
-import { PAGES_ROUTER_PATH } from './common/constants/routes/pages';
+import { PAGES_BASE_ROUTE } from './common/constants/routes/pages';
 import { IPagesController } from './controllers/pages-controller/pages.controller.interface';
 import { TPrismaService } from './common/types/prisma-service.interface';
 import { WORKSPACES_BASE_ROUTE } from './common/constants/routes/workspaces';
@@ -58,8 +58,8 @@ export default class App {
 
 	useRoutes(): void {
 		this.app.use(WORKSPACES_BASE_ROUTE, this.usersController.router);
-		this.app.use(HIGHLIGHTS_ROUTER_PATH, this.highlightsController.router);
-		this.app.use(PAGES_ROUTER_PATH, this.pagesController.router);
+		this.app.use(HIGHLIGHTS_BASE_ROUTE, this.highlightsController.router);
+		this.app.use(PAGES_BASE_ROUTE, this.pagesController.router);
 	}
 
 	useExceptions(): void {

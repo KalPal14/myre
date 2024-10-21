@@ -1,23 +1,21 @@
 import { hash } from 'bcryptjs';
 
-import { RIGHT_USER } from '../../src/common/constants/spec/users';
+import { USER, USER_MODEL } from '../../src/common/constants/spec/users';
 import { PrismaClient } from '../client';
 
 const salt = Number(process.env.SALT);
 
 export async function usersSeed(prisma: PrismaClient): Promise<void> {
 	await prisma.userModel.upsert({
-		where: { email: RIGHT_USER.email },
+		where: { id: USER_MODEL.id },
 		update: {},
 		create: {
-			email: RIGHT_USER.email,
-			username: RIGHT_USER.username,
-			password: await hash(RIGHT_USER.password, salt),
-			passwordUpdatedAt: null,
+			...USER,
+			password: await hash(USER.password, salt),
 		},
 	});
 	await prisma.userModel.upsert({
-		where: { email: 'bob@test.com' },
+		where: { id: USER_MODEL.id + 1 },
 		update: {},
 		create: {
 			email: 'bob@test.com',

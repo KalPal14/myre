@@ -1,11 +1,13 @@
-import { createRoutesFullPath } from '~libs/common';
+export const PAGES_BASE_ROUTE = `/pages`;
 
-export const PAGES_ROUTER_PATH = '/pages';
-
-export const PAGES_PATH = {
-	getPage: '/page',
-	getPages: '/get-all',
-	updatePage: '/page/:id',
+export const PAGES_ENDPOINTS = {
+	get: `/page`,
+	getPagesShortInfo: `/get-all`,
+	update: `/page/:id`,
 };
 
-export const PAGES_FULL_PATH = createRoutesFullPath(PAGES_ROUTER_PATH, PAGES_PATH);
+export const PAGES_URLS: Record<keyof typeof PAGES_ENDPOINTS, any> = {
+	get: `${PAGES_BASE_ROUTE}/page`,
+	getPagesShortInfo: `${PAGES_BASE_ROUTE}/get-all`,
+	update: (id: number): string => `${PAGES_BASE_ROUTE}/page/${id}`,
+};

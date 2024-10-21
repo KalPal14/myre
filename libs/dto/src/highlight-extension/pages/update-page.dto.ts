@@ -1,6 +1,5 @@
-import { IsUrl } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
 
-export class UpdatePageDto {
-	@IsUrl({}, { message: 'This field must contain a valid link to the page' })
-	url: string;
-}
+import { CreatePageDto } from './create-page.dto';
+
+export class UpdatePageDto extends PartialType(CreatePageDto) {}

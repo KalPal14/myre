@@ -5,15 +5,41 @@ import { TYPES } from '~/highlight-extension/common/constants/types';
 import { TPrismaService } from '~/highlight-extension/common/types/prisma-service.interface';
 import { Page } from '~/highlight-extension/domain/page/page';
 
-import { TPageDeepModel } from './types/page-deep-model.type';
 import { IPagesRepository } from './pages.repository.interface';
+import { IPageDeepModel } from './types/page-deep-model.interface';
 
 @injectable()
 export class PagesRepository implements IPagesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async create({ workspaceId, url }: Page): Promise<PageModel> {
-		return await this.prismaService.client.pageModel.create({
+	findBy(findData: Partial<PageModel>): Promise<PageModel | null> {
+		return this.prismaService.client.pageModel.findFirst({
+			where: findData,
+		});
+	}
+
+	deepFindBy(findData: Partial<PageModel>): Promise<IPageDeepModel | null> {
+		return this.prismaService.client.pageModel.findFirst({
+			where: findData,
+			include: { highlights: true },
+		});
+	}
+
+	findManyBy(findData: Partial<PageModel>): Promise<PageModel[]> {
+		return this.prismaService.client.pageModel.findMany({
+			where: findData,
+		});
+	}
+
+	deepFindManyBy(findData: Partial<PageModel>): Promise<IPageDeepModel[]> {
+		return this.prismaService.client.pageModel.findMany({
+			where: findData,
+			include: { highlights: true },
+		});
+	}
+
+	create({ workspaceId, url }: Page): Promise<PageModel> {
+		return this.prismaService.client.pageModel.create({
 			data: {
 				workspaceId,
 				url,
@@ -21,56 +47,15 @@ export class PagesRepository implements IPagesRepository {
 		});
 	}
 
-	async update(id: number, { url }: Pick<Page, 'url'>): Promise<PageModel> {
-		return await this.prismaService.client.pageModel.update({
+	async update(id: number, payload: Partial<Page>): Promise<PageModel> {
+		return this.prismaService.client.pageModel.update({
 			where: { id },
-			data: {
-				url,
-			},
-		});
-	}
-
-	async findByUrl(
-		url: string,
-		workspaceId: number,
-		includeHighlights: boolean = false
-	): Promise<TPageDeepModel | null> {
-		return await this.prismaService.client.pageModel.findFirst({
-			where: {
-				workspaceId,
-				url,
-			},
-			include: {
-				highlights: includeHighlights,
-			},
-		});
-	}
-
-	async findById(id: number): Promise<PageModel | null> {
-		return await this.prismaService.client.pageModel.findFirst({
-			where: {
-				id,
-			},
-		});
-	}
-
-	async findAll(
-		workspaceId: number,
-		includeHighlights: boolean = false
-	): Promise<TPageDeepModel[]> {
-		return await this.prismaService.client.pageModel.findMany({
-			where: {
-				workspaceId,
-			},
-			orderBy: { id: 'asc' },
-			include: {
-				highlights: includeHighlights,
-			},
+			data: payload,
 		});
 	}
 
 	async delete(id: number): Promise<PageModel> {
-		return await this.prismaService.client.pageModel.delete({
+		return this.prismaService.client.pageModel.delete({
 			where: { id },
 		});
 	}

@@ -1,17 +1,15 @@
 import { UpdatePageDto } from '~libs/dto/highlight-extension';
+import { CreatePageDto } from '~libs/dto/highlight-extension/pages/create-page.dto';
 
 import { PageModel } from '~/highlight-extension/prisma/client';
 
-import { TPageShortInfo } from './types/page-short-info.type';
-import { TPageAllInfo } from './types/page-all-info.type';
+import { IPageShortInfo } from './types/page-short-info.interface';
+import { IPageFullInfo } from './types/page-full-info.interface';
 
 export interface IPagesServise {
-	createPage: (pageUrl: string, workspaceId: number) => Promise<PageModel | Error>;
-	updatePage: (
-		userId: number,
-		pageId: number,
-		payload: UpdatePageDto
-	) => Promise<PageModel | Error>;
-	getPageInfo: (url: string, userId: number) => Promise<TPageAllInfo | null>;
-	getPagesInfo: (userId: number) => Promise<TPageShortInfo[]>;
+	getFullInfo: (url: string, workspaceId: number) => Promise<IPageFullInfo | null>;
+	getPagesShortInfo: (workspaceId: number) => Promise<IPageShortInfo[]>;
+
+	create: (page: CreatePageDto) => Promise<PageModel>;
+	update: (pageId: number, payload: UpdatePageDto) => Promise<PageModel>;
 }

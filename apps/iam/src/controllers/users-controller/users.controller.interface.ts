@@ -12,11 +12,11 @@ import {
 export interface IUsersController {
 	router: Router;
 
+	getUserInfo: TController;
+
 	login: TController<null, UsersLoginDto>;
 	register: TController<null, UsersRegisterDto>;
 	logout: TController;
-
-	getUserInfo: TController;
 
 	changePassword: TController<null, ChangePasswordDto>;
 	changeEmail: TController<null, ChangeEmailDto>;

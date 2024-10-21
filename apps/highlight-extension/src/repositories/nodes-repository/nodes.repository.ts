@@ -11,33 +11,33 @@ import { INodesRepository } from './nodes.repository.interface';
 export class NodesRepository implements INodesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async create({ text, indexNumber, sameElementsAmount }: Node): Promise<NodeModel> {
-		return await this.prismaService.client.nodeModel.create({
-			data: {
-				text,
-				indexNumber,
-				sameElementsAmount,
-			},
+	findBy(findData: Partial<NodeModel>): Promise<NodeModel | null> {
+		return this.prismaService.client.nodeModel.findFirst({
+			where: findData,
 		});
 	}
 
-	async update(id: number, payload: Partial<Node>): Promise<NodeModel> {
-		return await this.prismaService.client.nodeModel.update({
+	findManyBy(findData: Partial<NodeModel>): Promise<NodeModel[]> {
+		return this.prismaService.client.nodeModel.findMany({
+			where: findData,
+		});
+	}
+
+	create(node: Node): Promise<NodeModel> {
+		return this.prismaService.client.nodeModel.create({
+			data: node,
+		});
+	}
+
+	update(id: number, payload: Partial<Node>): Promise<NodeModel> {
+		return this.prismaService.client.nodeModel.update({
 			where: { id },
-			data: {
-				...payload,
-			},
+			data: payload,
 		});
 	}
 
-	async findById(id: number): Promise<NodeModel | null> {
-		return await this.prismaService.client.nodeModel.findFirst({
-			where: { id },
-		});
-	}
-
-	async delete(id: number): Promise<NodeModel> {
-		return await this.prismaService.client.nodeModel.delete({
+	delete(id: number): Promise<NodeModel> {
+		return this.prismaService.client.nodeModel.delete({
 			where: { id },
 		});
 	}

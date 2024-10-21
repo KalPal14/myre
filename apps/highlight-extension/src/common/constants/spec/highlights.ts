@@ -1,40 +1,51 @@
+import { CreateHighlightDto } from '~libs/dto/highlight-extension';
+
 import { HighlightModel } from '~/highlight-extension/prisma/client';
+import { Highlight } from '~/highlight-extension/domain/highlight/highlight';
+import { Node } from '~/highlight-extension/domain/node/node';
+import { IHighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.interface';
 
-import { RIGHT_PAGE, WRONG_PAGE } from './pages';
-import { RIGHT_START_NODE, RIGHT_END_NODE, UPDATED_END_NODE } from './nodes';
+import { START_NODE, END_NODE, START_NODE_MODEL, END_NODE_MODEL } from './nodes';
+import { CREATE_PAGE_DTO, PAGE_MODEL } from './pages';
+import { WORKSPACE_MODEL } from './workspaces';
 
-export const RIGHT_HIGHLIGHT: HighlightModel = {
-	id: 1,
-	pageId: RIGHT_PAGE.id,
+export const HIGHLIGHT: Highlight = {
+	pageId: PAGE_MODEL.id,
 	order: 1,
 	startOffset: 66,
 	endOffset: 4,
-	startContainerId: RIGHT_START_NODE.id,
-	endContainerId: RIGHT_END_NODE.id,
+	startContainerId: START_NODE_MODEL.id,
+	endContainerId: END_NODE_MODEL.id,
 	text: 'one-to-many relation between User and Post',
 	color: '#ff1500',
 	note: 'those modules between which the connection is established in the example',
 };
 
-export const UPDATED_HIGHLIGHT: HighlightModel = {
+export const HIGHLIGHT_DEEP: Highlight & { startContainer: Node; endContainer: Node } = {
+	...HIGHLIGHT,
+	startContainer: START_NODE,
+	endContainer: END_NODE,
+};
+
+export const HIGHLIGHT_MODEL: HighlightModel = {
 	id: 1,
-	pageId: RIGHT_HIGHLIGHT.pageId,
-	order: 2,
-	startOffset: 66,
-	endOffset: 5,
-	startContainerId: RIGHT_START_NODE.id,
-	endContainerId: UPDATED_END_NODE.id,
-	text: 'one-to-many relation between User and Post because one user can have many blog posts.',
-	note: 'new note',
-	color: '#15ff00',
+	...HIGHLIGHT,
 };
 
-export const WRONG_HIGHLIGHT: Partial<HighlightModel> = {
-	id: 500,
-	pageId: WRONG_PAGE.id,
-	text: 'wrong!!! wrong!!!',
+export const HIGHLIGHT_DEEP_MODEL: IHighlightDeepModel = {
+	id: 1,
+	...HIGHLIGHT_DEEP,
+	startContainer: START_NODE_MODEL,
+	endContainer: END_NODE_MODEL,
 };
 
-export const INVALID_HIGHLIGHT: Partial<HighlightModel> = {
-	color: 'green',
+export const CREATE_HIGHLIGHT_DTO: CreateHighlightDto = {
+	workspaceId: WORKSPACE_MODEL.id,
+	pageUrl: CREATE_PAGE_DTO.url,
+	startContainer: START_NODE,
+	endContainer: END_NODE,
+	startOffset: 2,
+	endOffset: 2,
+	text: 'new highlight text',
+	color: '#ff1500',
 };

@@ -23,7 +23,6 @@ export * from './services/prisma-service/base-prisma.service.interface';
 
 // types
 export * from './types/controller.type';
-export * from './types/jwt-payload.interface';
 
 // utils
 export * from './utils/base-controller/base.controller';

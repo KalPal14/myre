@@ -1,25 +1,21 @@
+import { CreatePageDto } from '~libs/dto/highlight-extension/pages/create-page.dto';
+
 import { PageModel } from '~/highlight-extension/prisma/client';
+import { Page } from '~/highlight-extension/domain/page/page';
 
 import { WORKSPACE_MODEL } from './workspaces';
 
-export const RIGHT_PAGE: PageModel = {
-	id: 1,
+export const PAGE: Page = {
 	workspaceId: WORKSPACE_MODEL.id,
 	url: 'https://www.prisma.io/docs/orm/prisma-schema/data-model/relations',
 };
 
-export const UPDATED_PAGE: PageModel = {
+export const PAGE_MODEL: PageModel = {
 	id: 1,
-	workspaceId: WORKSPACE_MODEL.id,
-	url: 'https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/one-to-one-relations',
+	...PAGE,
 };
 
-export const WRONG_PAGE: Partial<PageModel> = {
-	id: 500,
+export const CREATE_PAGE_DTO: CreatePageDto = {
 	workspaceId: WORKSPACE_MODEL.id,
-	url: 'https://www.prisma.io/wrong-page',
-};
-
-export const INVALID_PAGE: Partial<PageModel> = {
-	url: 'https:/www.prisma.io/wrong-page',
+	url: 'https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/new',
 };

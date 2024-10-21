@@ -2,11 +2,11 @@ import { injectable } from 'inversify';
 
 import { Page } from '../page';
 
-import { IPageFactory, IPageFactoryCreateArgs } from './page-factory.interface';
+import { IPageFactory } from './page-factory.interface';
 
 @injectable()
 export class PageFactory implements IPageFactory {
-	create(pageData: IPageFactoryCreateArgs): Page {
-		return new Page(pageData.workspaceId, pageData.url, pageData.highlights);
+	create(pageData: Page): Page {
+		return new Page(pageData.workspaceId, pageData.url);
 	}
 }

@@ -13,45 +13,41 @@ import { IWorkspaceDeepModel } from './types/workspace-deep-model.interface';
 export class WorkspacesRepository implements IWorkspacesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: TPrismaService) {}
 
-	async findBy(
-		workspaceData: Partial<Omit<WorkspaceModel, 'colors'>>
-	): Promise<WorkspaceModel | null> {
-		return await this.prismaService.client.workspaceModel.findFirst({
-			where: workspaceData,
+	findBy(findData: Partial<Omit<WorkspaceModel, 'colors'>>): Promise<WorkspaceModel | null> {
+		return this.prismaService.client.workspaceModel.findFirst({
+			where: findData,
 		});
 	}
 
-	async deepFindBy(
-		workspaceData: Partial<Omit<WorkspaceModel, 'colors'>>
+	deepFindBy(
+		findData: Partial<Omit<WorkspaceModel, 'colors'>>
 	): Promise<IWorkspaceDeepModel | null> {
-		return await this.prismaService.client.workspaceModel.findFirst({
-			where: workspaceData,
+		return this.prismaService.client.workspaceModel.findFirst({
+			where: findData,
 			include: { pages: true },
 		});
 	}
 
-	async findManyBy(
-		workspaceData: Partial<Omit<WorkspaceModel, 'colors'>>
-	): Promise<WorkspaceModel[]> {
-		return await this.prismaService.client.workspaceModel.findMany({
-			where: workspaceData,
+	findManyBy(findData: Partial<Omit<WorkspaceModel, 'colors'>>): Promise<WorkspaceModel[]> {
+		return this.prismaService.client.workspaceModel.findMany({
+			where: findData,
 		});
 	}
 
-	async create(workspace: Workspace): Promise<WorkspaceModel> {
+	create(workspace: Workspace): Promise<WorkspaceModel> {
 		return this.prismaService.client.workspaceModel.create({
 			data: workspace,
 		});
 	}
 
-	async update(id: number, payload: Partial<Workspace>): Promise<WorkspaceModel> {
-		return await this.prismaService.client.workspaceModel.update({
+	update(id: number, payload: Partial<Workspace>): Promise<WorkspaceModel> {
+		return this.prismaService.client.workspaceModel.update({
 			where: { id },
 			data: payload,
 		});
 	}
 
-	async delete(id: number): Promise<WorkspaceModel> {
-		return await this.prismaService.client.workspaceModel.delete({ where: { id } });
+	delete(id: number): Promise<WorkspaceModel> {
+		return this.prismaService.client.workspaceModel.delete({ where: { id } });
 	}
 }

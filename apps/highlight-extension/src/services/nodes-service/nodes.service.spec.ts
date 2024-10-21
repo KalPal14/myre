@@ -1,25 +1,24 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
+import { HTTPError } from '~libs/express-core';
+
 import { NodeModel } from '~/highlight-extension/prisma/client';
-import {
-	RIGHT_END_NODE,
-	UPDATED_END_NODE,
-	WRONG_NODE,
-} from '~/highlight-extension/common/constants/spec/nodes';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { Node } from '~/highlight-extension/domain/node/node';
 import { INodesRepository } from '~/highlight-extension/repositories/nodes-repository/nodes.repository.interface';
 import { INodeFactory } from '~/highlight-extension/domain/node/factory/node-factory.interface';
 import { NodeFactory } from '~/highlight-extension/domain/node/factory/node.factory';
+import { END_NODE_MODEL } from '~/highlight-extension/common/constants/spec/nodes';
 
 import { INodesService } from './nodes.service.interface';
 import { NodesService } from './nodes.service';
 
 const nodesRepositoryMock: INodesRepository = {
+	findBy: jest.fn(),
+	findManyBy: jest.fn(),
 	create: jest.fn(),
 	update: jest.fn(),
-	findById: jest.fn(),
 	delete: jest.fn(),
 };
 
@@ -36,60 +35,66 @@ beforeAll(() => {
 	nodesService = container.get<INodesService>(TYPES.NodesService);
 });
 
-describe('Nodes Service', () => {
-	it('update node - success', async () => {
-		nodesRepository.findById = jest.fn().mockReturnValue(RIGHT_END_NODE);
-		nodesRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<Node>): NodeModel => ({
-				...RIGHT_END_NODE,
-				...payload,
-			})
-		);
+const UPDATE_PAYLOAD: Partial<Node> = {
+	text: 'new text',
+};
 
-		const result = await nodesService.updateNode(RIGHT_END_NODE.id, {
-			text: UPDATED_END_NODE.text,
-			sameElementsAmount: UPDATED_END_NODE.sameElementsAmount,
+describe('NodesService', () => {
+	describe('update node', () => {
+		describe('pass existing node ID', () => {
+			it('return updated node', async () => {
+				nodesRepository.findBy = jest.fn().mockReturnValue(END_NODE_MODEL);
+				nodesRepository.update = jest.fn().mockImplementation(
+					(id: number, payload: Partial<Node>): NodeModel => ({
+						...END_NODE_MODEL,
+						id,
+						...payload,
+					})
+				);
+
+				const result = await nodesService.update(END_NODE_MODEL.id, UPDATE_PAYLOAD);
+
+				expect(result).toEqual({ ...END_NODE_MODEL, ...UPDATE_PAYLOAD });
+			});
 		});
 
-		expect(result).not.toBeInstanceOf(Error);
-		if (result instanceof Error) return;
-		expect(result).toEqual(UPDATED_END_NODE);
+		describe('pass unexisting node ID', () => {
+			it('throw error', async () => {
+				nodesRepository.findBy = jest.fn().mockReturnValue(null);
+
+				try {
+					await nodesService.update(END_NODE_MODEL.id, UPDATE_PAYLOAD);
+				} catch (err: any) {
+					expect(err).toBeInstanceOf(HTTPError);
+					expect(err.message).toBe(`node #${END_NODE_MODEL.id} not found`);
+				}
+			});
+		});
 	});
 
-	it('update node - wrong: there is no node with this id', async () => {
-		nodesRepository.findById = jest.fn().mockReturnValue(null);
-		nodesRepository.update = jest.fn().mockImplementation(
-			(id: number, payload: Partial<Node>): NodeModel => ({
-				...RIGHT_END_NODE,
-				...payload,
-			})
-		);
+	describe('delete node', () => {
+		describe('pass existing node ID', () => {
+			it('return deleted node', async () => {
+				nodesRepository.findBy = jest.fn().mockReturnValue(END_NODE_MODEL);
+				nodesRepository.delete = jest.fn().mockReturnValue(END_NODE_MODEL);
 
-		const result = await nodesService.updateNode(WRONG_NODE.id, {
-			text: UPDATED_END_NODE.text,
-			sameElementsAmount: UPDATED_END_NODE.sameElementsAmount,
+				const result = await nodesService.delete(END_NODE_MODEL.id);
+
+				expect(result).toEqual(END_NODE_MODEL);
+			});
 		});
 
-		expect(result).toBeInstanceOf(Error);
-	});
+		describe('pass unexisting node ID', () => {
+			it('throw error', async () => {
+				nodesRepository.findBy = jest.fn().mockReturnValue(null);
 
-	it('delete node - success', async () => {
-		nodesRepository.findById = jest.fn().mockReturnValue(RIGHT_END_NODE);
-		nodesRepository.delete = jest.fn().mockReturnValue(RIGHT_END_NODE);
-
-		const result = await nodesService.deleteNode(RIGHT_END_NODE.id);
-
-		expect(result).not.toBeInstanceOf(Error);
-		if (result instanceof Error) return;
-		expect(result).toEqual(RIGHT_END_NODE);
-	});
-
-	it('delete node - wrong: there is no node with this id', async () => {
-		nodesRepository.findById = jest.fn().mockReturnValue(null);
-		nodesRepository.delete = jest.fn().mockReturnValue(RIGHT_END_NODE);
-
-		const result = await nodesService.deleteNode(RIGHT_END_NODE.id);
-
-		expect(result).toBeInstanceOf(Error);
+				try {
+					await nodesService.delete(END_NODE_MODEL.id);
+				} catch (err: any) {
+					expect(err).toBeInstanceOf(HTTPError);
+					expect(err.message).toBe(`node #${END_NODE_MODEL.id} not found`);
+				}
+			});
+		});
 	});
 });

@@ -5,17 +5,13 @@ import {
 } from '~libs/dto/highlight-extension';
 
 import { HighlightModel } from '~/highlight-extension/prisma/client';
-import { THighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.type';
+import { IHighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.interface';
 
 export interface IHighlightsService {
-	getHighlights: (ids: number[]) => Promise<THighlightDeepModel[]>;
-	createHighlight: (highlightData: CreateHighlightDto) => Promise<THighlightDeepModel>;
-	updateHighlight: (
-		id: number,
-		payload: UpdateHighlightDto
-	) => Promise<THighlightDeepModel | Error>;
-	individualUpdateHighlights: (
-		data: IndividualUpdateHighlightsDto
-	) => Promise<THighlightDeepModel[]>;
-	deleteHighlight: (id: number) => Promise<HighlightModel | Error>;
+	get: (id: number) => Promise<IHighlightDeepModel>;
+	getMany: (ids: number[]) => Promise<IHighlightDeepModel[]>;
+	create: (highlightData: CreateHighlightDto) => Promise<IHighlightDeepModel>;
+	update: (id: number, payload: UpdateHighlightDto) => Promise<IHighlightDeepModel>;
+	individualUpdateMany: (data: IndividualUpdateHighlightsDto) => Promise<IHighlightDeepModel[]>;
+	delete: (id: number) => Promise<HighlightModel>;
 }

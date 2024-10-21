@@ -1,5 +1,7 @@
 import { inject, injectable } from 'inversify';
 
+import { HTTPError } from '~libs/express-core';
+
 import { NodeModel } from '~/highlight-extension/prisma/client';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { Node } from '~/highlight-extension/domain/node/node';
@@ -11,29 +13,26 @@ import { INodesService } from './nodes.service.interface';
 export class NodesService implements INodesService {
 	constructor(@inject(TYPES.NodesRepository) private nodesRepository: INodesRepository) {}
 
-	async getNode(id: number): Promise<NodeModel | null> {
-		return await this.nodesRepository.findById(id);
-	}
-
-	async createNode(nodeData: Node): Promise<NodeModel> {
-		return await this.nodesRepository.create(nodeData);
-	}
-
-	async updateNode(id: number, payload: Partial<Node>): Promise<NodeModel | Error> {
-		const existingNode = await this.nodesRepository.findById(id);
-		if (!existingNode) {
-			return Error('There is no node with this ID');
+	async get(id: number): Promise<NodeModel> {
+		const page = await this.nodesRepository.findBy({ id });
+		if (!page) {
+			throw new HTTPError(402, `node #${id} not found`);
 		}
 
-		return this.nodesRepository.update(existingNode.id, payload);
+		return page;
 	}
 
-	async deleteNode(id: number): Promise<NodeModel | Error> {
-		const existingNode = await this.nodesRepository.findById(id);
-		if (!existingNode) {
-			return Error('There is no node with this ID');
-		}
+	create(nodeData: Node): Promise<NodeModel> {
+		return this.nodesRepository.create(nodeData);
+	}
 
+	async update(id: number, payload: Partial<Node>): Promise<NodeModel> {
+		await this.get(id);
+		return this.nodesRepository.update(id, payload);
+	}
+
+	async delete(id: number): Promise<NodeModel> {
+		await this.get(id);
 		return this.nodesRepository.delete(id);
 	}
 }

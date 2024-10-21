@@ -1,4 +1,4 @@
-import { IJwtPayload } from '~libs/express-core';
+import { IJwtPayload } from '~libs/common';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -10,12 +10,11 @@ import {
 import { UserModel } from '~/iam/prisma/client';
 
 export interface IUsersService {
-	createUser: (user: UsersRegisterDto) => Promise<UserModel | Error>;
-	validateUser: (user: UsersLoginDto) => Promise<UserModel | Error>;
+	get: (id: number) => Promise<UserModel>;
+	create: (registerDto: UsersRegisterDto) => Promise<UserModel>;
+	validate: (loginDto: UsersLoginDto) => Promise<UserModel>;
 
-	getUserInfo: (id: number) => Promise<UserModel | null>;
-
-	changePassword: (user: IJwtPayload, payload: ChangePasswordDto) => Promise<UserModel | Error>;
-	changeEmail: (user: IJwtPayload, payload: ChangeEmailDto) => Promise<UserModel | Error>;
-	changeUsername: (user: IJwtPayload, payload: ChangeUsernameDto) => Promise<UserModel | Error>;
+	changePassword: (user: IJwtPayload, payload: ChangePasswordDto) => Promise<UserModel>;
+	changeEmail: (user: IJwtPayload, payload: ChangeEmailDto) => Promise<UserModel>;
+	changeUsername: (user: IJwtPayload, payload: ChangeUsernameDto) => Promise<UserModel>;
 }

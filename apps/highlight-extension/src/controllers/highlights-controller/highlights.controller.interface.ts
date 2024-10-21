@@ -11,9 +11,9 @@ import { TController } from '~libs/express-core';
 export interface IHighlightsController {
 	router: Router;
 
-	getHighlights: TController<null, null, GetHighlightsDto>;
-	createHighlight: TController<null, CreateHighlightDto>;
-	updateHighlight: TController<{ id: string }, UpdateHighlightDto>;
-	individualUpdateHighlights: TController<null, IndividualUpdateHighlightsDto>;
-	deleteHighlight: TController<{ id: string }>;
+	getMany: TController<null, null, GetHighlightsDto>;
+	create: TController<null, CreateHighlightDto>;
+	update: TController<{ id: string }, UpdateHighlightDto>;
+	individualUpdateMany: TController<null, IndividualUpdateHighlightsDto>;
+	delete: TController<{ id: string }>;
 }

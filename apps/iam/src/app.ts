@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 
 import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
 
-import { USERS_ROUTER_PATH } from '~/iam/common/constants/routes/users';
+import { USERS_BASE_ROUTE } from '~/iam/common/constants/routes/users';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
 
@@ -51,7 +51,7 @@ export default class App {
 	}
 
 	useRoutes(): void {
-		this.app.use(USERS_ROUTER_PATH, this.usersController.router);
+		this.app.use(USERS_BASE_ROUTE, this.usersController.router);
 	}
 
 	useExceptions(): void {

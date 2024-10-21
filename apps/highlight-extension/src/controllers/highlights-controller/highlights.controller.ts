@@ -14,7 +14,7 @@ import {
 	IndividualUpdateHighlightsDto,
 } from '~libs/dto/highlight-extension';
 
-import { HIGHLIGHTS_PATH } from '~/highlight-extension/common/constants/routes/highlights';
+import { HIGHLIGHTS_ENDPOINTS } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsService } from '~/highlight-extension/services/highlights-service/highlights.service.interface';
 
@@ -26,91 +26,70 @@ export class HighlightsController extends BaseController implements IHighlightsC
 		super();
 		this.bindRoutes([
 			{
-				path: HIGHLIGHTS_PATH.get,
+				path: HIGHLIGHTS_ENDPOINTS.getMany,
 				method: 'get',
-				func: this.getHighlights,
+				func: this.getMany,
 				middlewares: [new RouteGuard('user'), new ValidateMiddleware(GetHighlightsDto, 'query')],
 			},
 			{
-				path: HIGHLIGHTS_PATH.create,
+				path: HIGHLIGHTS_ENDPOINTS.create,
 				method: 'post',
-				func: this.createHighlight,
+				func: this.create,
 				middlewares: [new RouteGuard('user'), new ValidateMiddleware(CreateHighlightDto)],
 			},
 			{
-				path: HIGHLIGHTS_PATH.update,
+				path: HIGHLIGHTS_ENDPOINTS.update,
 				method: 'patch',
-				func: this.updateHighlight,
+				func: this.update,
 				middlewares: [new RouteGuard('user'), new ValidateMiddleware(UpdateHighlightDto)],
 			},
 			{
-				path: HIGHLIGHTS_PATH.individualUpdateMany,
+				path: HIGHLIGHTS_ENDPOINTS.individualUpdateMany,
 				method: 'patch',
-				func: this.individualUpdateHighlights,
+				func: this.individualUpdateMany,
 				middlewares: [
 					new RouteGuard('user'),
 					new ValidateMiddleware(IndividualUpdateHighlightsDto),
 				],
 			},
 			{
-				path: HIGHLIGHTS_PATH.delete,
+				path: HIGHLIGHTS_ENDPOINTS.delete,
 				method: 'delete',
-				func: this.deleteHighlight,
+				func: this.delete,
 				middlewares: [new RouteGuard('user')],
 			},
 		]);
 	}
 
-	getHighlights: TController<null, null, GetHighlightsDto> = async ({ query }, res) => {
-		const result = await this.highlightsService.getHighlights(JSON.parse(query.ids));
-
+	getMany: TController<null, null, GetHighlightsDto> = async ({ query }, res) => {
+		const result = await this.highlightsService.getMany(JSON.parse(query.ids));
 		this.ok(res, result);
 	};
 
-	createHighlight: TController<null, CreateHighlightDto> = async ({ body }, res, next) => {
-		const result = await this.highlightsService.createHighlight(body);
-
-		if (result instanceof Error) {
-			return next(new HTTPError(422, result.message));
-		}
-
+	create: TController<null, CreateHighlightDto> = async ({ body }, res) => {
+		const result = await this.highlightsService.create(body);
 		this.created(res, result);
 	};
 
-	updateHighlight: TController<{ id: string }, UpdateHighlightDto> = async (
-		{ params, body },
-		res,
-		next
-	) => {
+	update: TController<{ id: string }, UpdateHighlightDto> = async ({ params, body }, res, next) => {
 		if (!Object.keys(body).length) {
 			return next(new HTTPError(422, 'Highlight change data is empty'));
 		}
 
-		const result = await this.highlightsService.updateHighlight(Number(params.id), body);
-
-		if (result instanceof Error) {
-			return next(new HTTPError(422, result.message));
-		}
-
+		const result = await this.highlightsService.update(+params.id, body);
 		this.ok(res, result);
 	};
 
-	individualUpdateHighlights: TController<null, IndividualUpdateHighlightsDto> = async (
+	individualUpdateMany: TController<null, IndividualUpdateHighlightsDto> = async (
 		{ body },
 		res
 	) => {
-		const result = await this.highlightsService.individualUpdateHighlights(body);
-
+		const result = await this.highlightsService.individualUpdateMany(body);
 		this.ok(res, result);
 	};
 
-	deleteHighlight: TController<{ id: string }> = async ({ params }, res, next) => {
-		const result = await this.highlightsService.deleteHighlight(Number(params.id));
-
-		if (result instanceof Error) {
-			return next(new HTTPError(422, result.message));
-		}
-
+	delete: TController<{ id: string }> = async ({ params }, res, next) => {
+		const result = await this.highlightsService.delete(+params.id);
 		this.ok(res, result);
 	};
 }

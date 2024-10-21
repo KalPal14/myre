@@ -21,7 +21,7 @@ export class WorkspacesService implements IWorkspacesService {
 	async get(id: number): Promise<WorkspaceModel> {
 		const workspace = await this.workspacesRepository.deepFindBy({ id });
 		if (!workspace) {
-			throw new HTTPError(404, `highlight #${id} not found`);
+			throw new HTTPError(404, `workspace #${id} not found`);
 		}
 
 		return workspace;
