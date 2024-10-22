@@ -12,7 +12,7 @@ import { hideEmail, TEmail } from '~libs/common/index';
 
 import { bootstrap } from '~/iam/main';
 import App from '~/iam/app';
-import { USERS_URLS } from '~/iam/common/constants/routes/users';
+import { USERS_URLS } from '~libs/routes/iam';
 import {
 	CREATE_USER_DTO,
 	LOGIN_USER_DTO,

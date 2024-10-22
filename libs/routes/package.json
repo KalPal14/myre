@@ -1,0 +1,11 @@
+{
+	"name": "routes",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc && tsc-alias"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": ""
+}

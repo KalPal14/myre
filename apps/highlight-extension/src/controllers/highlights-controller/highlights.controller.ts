@@ -13,8 +13,8 @@ import {
 	UpdateHighlightDto,
 	IndividualUpdateHighlightsDto,
 } from '~libs/dto/highlight-extension';
+import { HIGHLIGHTS_ENDPOINTS } from '~libs/routes/highlight-extension';
 
-import { HIGHLIGHTS_ENDPOINTS } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsService } from '~/highlight-extension/services/highlights-service/highlights.service.interface';
 

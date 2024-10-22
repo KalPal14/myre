@@ -2,8 +2,8 @@ import { inject, injectable } from 'inversify';
 
 import { RouteGuard, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
+import { PAGES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
-import { PAGES_ENDPOINTS } from '~/highlight-extension/common/constants/routes/pages';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IPagesServise } from '~/highlight-extension/services/pages-service/pages.service.interface';
 

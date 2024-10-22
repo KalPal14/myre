@@ -6,7 +6,7 @@ import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/highlight-exte
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesService } from '~/highlight-extension/services/workspaces-service/workspaces.service.interface';
-import { WORKSPACES_ENDPOINTS } from '~/highlight-extension/common/constants/routes/workspaces';
+import { WORKSPACES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
 import { IWorkspacesController } from './workspaces.controller.interface';
 

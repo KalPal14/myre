@@ -9,16 +9,18 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import { ILogger, IConfigService, IExceptionFilter, JwtAuthMiddleware } from '~libs/express-core';
+import {
+	HIGHLIGHTS_BASE_ROUTE,
+	PAGES_BASE_ROUTE,
+	WORKSPACES_BASE_ROUTE,
+} from '~libs/routes/highlight-extension';
 
-import { HIGHLIGHTS_BASE_ROUTE } from '~/highlight-extension/common/constants/routes/highlights';
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesController } from '~/highlight-extension/controllers/workspaces-controller/workspaces.controller.interface';
 import { IHighlightsController } from '~/highlight-extension/controllers/highlights-controller/highlights.controller.interface';
 
-import { PAGES_BASE_ROUTE } from './common/constants/routes/pages';
 import { IPagesController } from './controllers/pages-controller/pages.controller.interface';
 import { TPrismaService } from './common/types/prisma-service.interface';
-import { WORKSPACES_BASE_ROUTE } from './common/constants/routes/workspaces';
 
 @injectable()
 export default class App {

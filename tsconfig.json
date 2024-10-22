@@ -13,6 +13,7 @@
       "strict": true,
       "strictPropertyInitialization": false,
       "forceConsistentCasingInFileNames": false,
+      "jsx": "react",
       "baseUrl": "./",
       "paths": {
          // apps
@@ -20,25 +21,31 @@
             "apps/highlight-extension/src/*",
             "apps/highlight-extension/*"
          ],
+         "~/highlight-extension-fe/*": [
+            "apps/highlight-extension-fe/src/*",
+         ],
          "~/iam/*": [
             "apps/iam/src/*",
             "apps/iam/*"
          ],
          // libs
+         "~libs/common/*": [
+            "libs/common/src/*"
+         ],
+         "~libs/common": [
+            "libs/common/src"
+         ],
+         "~libs/dto/*": [
+            "libs/dto/src/*"
+         ],
          "~libs/express-core": [
             "libs/express-core/src"
          ],
          "~libs/express-core/*": [
             "libs/express-core/src/*"
          ],
-         "~libs/dto/*": [
-            "libs/dto/src/*"
-         ],
-         "~libs/common/*": [
-            "libs/common/src/*"
-         ],
-         "~libs/common": [
-            "libs/common/src"
+         "~libs/routes/*": [
+            "libs/routes/src/*"
          ],
       }
    },

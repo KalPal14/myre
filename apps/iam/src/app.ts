@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 
 import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
 
-import { USERS_BASE_ROUTE } from '~/iam/common/constants/routes/users';
+import { USERS_BASE_ROUTE } from '~libs/routes/iam';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
 

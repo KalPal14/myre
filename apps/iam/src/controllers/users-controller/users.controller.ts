@@ -20,7 +20,7 @@ import {
 } from '~libs/dto/iam';
 
 import { UserModel } from '~/iam/prisma/client';
-import { USERS_ENDPOINTS } from '~/iam/common/constants/routes/users';
+import { USERS_ENDPOINTS } from '~libs/routes/iam';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersService } from '~/iam/services/users-service/users.service.interface';
 

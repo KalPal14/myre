@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import request from 'supertest';
 
 import { UpdateHighlightDto } from '~libs/dto/highlight-extension';
+import { HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
+import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/highlight-extension/main';
-import { HIGHLIGHTS_URLS } from '~/highlight-extension/common/constants/routes/highlights';
-import { USERS_URLS } from '~/iam/common/constants/routes/users';
 import { bootstrap as iamBootstrap } from '~/iam/main';
 import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
 import {
