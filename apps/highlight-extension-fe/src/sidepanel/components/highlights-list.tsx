@@ -10,7 +10,7 @@ import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-st
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
-import ICreateHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
+import ICreatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
 import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
 import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';
 
@@ -27,7 +27,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	const pageUrl = new URL(window.location.href).searchParams.get('url');
 	const createdHighlightRerendersCount = useRef(0);
 
-	const [createdHighlight] = useCrossExtState<ICreateHighlightExtState | null>(
+	const [createdHighlight] = useCrossExtState<ICreatedHighlightExtState | null>(
 		'createdHighlight',
 		null
 	);

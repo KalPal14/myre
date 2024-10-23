@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
+import { CreateHighlightDto } from '~libs/dto/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
@@ -10,17 +11,17 @@ import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-st
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import Toast from '~/highlight-extension-fe/content-scripts/common/ui/toasts/toast';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import ICreateHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
+import ICreatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
-import createRangeFromHighlightDto from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
+import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import buildCreateHighlightRo from '../helpers/build-create-highlight-ro.helper';
 
 import HighlightsController from './highlights-controller';
 
 export default function CreateHighlight(): JSX.Element {
-	const [, setCreatedHighlight] = useCrossExtState<ICreateHighlightExtState | null>(
+	const [, setCreatedHighlight] = useCrossExtState<ICreatedHighlightExtState | null>(
 		'createdHighlight',
 		null
 	);
@@ -83,7 +84,7 @@ export default function CreateHighlight(): JSX.Element {
 		if (!newHighlightData) {
 			return;
 		}
-		apiRequestDispatcher<ICreateHighlightRo>({
+		apiRequestDispatcher<CreateHighlightDto>({
 			contentScriptsHandler: 'createHighlightHandler',
 			url: HIGHLIGHTS_FULL_URLS.create,
 			method: 'post',
@@ -115,7 +116,7 @@ export default function CreateHighlight(): JSX.Element {
 
 	function createHighlightRespHandler(highlight: ICreateHighlightRo): void {
 		setCreatedHighlight({ highlight, pageUrl: getPageUrl() });
-		const highlightRange = createRangeFromHighlightDto(highlight);
+		const highlightRange = createRangeFromHighlightRo(highlight);
 		drawHighlight(highlightRange, highlight);
 		setSelectedRange(null);
 	}

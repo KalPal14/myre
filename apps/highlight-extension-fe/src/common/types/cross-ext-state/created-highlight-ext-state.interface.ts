@@ -1,6 +1,6 @@
-import ICreateHighlightDto from '../dto/highlights/create-highlight.interface';
+import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 
 export default interface ICreateHighlightExtState {
-	highlight: ICreateHighlightDto;
+	highlight: ICreateHighlightRo;
 	pageUrl: string;
 }

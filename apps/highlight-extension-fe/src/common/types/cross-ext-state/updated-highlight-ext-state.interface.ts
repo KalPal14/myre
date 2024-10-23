@@ -1,6 +1,6 @@
-import IUpdateHighlightDto from '../dto/highlights/update-highlight.interface';
+import { IUpdateHighlightRo } from '~libs/ro/highlight-extension';
 
 export default interface IUpdatedHighlightExtState {
-	highlight: IUpdateHighlightDto;
+	highlight: IUpdateHighlightRo;
 	pageUrl: string;
 }

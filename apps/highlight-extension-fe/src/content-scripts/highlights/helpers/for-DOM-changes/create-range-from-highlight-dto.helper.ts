@@ -1,10 +1,11 @@
+import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
+
 import INodeRangeInfo from '~/highlight-extension-fe/common/types/node-range-info.interface';
-import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
 
 import findElementsByInitialText from '../to-receive-DOM-data/find-elements-by-initial-text.helper';
 import findElementsByText from '../to-receive-DOM-data/find-elements-by-text.helper';
 
-export default function createRangeFromHighlightDto(highlight: IBaseHighlightDto): Range {
+export default function createRangeFromHighlightRo(highlight: IBaseHighlightRo): Range {
 	const startContainerPerent = findElementsByInitialText(highlight.startContainer.text)[
 		highlight.startContainer.indexNumber
 	];

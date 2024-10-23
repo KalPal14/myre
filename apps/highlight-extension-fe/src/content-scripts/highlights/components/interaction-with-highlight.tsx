@@ -18,7 +18,7 @@ import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.hel
 
 import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
-import createRangeFromHighlightDto from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
+import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import createHighlighterElement from '../helpers/for-DOM-changes/create-highlighter-element.helper';
 import IHighlightElementData from '../types/highlight-element-data-interface';
 
@@ -236,7 +236,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 
 	function redrawErasedHighlights(highlights: TGetHighlightsRo): void {
 		highlights.forEach((highlight) => {
-			const highlightRange = createRangeFromHighlightDto(highlight);
+			const highlightRange = createRangeFromHighlightRo(highlight);
 			drawHighlight(highlightRange, highlight);
 		});
 	}

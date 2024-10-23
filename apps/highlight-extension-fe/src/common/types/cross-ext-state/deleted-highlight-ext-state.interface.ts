@@ -1,6 +1,6 @@
-import IDeleteHighlightDto from '../dto/highlights/delete-highlight.interface';
+import { IDeleteHighlightRo } from '~libs/ro/highlight-extension';
 
 export default interface IDeletedHighlightExtState {
-	highlight: IDeleteHighlightDto;
+	highlight: IDeleteHighlightRo;
 	pageUrl: string;
 }

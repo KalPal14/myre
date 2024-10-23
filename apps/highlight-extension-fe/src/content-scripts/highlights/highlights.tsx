@@ -19,7 +19,7 @@ import Toast from '../common/ui/toasts/toast';
 
 import InteractionWithHighlight from './components/interaction-with-highlight';
 import drawHighlight from './helpers/for-DOM-changes/draw-highlight.helper';
-import createRangeFromHighlightDto from './helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
+import createRangeFromHighlightRo from './helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import CreateHighlight from './components/create-highlight';
 
 export default function Highlights(): JSX.Element {
@@ -153,7 +153,7 @@ export default function Highlights(): JSX.Element {
 
 		highlights.forEach((highlight) => {
 			try {
-				const highlightRange = createRangeFromHighlightDto(highlight);
+				const highlightRange = createRangeFromHighlightRo(highlight);
 				if (highlightRange.toString() !== highlight.text) {
 					newUnfoundHighlightsIds.push(highlight.id);
 					return;
