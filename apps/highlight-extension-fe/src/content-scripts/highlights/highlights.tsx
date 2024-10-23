@@ -3,10 +3,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { isEqual } from 'lodash';
 
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { GetPageDto } from '~libs/dto/highlight-extension';
+import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
-import TGetPageDto from '~/highlight-extension-fe/common/types/dto/pages/get-page.type';
-import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
-import TGetPageRo from '~/highlight-extension-fe/common/types/ro/pages/get-page.type';
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
@@ -26,7 +25,7 @@ import CreateHighlight from './components/create-highlight';
 export default function Highlights(): JSX.Element {
 	const componentBeforeGettingPageInfo = useRef(true);
 	const updatedPagesUrlsRerendersCount = useRef(0);
-	const prevHighlights = useRef<IBaseHighlightDto[] | null>(null);
+	const prevHighlights = useRef<IBaseHighlightRo[] | null>(null);
 
 	const [jwt] = useCrossExtState<null | string>('jwt', null);
 	const [, setUnfoundHighlightsIds] = useCrossExtState<number[]>('unfoundHighlightsIds', []);
@@ -38,16 +37,18 @@ export default function Highlights(): JSX.Element {
 	useEffect(() => {
 		if (!isExtActive) return;
 		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
-		apiRequestDispatcher<TGetPageRo>({
+		apiRequestDispatcher<GetPageDto>({
 			contentScriptsHandler: 'getPageHandler',
 			method: 'get',
 			url: PAGES_FULL_URLS.get,
 			data: {
+				// TODO
+				workspaceId: '1',
 				url: getPageUrl(),
 			},
 		});
 
-		return () => {
+		return (): void => {
 			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
 		};
 	}, [isExtActive]);
@@ -55,11 +56,13 @@ export default function Highlights(): JSX.Element {
 	useEffect(() => {
 		if (componentBeforeGettingPageInfo.current) return;
 		if (jwt && isExtActive) {
-			apiRequestDispatcher<TGetPageRo>({
+			apiRequestDispatcher<GetPageDto>({
 				contentScriptsHandler: 'getPageHandler',
 				method: 'get',
 				url: PAGES_FULL_URLS.get,
 				data: {
+					// TODO
+					workspaceId: '1',
 					url: getPageUrl(),
 				},
 			});
@@ -104,9 +107,11 @@ export default function Highlights(): JSX.Element {
 		if (serviceWorkerHandler !== 'apiRequest') return;
 		switch (contentScriptsHandler) {
 			case 'getPageHandler':
-				isDataHttpError
-					? getPageErrHandler(data as HTTPError)
-					: getPageHandler(data as TGetPageDto);
+				if (isDataHttpError) {
+					getPageErrHandler(data as HTTPError);
+					return;
+				}
+				getPageHandler(data as TGetPageRo);
 				componentBeforeGettingPageInfo.current = false;
 				return;
 		}
@@ -134,12 +139,12 @@ export default function Highlights(): JSX.Element {
 		});
 	}
 
-	function getPageHandler(page: TGetPageDto): void {
+	function getPageHandler(page: TGetPageRo): void {
 		if (page.id === null) return;
 		drawHighlightsFromDto(page.highlights);
 	}
 
-	function drawHighlightsFromDto(highlights: IBaseHighlightDto[] | null): void {
+	function drawHighlightsFromDto(highlights: IBaseHighlightRo[] | null): void {
 		if (!highlights) return;
 		if (isEqual(prevHighlights.current, highlights)) return;
 		prevHighlights.current = highlights;
@@ -166,6 +171,8 @@ export default function Highlights(): JSX.Element {
 	function renderInfoToasts(allHighlights: number, unfoundHighlights: number): void {
 		const foundHighlights = allHighlights - unfoundHighlights;
 		{
+			// TODO
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 			foundHighlights &&
 				toast(
 					<Toast

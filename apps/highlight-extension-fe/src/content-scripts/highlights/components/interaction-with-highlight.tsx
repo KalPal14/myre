@@ -1,27 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { union } from 'lodash';
 
-import IHighlightElementData from '../types/highlight-element-data-interface';
-import createHighlighterElement from '../helpers/for-DOM-changes/create-highlighter-element.helper';
-import createRangeFromHighlightDto from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
-import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
-import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
-
-import HighlightsController from './highlights-controller';
-
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import {
+	IDeleteHighlightRo,
+	IUpdateHighlightRo,
+	TGetHighlightsRo,
+} from '~libs/ro/highlight-extension';
+import { GetHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
-import TUpdateHighlightRo from '~/highlight-extension-fe/common/types/ro/highlights/update-highlight.type';
-import IUpdateHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/update-highlight.interface';
-import IDeleteHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/delete-highlight.interface';
-import TGetHighlightsRo from '~/highlight-extension-fe/common/types/ro/highlights/get-highlights.type';
-import TGetHighlightsDto from '~/highlight-extension-fe/common/types/dto/highlights/get-highlights.type';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
 import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
+
+import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
+import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
+import createRangeFromHighlightDto from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
+import createHighlighterElement from '../helpers/for-DOM-changes/create-highlighter-element.helper';
+import IHighlightElementData from '../types/highlight-element-data-interface';
+
+import HighlightsController from './highlights-controller';
 
 export default function InteractionWithHighlight(): JSX.Element {
 	const [, setUpdatdHighlight] = useCrossExtState<IUpdatedHighlightExtState | null>(
@@ -49,7 +50,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 		document.addEventListener('click', onDocumentClickHandler);
 		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
 
-		return () => {
+		return (): void => {
 			document.removeEventListener('click', onDocumentClickHandler);
 			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
 		};
@@ -137,20 +138,20 @@ export default function InteractionWithHighlight(): JSX.Element {
 		if (serviceWorkerHandler !== 'apiRequest') return;
 		switch (contentScriptsHandler) {
 			case 'updateHighlightRespHandler':
-				updateHighlightRespHandler(data as IUpdateHighlightDto, incomeData as TUpdateHighlightRo);
+				updateHighlightRespHandler(data as IUpdateHighlightRo, incomeData as UpdateHighlightDto);
 				return;
 			case 'deleteHighlightRespHandler':
-				deleteHighlightRespHandler(data as IDeleteHighlightDto);
+				deleteHighlightRespHandler(data as IDeleteHighlightRo);
 				return;
 			case 'redrawErasedHighlights':
-				redrawErasedHighlights(data as TGetHighlightsDto);
+				redrawErasedHighlights(data as TGetHighlightsRo);
 				return;
 		}
 	}
 
 	function updateHighlightRespHandler(
-		newHighlightData: IUpdateHighlightDto,
-		incomeHighlightData: TUpdateHighlightRo
+		newHighlightData: IUpdateHighlightRo,
+		incomeHighlightData: UpdateHighlightDto
 	): void {
 		if (!incomeHighlightData.text) {
 			setUpdatdHighlight({ highlight: newHighlightData, pageUrl: getPageUrl() });
@@ -158,7 +159,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 		}
 	}
 
-	function updateHighlighterElement(highlight: IUpdateHighlightDto): void {
+	function updateHighlighterElement(highlight: IUpdateHighlightRo): void {
 		const highlighterElements = document.querySelectorAll(`#web-highlight-${highlight.id}`);
 		highlighterElements.forEach((highlighterElement) => {
 			if (!highlighterElement.textContent) return;
@@ -173,7 +174,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 	async function changeHighlightColor(color: string): Promise<void> {
 		if (!currentHighlightElement) return;
 
-		apiRequestDispatcher<TUpdateHighlightRo>({
+		apiRequestDispatcher<UpdateHighlightDto>({
 			contentScriptsHandler: 'updateHighlightRespHandler',
 			url: HIGHLIGHTS_FULL_URLS.update(currentHighlightElement.highlightId),
 			method: 'patch',
@@ -186,7 +187,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 		if (!note && !highlightElementRef.current.note) return;
 
 		if (note !== highlightElementRef.current.note) {
-			apiRequestDispatcher<TUpdateHighlightRo>({
+			apiRequestDispatcher<UpdateHighlightDto>({
 				contentScriptsHandler: 'updateHighlightRespHandler',
 				url: HIGHLIGHTS_FULL_URLS.update(highlightElementRef.current.highlightId),
 				method: 'patch',
@@ -205,12 +206,12 @@ export default function InteractionWithHighlight(): JSX.Element {
 		});
 	}
 
-	function deleteHighlightRespHandler(highlight: IDeleteHighlightDto): void {
+	function deleteHighlightRespHandler(highlight: IDeleteHighlightRo): void {
 		setDeletedHighlight({ highlight, pageUrl: getPageUrl() });
 		deleteHighlight(highlight);
 	}
 
-	function deleteHighlight(highlight: IDeleteHighlightDto): void {
+	function deleteHighlight(highlight: IDeleteHighlightRo): void {
 		const nestedHighlightsIds: number[][] = [];
 
 		const highlighterElements = document.querySelectorAll(`#web-highlight-${highlight.id}`);
@@ -222,18 +223,18 @@ export default function InteractionWithHighlight(): JSX.Element {
 			nestedHighlightsIds.push(nestedToThisHighlightIds);
 		});
 
-		apiRequestDispatcher<TGetHighlightsRo>({
+		apiRequestDispatcher<GetHighlightsDto>({
 			contentScriptsHandler: 'redrawErasedHighlights',
 			url: HIGHLIGHTS_FULL_URLS.getMany,
 			method: 'get',
 			data: {
-				ids: union(...nestedHighlightsIds),
+				ids: JSON.stringify(union(...nestedHighlightsIds)),
 			},
 		});
 		setCurrentHighlightElement(null);
 	}
 
-	function redrawErasedHighlights(highlights: TGetHighlightsDto): void {
+	function redrawErasedHighlights(highlights: TGetHighlightsRo): void {
 		highlights.forEach((highlight) => {
 			const highlightRange = createRangeFromHighlightDto(highlight);
 			drawHighlight(highlightRange, highlight);

@@ -3,16 +3,15 @@ import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { UsersRegisterDto } from '~libs/dto/iam';
+import { IBaseUserRo, IRegistrationRo } from '~libs/ro/iam';
 
-import TRegistrationRo from '~/highlight-extension-fe/common/types/ro/users/registration.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import IRegistrationDto from '~/highlight-extension-fe/common/types/dto/users/registration.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IBaseUserDto from '~/highlight-extension-fe/common/types/dto/users/base/base-user-info.interface';
 
 export default function LoginForm(): JSX.Element {
 	const {
@@ -20,15 +19,16 @@ export default function LoginForm(): JSX.Element {
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<TRegistrationRo>();
+	} = useForm<UsersRegisterDto>();
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
-	const [, setCurrentUser] = useCrossExtState<IBaseUserDto | null>('currentUser', null);
+	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
-	async function onSubmit(formValues: TRegistrationRo): Promise<void> {
-		const resp = await new ApiServise().post<TRegistrationRo, IRegistrationDto>(
+	// TODO: UsersRegisterDto IRegistrationRo ???
+	async function onSubmit(formValues: UsersRegisterDto): Promise<void> {
+		const resp = await new ApiServise().post<UsersRegisterDto, IRegistrationRo>(
 			USERS_FULL_URLS.register,
 			formValues
 		);
@@ -46,7 +46,7 @@ export default function LoginForm(): JSX.Element {
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof TRegistrationRo, {
+				setError(property as keyof UsersRegisterDto, {
 					message: errors.join(),
 				});
 			},

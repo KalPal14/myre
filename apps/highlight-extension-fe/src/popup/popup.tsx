@@ -4,16 +4,17 @@ import { SettingsIcon } from '@chakra-ui/icons';
 
 import './popup.scss';
 
-import LoginSection from './components/login-section';
+import { IBaseUserRo } from '~libs/ro/iam';
 
 import openTab from '~/highlight-extension-fe/common/helpers/open-tab.helper';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IBaseUserDto from '~/highlight-extension-fe/common/types/dto/users/base/base-user-info.interface';
+
+import LoginSection from './components/login-section';
 
 export default function Popup(): JSX.Element {
 	const [jwt, setJwt] = useCrossExtState<string | null>('jwt', null);
-	const [, setCurrentUser] = useCrossExtState<IBaseUserDto | null>('currentUser', null);
+	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
 	const [isExtActive, setIsExtActive] = useCrossExtState<boolean>('isExtActive', true);
 
 	async function logout(): Promise<void> {

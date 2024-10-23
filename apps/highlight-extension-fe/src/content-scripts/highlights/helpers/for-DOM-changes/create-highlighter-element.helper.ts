@@ -1,8 +1,8 @@
-import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
+import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
 export default function createHighlighterElement(
 	textToHighlight: string,
-	{ id, color, note }: IBaseHighlightDto
+	{ id, color, note }: IBaseHighlightRo
 ): HTMLSpanElement {
 	const webHighlight = document.createElement('web-highlight');
 	webHighlight.style.backgroundColor = `${color}${80}`;

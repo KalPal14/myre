@@ -3,16 +3,15 @@ import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { UsersLoginDto } from '~libs/dto/iam';
+import { IBaseUserRo, ILoginRo } from '~libs/ro/iam';
 
-import TLoginRo from '~/highlight-extension-fe/common/types/ro/users/login.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import ILoginDto from '~/highlight-extension-fe/common/types/dto/users/login.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IBaseUserDto from '~/highlight-extension-fe/common/types/dto/users/base/base-user-info.interface';
 
 export default function LoginForm(): JSX.Element {
 	const {
@@ -20,15 +19,16 @@ export default function LoginForm(): JSX.Element {
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<TLoginRo>();
+	} = useForm<UsersLoginDto>();
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
-	const [, setCurrentUser] = useCrossExtState<IBaseUserDto | null>('currentUser', null);
+	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
-	async function onSubmit(formValues: TLoginRo): Promise<void> {
-		const resp = await new ApiServise().post<TLoginRo, ILoginDto>(
+	// TODO: мне не нравиться как рядом выглядят UsersLoginDto и ILoginRo
+	async function onSubmit(formValues: UsersLoginDto): Promise<void> {
+		const resp = await new ApiServise().post<UsersLoginDto, ILoginRo>(
 			USERS_FULL_URLS.login,
 			formValues
 		);
@@ -47,7 +47,7 @@ export default function LoginForm(): JSX.Element {
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof TLoginRo, {
+				setError(property as keyof UsersLoginDto, {
 					message: errors.join(),
 				});
 			},

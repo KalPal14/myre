@@ -85,6 +85,7 @@ module.exports = {
 			'~libs/common': path.resolve(__dirname, '../../libs/common/src'),
 			'~libs/dto': path.resolve(__dirname, '../../libs/dto/src'),
 			'~libs/express-core': path.resolve(__dirname, '../../libs/express-core/src'),
+			'~libs/ro': path.resolve(__dirname, '../../libs/ro/src'),
 			'~libs/routes': path.resolve(__dirname, '../../libs/routes/src'),
 		},
 		extensions: ['.js', '.ts', '.tsx'],

@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form';
 import date from 'date-and-time';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { ChangePasswordDto } from '~libs/dto/iam';
+import { IChangePasswordRo } from '~libs/ro/iam';
 
-import TChangePasswordRo from '~/highlight-extension-fe/common/types/ro/users/change-password-form.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import IChangePasswordDto from '~/highlight-extension-fe/common/types/dto/users/change-password.interface';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 
 export interface IChangePasswordFormProps {
@@ -28,15 +28,15 @@ export default function ChangePasswordForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<TChangePasswordRo>();
+	const useFormReturnValue = useForm<ChangePasswordDto>();
 	const {
 		register,
 		formState: { errors },
 		setError,
 	} = useFormReturnValue;
 
-	async function onSubmit(formValues: TChangePasswordRo): Promise<boolean> {
-		const resp = await new ApiServise().patch<TChangePasswordRo, IChangePasswordDto>(
+	async function onSubmit(formValues: ChangePasswordDto): Promise<boolean> {
+		const resp = await new ApiServise().patch<ChangePasswordDto, IChangePasswordRo>(
 			USERS_FULL_URLS.changePassword,
 			formValues
 		);
@@ -56,7 +56,7 @@ export default function ChangePasswordForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof TChangePasswordRo, {
+				setError(property as keyof ChangePasswordDto, {
 					message: errors.join(),
 				});
 			},

@@ -1,23 +1,31 @@
 import React from 'react';
 
-import ChangeColorsForm from './change-colors-form';
+import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IBaseUserDto from '~/highlight-extension-fe/common/types/dto/users/base/base-user-info.interface';
+
+import ChangeColorsForm from './change-colors-form';
 
 export default function ColorsTab(): JSX.Element {
-	const [currentUser, setCurrentUser] = useCrossExtState<IBaseUserDto | null>('currentUser', null);
+	const [currentWorkspace, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>(
+		'currentWorkspace',
+		null
+	);
+
+	// TODO: разобраться зачем я вообще использую IColors[]
+	// скорее всего это связано с формой, но возможно для простоты можно это убрать
+	const colorsFormFormat = currentWorkspace?.colors.map((color) => ({ color }));
 
 	return (
 		<section className="options_colorsTab">
-			{currentUser && (
+			{currentWorkspace && (
 				<ChangeColorsForm
-					currentColors={currentUser.colors.length ? currentUser.colors : DEF_COLORS}
+					currentColors={colorsFormFormat?.length ? colorsFormFormat : DEF_COLORS}
 					onSuccess={(colors) =>
-						setCurrentUser({
-							...currentUser,
-							colors,
+						setCurrentWorkspace({
+							...currentWorkspace,
+							colors: colors.map(({ color }) => color),
 						})
 					}
 				/>

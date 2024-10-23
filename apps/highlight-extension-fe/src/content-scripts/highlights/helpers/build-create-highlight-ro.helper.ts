@@ -1,15 +1,17 @@
+import { CreateHighlightDto } from '~libs/dto/highlight-extension';
+
+import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
+
 import findElementsByText from './to-receive-DOM-data/find-elements-by-text.helper';
 import getHighlightPerent from './to-receive-DOM-data/get-highlight-perent.helper';
 import setInitialTextToHighlightPerent from './for-DOM-changes/set-initial-text-to-highlight-perent.helper';
 
-import TCreateHighlightRo from '~/highlight-extension-fe/common/types/ro/highlights/create-highlight.type';
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
-
+// TODO переименовать на buildCreateHighlightDto
 export default function buildCreateHighlightRo(
 	range: Range,
 	color: string,
 	note?: string
-): TCreateHighlightRo | null {
+): CreateHighlightDto | null {
 	if (
 		!range.startContainer.parentElement?.textContent ||
 		!range.endContainer.parentElement?.textContent
@@ -35,6 +37,8 @@ export default function buildCreateHighlightRo(
 	const endNodeIndex = sameToEndContainerPerent.indexOf(endContainerPerent);
 
 	return {
+		// TODO workspaceId
+		workspaceId: 1,
 		pageUrl: getPageUrl(),
 		startOffset: calculateOffset(range.startContainer, startContainerPerent, range.startOffset),
 		endOffset: calculateOffset(range.endContainer, endContainerPerent, range.endOffset),

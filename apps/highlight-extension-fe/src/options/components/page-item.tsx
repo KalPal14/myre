@@ -11,29 +11,26 @@ import {
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import IChangePageUrlForm from '../types/change-page-url-form.interface';
-import IDataForPageUpdating from '../types/data-for-page-updating.interface';
+import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
+import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import TArrayElement from '~/highlight-extension-fe/common/types/array-element.type';
-import TGetPagesDto from '~/highlight-extension-fe/common/types/dto/pages/get-pages.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
-import IUpdatePageDto from '~/highlight-extension-fe/common/types/dto/pages/update-page.interface';
-import TUpdatePageRo from '~/highlight-extension-fe/common/types/ro/pages/update-page.type';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
-import TGetPageRo from '~/highlight-extension-fe/common/types/ro/pages/get-page.type';
-import TGetPageDto from '~/highlight-extension-fe/common/types/dto/pages/get-page.type';
 import ConfirmationModal from '~/highlight-extension-fe/common/ui/modals/confirmation-modal';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import IUpdatedPagesUrlsExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-pages-urls-ext-state.interface';
 
+import IDataForPageUpdating from '../types/data-for-page-updating.interface';
+import IChangePageUrlForm from '../types/change-page-url-form.interface';
+
 export interface IPageItemProps {
-	page: TArrayElement<TGetPagesDto>;
-	onUpdatePage: (page: IUpdatePageDto) => void;
+	page: IGetPagesRoItem;
+	onUpdatePage: (page: IUpdatePageRo) => void;
 }
 
 export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.Element {
@@ -68,9 +65,10 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function checkExistingPagesWithNewURL(url: string): Promise<boolean> {
-		const pageWithNewUrl = await new ApiServise().get<TGetPageRo, TGetPageDto>(
+		const pageWithNewUrl = await new ApiServise().get<GetPageDto, TGetPageRo>(
 			PAGES_FULL_URLS.get,
-			{ url: getPageUrl(url) }
+			// TODO
+			{ workspaceId: '1', url: getPageUrl(url) }
 		);
 		if (pageWithNewUrl instanceof HTTPError) {
 			handleErr(pageWithNewUrl);
@@ -82,7 +80,7 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function updatePage(pageId: number, url: string): Promise<boolean | void> {
-		const resp = await new ApiServise().patch<TUpdatePageRo, IUpdatePageDto>(
+		const resp = await new ApiServise().patch<UpdatePageDto, IUpdatePageRo>(
 			PAGES_FULL_URLS.update(pageId),
 			{ url: getPageUrl(url) }
 		);

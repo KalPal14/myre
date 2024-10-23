@@ -1,11 +1,11 @@
+import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
+
 import INodeInRangeTextContent from '../../types/node-in-range-text-content.interface';
 import findTextToHighlight from '../to-receive-DOM-data/find-text-to-highlight.helper';
 
 import createHighlighterElement from './create-highlighter-element.helper';
 
-import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
-
-export default function drawHighlight(range: Range, highlight: IBaseHighlightDto): void {
+export default function drawHighlight(range: Range, highlight: IBaseHighlightRo): void {
 	const nodesInRangeList = findTextToHighlight(range.commonAncestorContainer, range);
 
 	nodesInRangeList.forEach(({ node, textContent }, index) => {
@@ -60,7 +60,7 @@ function removeLetter({
 function wrapTextWithHighlighterElement(
 	textNode: Node,
 	{ strBeforeRange, strAfterRange, strInRange }: INodeInRangeTextContent,
-	highlight: IBaseHighlightDto
+	highlight: IBaseHighlightRo
 ): void {
 	if (textNode.nodeType !== Node.TEXT_NODE || !textNode.textContent || !textNode.parentElement) {
 		return;

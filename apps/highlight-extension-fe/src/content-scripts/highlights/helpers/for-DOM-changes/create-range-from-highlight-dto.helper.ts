@@ -1,8 +1,8 @@
-import findElementsByInitialText from '../to-receive-DOM-data/find-elements-by-initial-text.helper';
-import findElementsByText from '../to-receive-DOM-data/find-elements-by-text.helper';
-
 import INodeRangeInfo from '~/highlight-extension-fe/common/types/node-range-info.interface';
 import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
+
+import findElementsByInitialText from '../to-receive-DOM-data/find-elements-by-initial-text.helper';
+import findElementsByText from '../to-receive-DOM-data/find-elements-by-text.helper';
 
 export default function createRangeFromHighlightDto(highlight: IBaseHighlightDto): Range {
 	const startContainerPerent = findElementsByInitialText(highlight.startContainer.text)[

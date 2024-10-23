@@ -4,15 +4,16 @@ import { useForm } from 'react-hook-form';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import cl from 'classnames';
 
-import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
+import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import openTabDispatcher from '~/highlight-extension-fe/service-worker/handlers/open-tab/open-tab.dispatcher';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IBaseUserDto from '~/highlight-extension-fe/common/types/dto/users/base/base-user-info.interface';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
+
+import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
 
 export interface IHighlightsControllerProps {
 	clientX: number;
@@ -40,24 +41,25 @@ export default function HighlightsController({
 			note,
 		},
 	});
-	const [currentUser] = useCrossExtState<IBaseUserDto | null>('currentUser', null);
+	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
 
 	const [showNoteField, setShowNoteField] = useState(Boolean(note));
 	const [colors, setColors] = useState(DEF_COLORS);
 
 	useEffect(() => {
-		return () => onControllerClose(firstColorRef.current, watch('note'));
+		return (): void => onControllerClose(firstColorRef.current, watch('note'));
 	}, []);
 
 	useEffect(() => {
-		if (currentUser?.colors.length) {
-			setColors(currentUser.colors);
-			firstColorRef.current = currentUser.colors[0].color;
+		if (currentWorkspace?.colors.length) {
+			// TODO
+			setColors(currentWorkspace.colors.map((color) => ({ color })));
+			firstColorRef.current = currentWorkspace.colors[0];
 			return;
 		}
 		setColors(DEF_COLORS);
 		firstColorRef.current = DEF_COLORS[0].color;
-	}, [currentUser?.colors]);
+	}, [currentWorkspace?.colors]);
 
 	useEffect(() => {
 		setShowNoteField(Boolean(note));

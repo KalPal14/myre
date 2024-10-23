@@ -1,6 +1,7 @@
 const CHROME_STOREGE_KEYS = {
 	jwt: 'jwt',
 	currentUser: 'currentUser',
+	currentWorkspace: 'currentWorkspace',
 	isExtActive: 'isExtActive',
 	createdHighlight: 'createHighlight',
 	deletedHighlight: 'deletedHighlight',

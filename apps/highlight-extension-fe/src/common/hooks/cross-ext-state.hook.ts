@@ -17,7 +17,7 @@ export default function useCrossExtState<TState>(
 	useEffect(() => {
 		chrome.storage.onChanged.addListener(onStoreChangeHandler);
 
-		return () => chrome.storage.onChanged.removeListener(onStoreChangeHandler);
+		return (): void => chrome.storage.onChanged.removeListener(onStoreChangeHandler);
 	}, [stateKey, setState]);
 
 	async function setCrossExtState(): Promise<void> {

@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 
-import TCreateHighlightRo from '~/highlight-extension-fe/common/types/ro/highlights/create-highlight.type';
-import ICreateHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/create-highlight.interface';
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
@@ -36,7 +35,7 @@ export default function CreateHighlight(): JSX.Element {
 		document.addEventListener('mouseup', selectionHandler);
 		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
 
-		return () => {
+		return (): void => {
 			document.removeEventListener('mouseup', selectionHandler);
 			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
 		};
@@ -68,9 +67,11 @@ export default function CreateHighlight(): JSX.Element {
 		if (serviceWorkerHandler !== 'apiRequest') return;
 		switch (contentScriptsHandler) {
 			case 'createHighlightHandler':
-				isDataHttpError
-					? createHighlightErrHandler(data as HTTPError)
-					: createHighlightRespHandler(data as ICreateHighlightDto);
+				if (isDataHttpError) {
+					createHighlightErrHandler(data as HTTPError);
+					return;
+				}
+				createHighlightRespHandler(data as ICreateHighlightRo);
 				return;
 		}
 	}
@@ -82,7 +83,7 @@ export default function CreateHighlight(): JSX.Element {
 		if (!newHighlightData) {
 			return;
 		}
-		apiRequestDispatcher<TCreateHighlightRo>({
+		apiRequestDispatcher<ICreateHighlightRo>({
 			contentScriptsHandler: 'createHighlightHandler',
 			url: HIGHLIGHTS_FULL_URLS.create,
 			method: 'post',
@@ -112,7 +113,7 @@ export default function CreateHighlight(): JSX.Element {
 		});
 	}
 
-	function createHighlightRespHandler(highlight: ICreateHighlightDto): void {
+	function createHighlightRespHandler(highlight: ICreateHighlightRo): void {
 		setCreatedHighlight({ highlight, pageUrl: getPageUrl() });
 		const highlightRange = createRangeFromHighlightDto(highlight);
 		drawHighlight(highlightRange, highlight);

@@ -3,14 +3,15 @@ import { UseFormRegister } from 'react-hook-form';
 import { Divider, Text, Tooltip } from '@chakra-ui/react';
 import { WarningTwoIcon } from '@chakra-ui/icons';
 
-import IChangeHighlightForm from '../types/change-highlight-form.interface';
+import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
-import IBaseHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/base/base-highlight.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+
+import IChangeHighlightForm from '../types/change-highlight-form.interface';
 
 export interface IHighlightsListItemProps {
 	register: UseFormRegister<IChangeHighlightForm>;
-	highlight: IBaseHighlightDto;
+	highlight: IBaseHighlightRo;
 	index: number;
 }
 

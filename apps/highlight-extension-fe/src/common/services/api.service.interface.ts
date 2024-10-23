@@ -1,6 +1,8 @@
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 
-export type TRoLimiter = Record<string, unknown> | null | undefined;
+// TODO
+// export type TRoLimiter = Record<string, unknown> | null | undefined;
+export type TRoLimiter = any;
 
 type TFetch = <RO extends TRoLimiter, DTO>(url: string, data?: RO) => Promise<DTO | HTTPError>;
 

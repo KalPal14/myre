@@ -3,10 +3,10 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { ChangeEmailDto } from '~libs/dto/iam';
+import { IChangeEmailRo } from '~libs/ro/iam';
 
-import TChangeEmailRo from '~/highlight-extension-fe/common/types/ro/users/change-email.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import IChangeEmailDto from '~/highlight-extension-fe/common/types/dto/users/change-email.interface';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
@@ -28,7 +28,7 @@ export default function ChangeEmailForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<TChangeEmailRo>();
+	const useFormReturnValue = useForm<ChangeEmailDto>();
 	const {
 		register,
 		formState: { errors },
@@ -37,8 +37,8 @@ export default function ChangeEmailForm({
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
 
-	async function onSubmit(formValues: TChangeEmailRo): Promise<boolean> {
-		const resp = await new ApiServise().patch<TChangeEmailRo, IChangeEmailDto>(
+	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
+		const resp = await new ApiServise().patch<ChangeEmailDto, IChangeEmailRo>(
 			USERS_FULL_URLS.changeEmail,
 			formValues
 		);
@@ -61,7 +61,7 @@ export default function ChangeEmailForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof TChangeEmailRo, {
+				setError(property as keyof ChangeEmailDto, {
 					message: errors.join(),
 				});
 			},

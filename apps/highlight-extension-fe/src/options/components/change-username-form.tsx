@@ -3,13 +3,13 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { ChangeUsernameDto } from '~libs/dto/iam';
+import { IChangeUsernameRo } from '~libs/ro/iam';
 
-import TChangeUsernameRo from '~/highlight-extension-fe/common/types/ro/users/change-username.type';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import IChangeUsernameDto from '~/highlight-extension-fe/common/types/dto/users/change-username.interface';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 
 export interface IChangeusernameFormProps {
@@ -27,15 +27,15 @@ export default function ChangeUsernameForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<TChangeUsernameRo>();
+	const useFormReturnValue = useForm<ChangeUsernameDto>();
 	const {
 		register,
 		formState: { errors },
 		setError,
 	} = useFormReturnValue;
 
-	async function onSubmit(formValues: TChangeUsernameRo): Promise<boolean> {
-		const resp = await new ApiServise().patch<TChangeUsernameRo, IChangeUsernameDto>(
+	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
+		const resp = await new ApiServise().patch<ChangeUsernameDto, IChangeUsernameRo>(
 			USERS_FULL_URLS.changeUsername,
 			formValues
 		);
@@ -60,7 +60,7 @@ export default function ChangeUsernameForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof TChangeUsernameRo, {
+				setError(property as keyof ChangeUsernameDto, {
 					message: errors.join(),
 				});
 			},

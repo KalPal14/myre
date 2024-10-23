@@ -44,6 +44,9 @@
          "~libs/express-core/*": [
             "libs/express-core/src/*"
          ],
+         "~libs/ro/*": [
+            "libs/ro/src/*"
+         ],
          "~libs/routes/*": [
             "libs/routes/src/*"
          ],

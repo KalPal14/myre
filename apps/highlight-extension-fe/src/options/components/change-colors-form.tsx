@@ -3,13 +3,13 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { useToast } from '@chakra-ui/react';
 
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
+import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
 import ColorField from '~/highlight-extension-fe/common/ui/fields/color-field';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import TUpdateUserRo from '~/highlight-extension-fe/common/types/ro/users/update-user.type';
-import IUpdateUserDto from '~/highlight-extension-fe/common/types/dto/users/update-user.interface';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import IColor from '~/highlight-extension-fe/common/constants/default-values/types/color.interface';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
@@ -45,7 +45,7 @@ export default function ChangeColorsForm({
 
 	async function onSubmit(formValues: IChangeColorsForm): Promise<boolean> {
 		const newColors = formValues.colors.map(({ color }) => color);
-		const resp = await new ApiServise().patch<TUpdateUserRo, IUpdateUserDto>(
+		const resp = await new ApiServise().patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
 			// TODO
 			WORKSPACES_FULL_URLS.update(-1),
 			{
@@ -60,7 +60,7 @@ export default function ChangeColorsForm({
 			title: 'Colors has been successfully saved',
 			status: 'success',
 		});
-		onSuccess(resp.colors);
+		onSuccess(resp.colors.map((color) => ({ color })));
 		return true;
 	}
 

@@ -3,10 +3,10 @@ import { inject, injectable } from 'inversify';
 
 import { BaseController, RouteGuard, TController, ValidateMiddleware } from '~libs/express-core';
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
+import { WORKSPACES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesService } from '~/highlight-extension/services/workspaces-service/workspaces.service.interface';
-import { WORKSPACES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
 import { IWorkspacesController } from './workspaces.controller.interface';
 

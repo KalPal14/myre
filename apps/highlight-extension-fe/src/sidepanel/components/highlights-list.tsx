@@ -2,26 +2,22 @@ import React, { useEffect, useRef } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Heading } from '@chakra-ui/react';
 
-import IChangeHighlightForm from '../types/change-highlight-form.interface';
-import THighlightsTabName from '../types/highlights-tab-name.type';
+import { PAGES_FULL_URLS, HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
+import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
 
-import HighlightsListItem from './highlights-list-item';
-
-import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import TGetPageRo from '~/highlight-extension-fe/common/types/ro/pages/get-page.type';
-import TGetPageDto from '~/highlight-extension-fe/common/types/dto/pages/get-page.type';
-import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
-
-import IDeleteHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/delete-highlight.interface';
-import IUpdateHighlightDto from '~/highlight-extension-fe/common/types/dto/highlights/update-highlight.interface';
-import TIndividualUpdateHighlightsRo from '~/highlight-extension-fe/common/types/ro/highlights/individual-update-highlights.type';
+import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
 import ICreateHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
 import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
 import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';
+
+import THighlightsTabName from '../types/highlights-tab-name.type';
+import IChangeHighlightForm from '../types/change-highlight-form.interface';
+
+import HighlightsListItem from './highlights-list-item';
 
 export interface IHighlightsListProps {
 	tabName: THighlightsTabName;
@@ -87,7 +83,9 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 	async function getHighlights(): Promise<void> {
 		if (!pageUrl) return;
-		const resp = await new ApiServise().get<TGetPageRo, TGetPageDto>(PAGES_FULL_URLS.get, {
+		const resp = await new ApiServise().get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+			// TODO
+			workspaceId: '1',
 			url: pageUrl,
 		});
 		if (resp instanceof HTTPError) return;
@@ -101,7 +99,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	async function onDeleteHighlight(index: number): Promise<void> {
 		const { highlight } = fields[index];
 
-		const resp = await new ApiServise().delete<null, IDeleteHighlightDto>(
+		const resp = await new ApiServise().delete<null, IDeleteHighlightRo>(
 			HIGHLIGHTS_FULL_URLS.delete(highlight.id)
 		);
 		if (resp instanceof HTTPError) return;
@@ -121,11 +119,12 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 		if (!dataToUpdate.length) return;
 
-		await new ApiServise().patch<TIndividualUpdateHighlightsRo, IUpdateHighlightDto[]>(
+		// TODO: IUpdateHighlightRo[] заменить на IIndividualUpdateHighlightsRo
+		await new ApiServise().patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
 			HIGHLIGHTS_FULL_URLS.individualUpdateMany,
 			{
 				highlights: dataToUpdate,
-			} as TIndividualUpdateHighlightsRo
+			}
 		);
 	}
 
