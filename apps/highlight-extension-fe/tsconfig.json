@@ -3,8 +3,6 @@
 	"compilerOptions": {
 		"outDir": "../../dist/apps/highlight-extension-fe",
 		"esModuleInterop": true,
-		// "moduleResolution": "Node16",
-		// "forceConsistentCasingInFileNames": true,
 		"types": [
 			"@emotion/react/types/css-prop",
 			"chrome",
