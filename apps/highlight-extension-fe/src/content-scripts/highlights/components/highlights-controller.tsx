@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { EditIcon, DeleteIcon, SettingsIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import cl from 'classnames';
@@ -12,6 +11,10 @@ import openTabDispatcher from '~/highlight-extension-fe/service-worker/handlers/
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
+import TrashSVG from '~/highlight-extension-fe/assets/imgs/svg/trash';
+import ArrowRightToLineSVG from '~/highlight-extension-fe/assets/imgs/svg/arrow-right-to-line';
+import AlignTextJustifySVG from '~/highlight-extension-fe/assets/imgs/svg/align-text-justify';
+import CogSVG from '~/highlight-extension-fe/assets/imgs/svg/cog';
 
 import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
 
@@ -108,8 +111,16 @@ export default function HighlightsController({
 					left: ds.left,
 				}}
 			>
-				{forExistingHighlight && <DeleteIcon onClick={onDeleteClick} />}
-				<ExternalLinkIcon
+				{forExistingHighlight && (
+					<TrashSVG
+						width={22}
+						height={22}
+						onClick={onDeleteClick}
+					/>
+				)}
+				<ArrowRightToLineSVG
+					width={22}
+					height={22}
 					onClick={(): void => setSidepanelDispatcher({ url: getPageUrl(), enabled: true })}
 				/>
 			</section>
@@ -129,7 +140,11 @@ export default function HighlightsController({
 							marginRight: `-${ds.noteBtnMlAbs}px`,
 						}}
 					>
-						<EditIcon />
+						<AlignTextJustifySVG
+							width={24}
+							height={24}
+							color="#fff"
+						/>
 					</div>
 					<div
 						className="highlighController_colorsAndSettingsContainer"
@@ -154,9 +169,10 @@ export default function HighlightsController({
 							))}
 						</ul>
 
-						<SettingsIcon
+						<CogSVG
+							width={26}
+							height={26}
 							onClick={() => openTabDispatcher({ url: FULL_OPTIONS_ROUTES.colors })}
-							className="highlighController_settingsBtn"
 						/>
 					</div>
 				</div>

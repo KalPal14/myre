@@ -8,6 +8,7 @@ $box-shadow: rgba(255, 255, 255, 0.2) 0px 2px 8px 0px;
 
 $color-gray-100: #d4d4bf;
 $color-gray-600: #4a4a4a;
+$hover-btn-gray: #a6a6a0;
 
 $border-white: 1px solid #fff;
 
@@ -24,13 +25,6 @@ $border-white: 1px solid #fff;
 
       &-externalLinkOnly {
          padding: 5px 5px 6px 6px;
-      }
-
-      svg {
-         cursor: pointer;
-         width: 22px;
-         color: $color-gray-600;
-         margin: 0 1.5px;
       }
    }
 
@@ -57,9 +51,8 @@ $border-white: 1px solid #fff;
       box-shadow: $box-shadow;
       background-color: $color-gray-600;
 
-      svg {
-         width: 24px;
-         color: #fff;
+      &:hover {
+         background-color: $hover-btn-gray;
       }
    }
 
@@ -93,12 +86,25 @@ $border-white: 1px solid #fff;
       list-style: none;
       flex: 0 1 23px;
       cursor: pointer;
-      margin: 1px 1.5px;
+      padding: 1px 1.5px;
 
       div {
          width: 23px;
          height: 23px;
          border-radius: 50%;
+      }
+   }
+
+   .svg {
+      cursor: pointer;
+      padding: 2px;
+   }
+
+   .svg, &_color {
+      border-radius: 4px;
+
+      &:hover {
+         background-color: $hover-btn-gray;
       }
    }
 

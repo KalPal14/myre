@@ -10,8 +10,10 @@ import {
 	InputGroup,
 	FormHelperText,
 } from '@chakra-ui/react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FieldError, FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
+
+import EyeSlashSVG from '~/highlight-extension-fe/assets/imgs/svg/eye-slash';
+import EyeSVG from '~/highlight-extension-fe/assets/imgs/svg/eye';
 
 export interface ITextFieldProps<FormFields extends FieldValues> {
 	register: UseFormRegister<FormFields>;
@@ -55,7 +57,7 @@ export default function TextField<FormFields extends FieldValues>({
 				></Input>
 				{type === 'password' && (
 					<InputRightElement onClick={setHideText.toggle}>
-						{hideText ? <ViewOffIcon /> : <ViewIcon />}
+						{hideText ? <EyeSlashSVG /> : <EyeSVG />}
 					</InputRightElement>
 				)}
 			</InputGroup>

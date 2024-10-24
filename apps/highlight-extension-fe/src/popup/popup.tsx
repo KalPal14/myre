@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Tooltip } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
 
 import './popup.scss';
 
@@ -9,6 +8,8 @@ import { IBaseUserRo } from '~libs/ro/iam';
 import openTab from '~/highlight-extension-fe/common/helpers/open-tab.helper';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+
+import CogSVG from '../assets/imgs/svg/cog';
 
 import LoginSection from './components/login-section';
 
@@ -30,11 +31,10 @@ export default function Popup(): JSX.Element {
 					fontSize="md"
 					placement="auto-end"
 				>
-					<SettingsIcon
+					<CogSVG
 						onClick={() => openTab(FULL_OPTIONS_ROUTES.userInfo)}
-						height={7}
-						width={7}
-						color="gray.400"
+						height={28}
+						width={28}
 						cursor="pointer"
 					/>
 				</Tooltip>

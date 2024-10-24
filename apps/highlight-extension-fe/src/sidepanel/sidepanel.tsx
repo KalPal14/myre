@@ -1,11 +1,12 @@
 import React from 'react';
-import { SettingsIcon } from '@chakra-ui/icons';
 import { Tooltip } from '@chakra-ui/react';
-
-import HighlightsListTabs from './components/highlights-list-tabs';
 
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import openTab from '~/highlight-extension-fe/common/helpers/open-tab.helper';
+
+import CogSVG from '../assets/imgs/svg/cog';
+
+import HighlightsListTabs from './components/highlights-list-tabs';
 
 export default function Sidepanel(): JSX.Element {
 	return (
@@ -16,11 +17,10 @@ export default function Sidepanel(): JSX.Element {
 					fontSize="md"
 					placement="left"
 				>
-					<SettingsIcon
+					<CogSVG
 						onClick={() => openTab(FULL_OPTIONS_ROUTES.pages)}
-						height={7}
-						width={7}
-						color="gray.400"
+						height={28}
+						width={28}
 						cursor="pointer"
 					/>
 				</Tooltip>

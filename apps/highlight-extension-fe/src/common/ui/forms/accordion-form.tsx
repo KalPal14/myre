@@ -1,5 +1,4 @@
 import React from 'react';
-import { ChevronUpIcon, EditIcon } from '@chakra-ui/icons';
 import {
 	Accordion,
 	AccordionItem,
@@ -15,6 +14,8 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import './forms.scss';
 import TJsxContent from '~/highlight-extension-fe/common/types/jsx-content.type';
+import PencilSquareSVG from '~/highlight-extension-fe/assets/imgs/svg/pencil-square';
+import AngleUpSVG from '~/highlight-extension-fe/assets/imgs/svg/angle-up';
 
 export interface IAccordionFormProps<Form extends FieldValues> {
 	children: JSX.Element;
@@ -77,7 +78,7 @@ export default function AccordionForm<Form extends FieldValues>({
 								>
 									{accordionButtonText}
 								</Box>
-								{isExpanded ? <ChevronUpIcon /> : <EditIcon />}
+								{isExpanded ? <AngleUpSVG /> : <PencilSquareSVG />}
 							</AccordionButton>
 						</Tooltip>
 						<AccordionPanel pb={4}>

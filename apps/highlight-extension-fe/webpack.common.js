@@ -45,8 +45,13 @@ module.exports = {
 				],
 			},
 			{
-				type: 'assets/resource',
-				test: /\.(png|jpg|jpeg|gif|woff|woff2|tff|eot|svg)$/,
+				type: 'assets/imgs',
+				test: /\.(png|jpg|jpeg|gif|woff|woff2|tff|eot)$/,
+			},
+			{
+				type: 'assets/imgs',
+				test: /\.svg$/,
+				use: ['@svgr/webpack'],
 			},
 			{
 				test: /\.css$/i,
@@ -77,14 +82,12 @@ module.exports = {
 		...getHtmlPlugins(['popup', 'options', 'tabs', 'sidepanel']),
 	],
 	resolve: {
-		modules: [path.resolve(__dirname, '../../'), 'node_modules'],
 		alias: {
 			// Apps
 			'~/highlight-extension-fe': path.resolve(__dirname, '../../apps/highlight-extension-fe/src'),
 			// Libs
 			'~libs/common': path.resolve(__dirname, '../../libs/common/src'),
 			'~libs/dto': path.resolve(__dirname, '../../libs/dto/src'),
-			'~libs/express-core': path.resolve(__dirname, '../../libs/express-core/src'),
 			'~libs/ro': path.resolve(__dirname, '../../libs/ro/src'),
 			'~libs/routes': path.resolve(__dirname, '../../libs/routes/src'),
 		},

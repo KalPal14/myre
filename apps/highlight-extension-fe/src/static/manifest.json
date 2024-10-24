@@ -5,14 +5,13 @@
 	"version": "1.0.0",
 	"action": {
 		"default_popup": "popup.html",
-		"default_title": "Highlighter",
-		"default_icon": "highlighter-icon.png"
+		"default_title": "Highlighter"
 	},
 	"permissions": ["tabs", "bookmarks", "storage", "identity", "cookies", "sidePanel"],
 	"icons": {
-		"16": "highlighter-icon.png",
-		"48": "highlighter-icon.png",
-		"128": "highlighter-icon.png"
+		"16": "./icons/note.png",
+		"48": "./icons/note.png",
+		"128": "./icons/note.png"
 	},
 	"options_page": "options.html",
 	"content_scripts": [

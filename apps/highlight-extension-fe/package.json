@@ -10,6 +10,7 @@
 		"postinstall": "husky"
 	},
 	"devDependencies": {
+		"@svgr/webpack": "^8.1.0",
 		"@types/chrome": "^0.0.268",
 		"@types/react": "^18.0.9",
 		"@types/react-dom": "^18.0.4",
@@ -25,13 +26,12 @@
 		"sass-loader": "^16.0.2",
 		"sass-to-string": "^1.6.4",
 		"style-loader": "^3.3.1",
-		"ts-loader": "^9.3.0",
+		"ts-loader": "^9.5.1",
 		"webpack": "^5.72.1",
 		"webpack-cli": "^4.9.2",
 		"webpack-merge": "^5.8.0"
 	},
 	"dependencies": {
-		"@chakra-ui/icons": "^2.1.1",
 		"@chakra-ui/react": "^2.8.2",
 		"@emotion/react": "^11.11.4",
 		"@emotion/styled": "^11.11.0",

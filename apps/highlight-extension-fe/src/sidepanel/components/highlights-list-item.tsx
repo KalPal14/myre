@@ -1,11 +1,11 @@
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { Divider, Text, Tooltip } from '@chakra-ui/react';
-import { WarningTwoIcon } from '@chakra-ui/icons';
 
 import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import ExclamationOctagonSVG from '~/highlight-extension-fe/assets/imgs/svg/exclamation-octagon';
 
 import IChangeHighlightForm from '../types/change-highlight-form.interface';
 
@@ -35,10 +35,7 @@ export default function HighlightsListItem({
 		>
 			{unfoundHighlight && (
 				<Tooltip label="This note is only in the sidebar">
-					<WarningTwoIcon
-						className="highlightsList_itemWarningIcon"
-						color="orange.400"
-					/>
+					<ExclamationOctagonSVG />
 				</Tooltip>
 			)}
 			<Text
