@@ -22,7 +22,7 @@
 		"react": "^18.1.0",
 		"react-dom": "^18.1.0",
 		"sass": "^1.71.1",
-		"sass-loader": "^14.1.1",
+		"sass-loader": "^16.0.2",
 		"sass-to-string": "^1.6.4",
 		"style-loader": "^3.3.1",
 		"ts-loader": "^9.3.0",
