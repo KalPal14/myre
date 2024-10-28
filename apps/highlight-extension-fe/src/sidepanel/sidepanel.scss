@@ -34,4 +34,16 @@
          margin-bottom: "6px";
       }
    }
+
+   &_exclamationSvgContainer {
+      display: inline-block;
+      
+      .svg {
+         cursor: default;
+
+         &:hover {
+            background-color: #fff;
+         }
+      }
+   }
 }

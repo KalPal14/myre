@@ -7,9 +7,9 @@ import '../fields.scss';
 
 import TJsxContent from '~/highlight-extension-fe/common/types/jsx-content.type';
 
-import SortableItem from './sortable-fields-item';
+import DraggableItem from './draggable-fields-item';
 
-export interface ISortableFieldsProps<Fields extends FieldValues> {
+export interface IDraggableFieldsProps<Fields extends FieldValues> {
 	useFieldArrayReturn: UseFieldArrayReturn<Fields>;
 	fieldsList: (JSX.Element | null)[];
 	addBtn?: {
@@ -21,14 +21,14 @@ export interface ISortableFieldsProps<Fields extends FieldValues> {
 	onSortEnd?: () => void;
 }
 
-export default function SortableFields<Fields extends FieldValues>({
+export default function DraggableFields<Fields extends FieldValues>({
 	useFieldArrayReturn,
 	fieldsList,
 	addBtn,
 	showDeleteBtn,
 	onDelete,
 	onSortEnd,
-}: ISortableFieldsProps<Fields>): JSX.Element {
+}: IDraggableFieldsProps<Fields>): JSX.Element {
 	const { move, append, remove } = useFieldArrayReturn;
 
 	function handleDragEnd({ source, destination }: DropResult): void {
@@ -60,7 +60,7 @@ export default function SortableFields<Fields extends FieldValues>({
 						<ul
 							{...provided.droppableProps}
 							ref={provided.innerRef}
-							className="sortableFields"
+							className="draggableFields"
 						>
 							{fieldsList.map((field, index) =>
 								field ? (
@@ -75,7 +75,7 @@ export default function SortableFields<Fields extends FieldValues>({
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<SortableItem
+												<DraggableItem
 													key={index}
 													field={field}
 													index={index}
@@ -93,7 +93,7 @@ export default function SortableFields<Fields extends FieldValues>({
 				)}
 			</Droppable>
 			{addBtn && (
-				<div className="sortableFields_addBtnContainer">
+				<div className="draggableFields_addBtnContainer">
 					<Button
 						onClick={addElement}
 						colorScheme="teal"

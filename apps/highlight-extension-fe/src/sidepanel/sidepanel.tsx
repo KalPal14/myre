@@ -17,12 +17,14 @@ export default function Sidepanel(): JSX.Element {
 					fontSize="md"
 					placement="left"
 				>
-					<CogSVG
-						onClick={() => openTab(FULL_OPTIONS_ROUTES.pages)}
-						height={28}
-						width={28}
-						cursor="pointer"
-					/>
+					<div>
+						<CogSVG
+							onClick={() => openTab(FULL_OPTIONS_ROUTES.pages)}
+							height={28}
+							width={28}
+							cursor="pointer"
+						/>
+					</div>
 				</Tooltip>
 			</header>
 			<section className="highlightsList">

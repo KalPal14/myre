@@ -35,7 +35,9 @@ export default function HighlightsListItem({
 		>
 			{unfoundHighlight && (
 				<Tooltip label="This note is only in the sidebar">
-					<ExclamationOctagonSVG />
+					<div className="highlightsList_exclamationSvgContainer">
+						<ExclamationOctagonSVG />
+					</div>
 				</Tooltip>
 			)}
 			<Text

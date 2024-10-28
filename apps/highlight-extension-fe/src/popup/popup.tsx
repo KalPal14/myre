@@ -31,12 +31,14 @@ export default function Popup(): JSX.Element {
 					fontSize="md"
 					placement="auto-end"
 				>
-					<CogSVG
-						onClick={() => openTab(FULL_OPTIONS_ROUTES.userInfo)}
-						height={28}
-						width={28}
-						cursor="pointer"
-					/>
+					<div>
+						<CogSVG
+							onClick={() => openTab(FULL_OPTIONS_ROUTES.userInfo)}
+							height={28}
+							width={28}
+							cursor="pointer"
+						/>
+					</div>
 				</Tooltip>
 			</header>
 			<Button

@@ -3,29 +3,29 @@ import React from 'react';
 import GripVerticalSVG from '~/highlight-extension-fe/assets/imgs/svg/grip-vertical';
 import TrashSVG from '~/highlight-extension-fe/assets/imgs/svg/trash';
 
-export interface ISortableItemProps {
+export interface IDraggableItemProps {
 	field: JSX.Element;
 	index: number;
 	showDeleteBtn?: boolean;
 	onDelete?: (index: number) => void;
 }
 
-export default function SortableItem({
+export default function DraggableItem({
 	field,
 	index,
 	onDelete,
 	showDeleteBtn,
-}: ISortableItemProps): JSX.Element {
+}: IDraggableItemProps): JSX.Element {
 	return (
-		<li className="sortableFields_item">
-			<div className="sortableFields_itemLeftBox">
+		<li className="draggableFields_item">
+			<div className="draggableFields_itemLeftBox">
 				<div>
 					<GripVerticalSVG cursor="grab" />
 				</div>
-				<div className="sortableFields_customContentBox">{field}</div>
+				<div className="draggableFields_customContentBox">{field}</div>
 			</div>
 			{showDeleteBtn && (
-				<div className="sortableFields_itemRightBox">
+				<div className="draggableFields_itemRightBox">
 					<TrashSVG onClick={() => onDelete?.(index)} />
 				</div>
 			)}
