@@ -32,7 +32,7 @@ export default function Highlights(): JSX.Element {
 	const [updatedPages] = useCrossExtState<IUpdatedPagesUrlsExtState>('updatedPages', {
 		urls: [],
 	});
-	const [isExtActive] = useCrossExtState<boolean>('isExtActive', false);
+	const [isExtActive] = useCrossExtState<boolean>('isExtActive', true);
 
 	useEffect(() => {
 		if (!isExtActive) return;
