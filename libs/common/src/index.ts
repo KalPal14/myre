@@ -15,6 +15,7 @@ export * from './utils/dto-validation-rules/is-user-identifier';
 // /utils/helper-functions
 export * from './utils/helper-functions/random.helper';
 export * from './utils/helper-functions/hide-email/hide-email.helper';
+export * from './utils/helper-functions/generate-jwt';
 
 // /utils/obj-conventers
 export * from './utils/obj-conventers/to-where-in/to-where-in';

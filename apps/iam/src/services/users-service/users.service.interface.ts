@@ -6,12 +6,16 @@ import {
 	UsersLoginDto,
 	UsersRegisterDto,
 } from '~libs/dto/iam';
+import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import { UserModel } from '~/iam/prisma/client';
 
 export interface IUsersService {
 	get: (id: number) => Promise<UserModel>;
-	create: (registerDto: UsersRegisterDto) => Promise<UserModel>;
+	// TODO
+	create: (
+		registerDto: UsersRegisterDto
+	) => Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }>;
 	validate: (loginDto: UsersLoginDto) => Promise<UserModel>;
 
 	changePassword: (user: IJwtPayload, payload: ChangePasswordDto) => Promise<UserModel>;

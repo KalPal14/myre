@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
-import { sign } from 'jsonwebtoken';
 
 import {
 	HTTPError,
@@ -10,7 +9,7 @@ import {
 	TController,
 	BaseController,
 } from '~libs/express-core';
-import { hideEmail, IJwtPayload, TEmail } from '~libs/common';
+import { hideEmail, generateJwt, TEmail } from '~libs/common';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -29,11 +28,14 @@ import { IUsersController } from './users.controller.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
+	private jwtKey: string;
+
 	constructor(
 		@inject(TYPES.UsersService) private usersService: IUsersService,
 		@inject(TYPES.ConfigService) private configService: IConfigService
 	) {
 		super();
+		this.jwtKey = this.configService.get('JWT_KEY');
 		this.bindRoutes([
 			{
 				path: USERS_ENDPOINTS.getUserInfo,
@@ -87,7 +89,7 @@ export class UsersController extends BaseController implements IUsersController 
 
 	login: TController<null, UsersLoginDto> = async ({ body }, res) => {
 		const result = await this.usersService.validate(body);
-		this.generateJwt(result)
+		generateJwt(result, this.jwtKey)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,
@@ -97,13 +99,15 @@ export class UsersController extends BaseController implements IUsersController 
 			.catch((err) => this.send(res, 500, { err }));
 	};
 
+	// TODO
 	register: TController<null, UsersRegisterDto> = async ({ body }, res) => {
 		const result = await this.usersService.create(body);
-		this.generateJwt(result)
+		generateJwt(result.user, this.jwtKey)
 			.then((jwt) => {
 				this.created(res, {
 					jwt,
-					...this.layoutUserInfoRes(result),
+					user: this.layoutUserInfoRes(result.user),
+					workspace: result.workspace,
 				});
 			})
 			.catch((err) => this.send(res, 500, { err }));
@@ -129,7 +133,7 @@ export class UsersController extends BaseController implements IUsersController 
 
 	changeEmail: TController<null, ChangeEmailDto> = async ({ user, body }, res) => {
 		const result = await this.usersService.changeEmail(user, body);
-		this.generateJwt(result)
+		generateJwt(result, this.jwtKey)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,
@@ -141,7 +145,7 @@ export class UsersController extends BaseController implements IUsersController 
 
 	changeUsername: TController<null, ChangeUsernameDto> = async ({ user, body }, res) => {
 		const result = await this.usersService.changeUsername(user, body);
-		this.generateJwt(result)
+		generateJwt(result, this.jwtKey)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,
@@ -158,26 +162,5 @@ export class UsersController extends BaseController implements IUsersController 
 			username: user.username,
 			passwordUpdatedAt: user.passwordUpdatedAt,
 		};
-	}
-
-	private async generateJwt({ id, email, username }: IJwtPayload): Promise<string> {
-		return new Promise((resolve, reject) => {
-			const jwtKey = this.configService.get('JWT_KEY');
-
-			sign(
-				{ id, email, username },
-				jwtKey,
-				{
-					algorithm: 'HS256',
-				},
-				(err, token) => {
-					if (err) {
-						reject(err.message);
-					} else {
-						resolve(token as string);
-					}
-				}
-			);
-		});
 	}
 }

@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { IJwtPayload } from '~libs/common';
-import { HTTPError } from '~libs/express-core';
+import { generateJwt, IJwtPayload } from '~libs/common';
+import { HTTPError, IConfigService } from '~libs/express-core';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -10,20 +10,30 @@ import {
 	UsersLoginDto,
 	UsersRegisterDto,
 } from '~libs/dto/iam';
+import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
+import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
+import { TPrismaService } from '~/iam/common/types/prisma-service.interface';
 
 import { IUsersService } from './users.service.interface';
 
 @injectable()
 export class UsersService implements IUsersService {
+	private jwtKey: string;
+
 	constructor(
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
-		@inject(TYPES.UserFactory) private userFactory: IUserFactory
-	) {}
+		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
+		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
+		@inject(TYPES.ConfigService) private configService: IConfigService
+	) {
+		this.jwtKey = this.configService.get('JWT_KEY');
+	}
 
 	async get(id: number): Promise<UserModel> {
 		const user = await this.usersRepository.findBy({ id });
@@ -34,7 +44,11 @@ export class UsersService implements IUsersService {
 		return user;
 	}
 
-	async create(registerDto: UsersRegisterDto): Promise<UserModel> {
+	// TODO: обновить тесты
+	// TODO
+	async create(
+		registerDto: UsersRegisterDto
+	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
 		let existingUser = await this.usersRepository.findBy({ email: registerDto.email });
 		if (existingUser) {
 			throw new HTTPError(422, 'user with this email already exists');
@@ -44,8 +58,44 @@ export class UsersService implements IUsersService {
 			throw new HTTPError(422, 'user with this username already exists');
 		}
 
-		const newUser = await this.userFactory.create(registerDto);
-		return this.usersRepository.create(newUser);
+		return await this.prismaService.client.$transaction(async (tx) => {
+			const newUser = await this.userFactory.create(registerDto);
+			const newUserEntity = await tx.userModel.create({ data: newUser });
+			// TODO: я бы как-то без jwt это сделал бы
+			// TODO: NODE_TLS_REJECT_UNAUTHORIZED=0 убрать
+			const jwt = await generateJwt(
+				{
+					id: newUserEntity.id,
+					email: newUser.email,
+					username: newUser.username,
+				},
+				this.jwtKey
+			);
+
+			const body: CreateWorkspaceDto = {
+				name: `${newUser.username}'s workspace`,
+				colors: [],
+			};
+			try {
+				const resp = await fetch(WORKSPACES_FULL_URLS.create, {
+					method: 'POST',
+					body: JSON.stringify(body),
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8',
+						Authorization: `Bearer ${jwt}`,
+					},
+				});
+
+				const workspace = await resp.json();
+				if (!workspace.id) {
+					throw new Error();
+				}
+
+				return { user: newUserEntity, workspace };
+			} catch {
+				throw new Error();
+			}
+		});
 	}
 
 	async validate({ userIdentifier, password }: UsersLoginDto): Promise<UserModel> {

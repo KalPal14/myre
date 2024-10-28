@@ -13,7 +13,9 @@ import {
 	HIGHLIGHTS_BASE_ROUTE,
 	PAGES_BASE_ROUTE,
 	WORKSPACES_BASE_ROUTE,
+	DOMAIN_URL as HIGHLIGHT_EXT_DOMAIN_URL,
 } from '~libs/routes/highlight-extension';
+import { DOMAIN_URL as IAM_DOMAIN_URL } from '~libs/routes/iam';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesController } from '~/highlight-extension/controllers/workspaces-controller/workspaces.controller.interface';
@@ -46,7 +48,8 @@ export default class App {
 
 		this.app.use(
 			cors({
-				origin: clientUrl,
+				// TODO IAM_DOMAIN_URL HIGHLIGHT_EXT_DOMAIN_URL
+				origin: [clientUrl, IAM_DOMAIN_URL, HIGHLIGHT_EXT_DOMAIN_URL],
 				methods: ['GET', 'PATCH', 'POST', 'DELETE'],
 				allowedHeaders: ['Content-Type', 'Authorization'],
 			})

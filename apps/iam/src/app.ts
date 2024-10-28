@@ -9,8 +9,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
+import { USERS_BASE_ROUTE, DOMAIN_URL as IAM_DOMAIN_URL } from '~libs/routes/iam';
+import { DOMAIN_URL as HIGHLIGHT_EXT_DOMAIN_URL } from '~libs/routes/highlight-extension';
 
-import { USERS_BASE_ROUTE } from '~libs/routes/iam';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
 
@@ -38,7 +39,8 @@ export default class App {
 
 		this.app.use(
 			cors({
-				origin: clientUrl,
+				// TODO HIGHLIGHT_EXT_DOMAIN_URL IAM_DOMAIN_URL
+				origin: [clientUrl, HIGHLIGHT_EXT_DOMAIN_URL, IAM_DOMAIN_URL],
 				methods: ['GET', 'PATCH', 'POST', 'DELETE'],
 				allowedHeaders: ['Content-Type', 'Authorization'],
 			})
