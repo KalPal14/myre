@@ -18,8 +18,8 @@
          border-top: 1px solid #d3d3d3;
       }
 
-      &:focus {
-         background-color: red;
+      &:active {
+         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       }
    }
 
@@ -37,9 +37,9 @@
       width: 100%;
    }
 
-   &_iconBtn {
-      width: 24px !important;
-      height: 24px !important;
+   .svg {
+      width: 24px;
+      height: 24px;
       padding: 4px;
       border-radius: 2px;
       cursor: pointer;

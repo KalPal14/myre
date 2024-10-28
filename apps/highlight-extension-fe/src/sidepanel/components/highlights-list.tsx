@@ -9,7 +9,7 @@ import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/hig
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
+import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields/sortable-fields';
 import ICreatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
 import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
 import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';

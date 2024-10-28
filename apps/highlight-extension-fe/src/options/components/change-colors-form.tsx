@@ -7,7 +7,7 @@ import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields';
+import SortableFields from '~/highlight-extension-fe/common/ui/fields/sortable-fields/sortable-fields';
 import ColorField from '~/highlight-extension-fe/common/ui/fields/color-field';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';

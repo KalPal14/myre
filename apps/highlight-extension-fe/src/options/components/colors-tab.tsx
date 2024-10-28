@@ -8,9 +8,10 @@ import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-st
 import ChangeColorsForm from './change-colors-form';
 
 export default function ColorsTab(): JSX.Element {
-	const [currentWorkspace, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>(
+	const [currentWorkspace, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo>(
 		'currentWorkspace',
-		null
+		// TODO: тут нужен null
+		{ id: 1, name: 'W 1', ownerId: 1, colors: [] }
 	);
 
 	// TODO: разобраться зачем я вообще использую IColors[]

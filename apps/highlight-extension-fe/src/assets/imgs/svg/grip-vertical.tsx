@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
 
-export default function EyeSVG({
+export default function GripVerticalSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',

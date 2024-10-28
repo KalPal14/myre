@@ -26,8 +26,8 @@ export default function TrashSVG({
 				fill={color}
 			/>
 			<path
-				fill-rule="evenodd"
-				clip-rule="evenodd"
+				fillRule="evenodd"
+				clipRule="evenodd"
 				d="M3 6H13V16H3V6ZM7 9H9V13H7V9Z"
 				fill={color}
 			/>
