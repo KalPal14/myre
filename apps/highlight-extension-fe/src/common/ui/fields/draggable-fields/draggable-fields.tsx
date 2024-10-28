@@ -69,7 +69,7 @@ export default function DraggableFields<Fields extends FieldValues>({
 										draggableId={index.toString()}
 										index={index}
 									>
-										{(provided, snapshot) => (
+										{(provided) => (
 											<div
 												ref={provided.innerRef}
 												{...provided.draggableProps}
