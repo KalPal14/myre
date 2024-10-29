@@ -10,11 +10,11 @@ import { IConfigService } from './config.service.interface';
 
 @injectable()
 export class ConfigService implements IConfigService {
-	protected envFile: string;
+	private envFile: string;
 	env: DotenvParseOutput;
 
 	constructor(@inject(EXPRESS_CORE_TYPES.LoggerService) private loggerService: ILogger) {
-		this.envFile = process.env.NODE_ENV || '.env.dev';
+		this.envFile = process.env.NODE_ENV || '../../.env.dev';
 
 		const result: DotenvConfigOutput = config({ path: this.envFile });
 

@@ -12,7 +12,7 @@ module.exports = merge(common, {
 	devtool: 'cheap-module-source-map',
 	plugins: [
 		new Dotenv({
-			path: './.env.dev',
+			path: '../../.env.dev',
 		}),
 	],
 });

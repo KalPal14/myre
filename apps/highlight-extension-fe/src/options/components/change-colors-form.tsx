@@ -47,9 +47,11 @@ export default function ChangeColorsForm({
 	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
 
 	async function onSubmit(formValues: IChangeColorsForm): Promise<boolean> {
+		if (!currentWorkspace) return false;
+
 		const newColors = formValues.colors.map(({ color }) => color);
 		const resp = await new ApiServise().patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
-			WORKSPACES_FULL_URLS.update(currentWorkspace?.id),
+			WORKSPACES_FULL_URLS.update(currentWorkspace.id),
 			{
 				colors: newColors,
 			}

@@ -8,7 +8,7 @@ import {
 	UsersLoginDto,
 	UsersRegisterDto,
 } from '~libs/dto/iam';
-import { hideEmail, TEmail } from '~libs/common/index';
+import { hideEmail, TEmail } from '~libs/common';
 import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
