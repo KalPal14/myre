@@ -169,16 +169,14 @@ export default function Highlights(): JSX.Element {
 
 	function renderInfoToasts(allHighlights: number, unfoundHighlights: number): void {
 		const foundHighlights = allHighlights - unfoundHighlights;
-		{
-			// TODO
-			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-			foundHighlights &&
-				toast(
-					<Toast
-						status="success"
-						title={`${foundHighlights} highlight${foundHighlights > 1 ? 's' : ''} successfully found in text`}
-					/>
-				);
+
+		if (foundHighlights) {
+			toast(
+				<Toast
+					status="success"
+					title={`${foundHighlights} highlight${foundHighlights > 1 ? 's' : ''} successfully found in text`}
+				/>
+			);
 		}
 		if (unfoundHighlights) {
 			toast(
