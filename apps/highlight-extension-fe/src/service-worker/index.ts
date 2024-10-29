@@ -1,4 +1,3 @@
-import { TRoLimiter } from '~/highlight-extension-fe/common/services/api.service.interface';
 import CHROME_STOREGE_KEYS from '~/highlight-extension-fe/common/constants/chrome-storage-keys';
 
 import openTabHandler from './handlers/open-tab/open-tab.handler';
@@ -9,13 +8,13 @@ import IOpenTabIncomeMsg from './types/income-msgs/open-tab.income-msg.interface
 import setSidepanelHandler from './handlers/set-sidepanel/open-sidepanel.handler';
 import ISetSidepanelIncomeMsg from './types/income-msgs/set-sidepanel.income-msg.interface';
 
-chrome.runtime.onMessage.addListener(async function <RO extends TRoLimiter>(
+chrome.runtime.onMessage.addListener(async function <DTO>(
 	msg: IBaseMsg,
 	sender: chrome.runtime.MessageSender
 ) {
 	switch (msg.serviceWorkerHandler) {
 		case 'apiRequest':
-			apiRequestHandler(msg as IApiRequestIncomeMsg<RO>, sender);
+			apiRequestHandler(msg as IApiRequestIncomeMsg<DTO>, sender);
 			return;
 		case 'openTab':
 			openTabHandler(msg as IOpenTabIncomeMsg);

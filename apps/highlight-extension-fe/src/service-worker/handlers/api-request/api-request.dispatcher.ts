@@ -1,13 +1,12 @@
-import { TRoLimiter } from '~/highlight-extension-fe/common/services/api.service.interface';
 import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
 
-export default function apiRequestDispatcher<RO extends TRoLimiter = undefined>({
+export default function apiRequestDispatcher<DTO = undefined>({
 	contentScriptsHandler,
 	url,
 	method,
 	data = undefined,
-}: Omit<IApiRequestIncomeMsg<RO>, 'serviceWorkerHandler'>): void {
-	chrome.runtime.sendMessage<IApiRequestIncomeMsg<RO>>({
+}: Omit<IApiRequestIncomeMsg<DTO>, 'serviceWorkerHandler'>): void {
+	chrome.runtime.sendMessage<IApiRequestIncomeMsg<DTO>>({
 		serviceWorkerHandler: 'apiRequest',
 		contentScriptsHandler,
 		method,

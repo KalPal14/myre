@@ -2,7 +2,7 @@ import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error
 
 import CHROME_STOREGE_KEYS from '../constants/chrome-storage-keys';
 
-import IApiServise, { TRoLimiter } from './api.service.interface';
+import IApiServise from './api.service.interface';
 
 export default class ApiServise implements IApiServise {
 	private initRequest: RequestInit;
@@ -17,7 +17,7 @@ export default class ApiServise implements IApiServise {
 		};
 	}
 
-	private createSearchParams<RO extends TRoLimiter>(data: RO): URLSearchParams {
+	private createSearchParams<DTO>(data: DTO): URLSearchParams {
 		const searchParamsData: Record<string, string> = {};
 		for (const key in data) {
 			if (typeof data[key] === 'object') {
@@ -29,7 +29,7 @@ export default class ApiServise implements IApiServise {
 		return new URLSearchParams(searchParamsData);
 	}
 
-	async get<RO extends TRoLimiter, DTO>(url: string, data?: RO): Promise<DTO | HTTPError> {
+	async get<DTO, RO>(url: string, data?: DTO): Promise<RO | HTTPError> {
 		try {
 			const { jwt } = await chrome.storage.local.get(CHROME_STOREGE_KEYS.jwt);
 			const params = data ? `?${this.createSearchParams(data)}` : '';
@@ -50,11 +50,11 @@ export default class ApiServise implements IApiServise {
 		}
 	}
 
-	private async fetchLayout<RO extends TRoLimiter, DTO>(
+	private async fetchLayout<DTO, RO>(
 		method: 'POST' | 'PATCH' | 'DELETE',
 		url: string,
-		data?: RO
-	): Promise<DTO | HTTPError> {
+		data?: DTO
+	): Promise<RO | HTTPError> {
 		try {
 			const { jwt } = await chrome.storage.local.get(CHROME_STOREGE_KEYS.jwt);
 			const resp = await fetch(`${url}`, {
@@ -75,15 +75,15 @@ export default class ApiServise implements IApiServise {
 		}
 	}
 
-	async post<RO extends TRoLimiter, DTO>(url: string, data?: RO): Promise<DTO | HTTPError> {
+	async post<DTO, RO>(url: string, data?: DTO): Promise<RO | HTTPError> {
 		return await this.fetchLayout('POST', url, data);
 	}
 
-	async patch<RO extends TRoLimiter, DTO>(url: string, data?: RO): Promise<DTO | HTTPError> {
+	async patch<DTO, RO>(url: string, data?: DTO): Promise<RO | HTTPError> {
 		return await this.fetchLayout('PATCH', url, data);
 	}
 
-	async delete<RO extends TRoLimiter, DTO>(url: string, data?: RO): Promise<DTO | HTTPError> {
+	async delete<DTO, RO>(url: string, data?: DTO): Promise<RO | HTTPError> {
 		return await this.fetchLayout('DELETE', url, data);
 	}
 }

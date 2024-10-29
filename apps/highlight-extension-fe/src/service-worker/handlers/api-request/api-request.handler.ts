@@ -1,11 +1,10 @@
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import { TRoLimiter } from '~/highlight-extension-fe/common/services/api.service.interface';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 
-export default async function apiRequestHandler<RO extends TRoLimiter>(
-	{ method, url, data, contentScriptsHandler, serviceWorkerHandler }: IApiRequestIncomeMsg<RO>,
+export default async function apiRequestHandler<DTO>(
+	{ method, url, data, contentScriptsHandler, serviceWorkerHandler }: IApiRequestIncomeMsg<DTO>,
 	sender: chrome.runtime.MessageSender
 ): Promise<void> {
 	if (!sender.tab?.id) return;
