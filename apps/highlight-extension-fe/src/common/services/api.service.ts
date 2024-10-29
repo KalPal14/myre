@@ -36,8 +36,8 @@ export default class ApiServise implements IApiServise {
 			const resp = await fetch(`${url}${params}`, {
 				...this.initRequest,
 				headers: {
-					...this.initRequest.headers,
 					Authorization: `Bearer ${jwt}`,
+					...this.initRequest.headers,
 				},
 				method: 'GET',
 			});
@@ -60,8 +60,8 @@ export default class ApiServise implements IApiServise {
 			const resp = await fetch(`${url}`, {
 				...this.initRequest,
 				headers: {
-					...this.initRequest.headers,
 					Authorization: `Bearer ${jwt}`,
+					...this.initRequest.headers,
 				},
 				method,
 				body: JSON.stringify(data),

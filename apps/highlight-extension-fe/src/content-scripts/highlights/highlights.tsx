@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
-import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
+import { TGetPageRo, IBaseHighlightRo, IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
@@ -33,17 +33,17 @@ export default function Highlights(): JSX.Element {
 		urls: [],
 	});
 	const [isExtActive] = useCrossExtState<boolean>('isExtActive', true);
+	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
 
 	useEffect(() => {
-		if (!isExtActive) return;
+		if (!isExtActive || !currentWorkspace) return;
 		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
 		apiRequestDispatcher<GetPageDto>({
 			contentScriptsHandler: 'getPageHandler',
 			method: 'get',
 			url: PAGES_FULL_URLS.get,
 			data: {
-				// TODO
-				workspaceId: '1',
+				workspaceId: currentWorkspace.id.toString(),
 				url: getPageUrl(),
 			},
 		});
@@ -51,18 +51,17 @@ export default function Highlights(): JSX.Element {
 		return (): void => {
 			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
 		};
-	}, [isExtActive]);
+	}, [isExtActive, currentWorkspace]);
 
 	useEffect(() => {
 		if (componentBeforeGettingPageInfo.current) return;
-		if (jwt && isExtActive) {
+		if (jwt && isExtActive && currentWorkspace) {
 			apiRequestDispatcher<GetPageDto>({
 				contentScriptsHandler: 'getPageHandler',
 				method: 'get',
 				url: PAGES_FULL_URLS.get,
 				data: {
-					// TODO
-					workspaceId: '1',
+					workspaceId: currentWorkspace.id.toString(),
 					url: getPageUrl(),
 				},
 			});
@@ -84,7 +83,7 @@ export default function Highlights(): JSX.Element {
 			}
 			window.location.reload();
 		}
-	}, [jwt, isExtActive]);
+	}, [jwt, isExtActive, currentWorkspace]);
 
 	useEffect(() => {
 		if (updatedPagesUrlsRerendersCount.current <= 1) {

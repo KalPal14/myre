@@ -4,7 +4,7 @@ import { useToast } from '@chakra-ui/react';
 
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
+import { IBaseWorkspaceRo, IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
@@ -13,6 +13,7 @@ import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import IColor from '~/highlight-extension-fe/common/constants/default-values/types/color.interface';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';
 
@@ -43,11 +44,12 @@ export default function ChangeColorsForm({
 	});
 	const { fields } = useFieldArrayReturn;
 
+	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
+
 	async function onSubmit(formValues: IChangeColorsForm): Promise<boolean> {
 		const newColors = formValues.colors.map(({ color }) => color);
 		const resp = await new ApiServise().patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
-			// TODO
-			WORKSPACES_FULL_URLS.update(-1),
+			WORKSPACES_FULL_URLS.update(currentWorkspace?.id),
 			{
 				colors: newColors,
 			}

@@ -14,8 +14,8 @@ import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 
 export interface IChangePasswordFormProps {
-	passwordUpdatedAt: string | null;
-	onSuccess: (passwordUpdatedAt: string) => void;
+	passwordUpdatedAt: Date | null;
+	onSuccess: (passwordUpdatedAt: Date) => void;
 }
 
 export default function ChangePasswordForm({

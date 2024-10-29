@@ -20,7 +20,7 @@ import tabsList from './constants/tabs-list';
 
 const OptionsPage = (): JSX.Element => {
 	const [currentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
-
+	const [currentWorkspace] = useCrossExtState<IBaseUserRo | null>('currentWorkspace', null);
 	const [activeTabIndex, setActiveTabIndex] = useState(0);
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ const OptionsPage = (): JSX.Element => {
 					))}
 				</TabList>
 
-				{!currentUser && (
+				{(!currentUser || !currentWorkspace) && (
 					<TabPanels>
 						<Alert
 							status="warning"
@@ -71,7 +71,7 @@ const OptionsPage = (): JSX.Element => {
 					</TabPanels>
 				)}
 
-				{currentUser && (
+				{currentUser && currentWorkspace && (
 					<TabPanels>
 						{tabsList.map(({ element }, index) => (
 							<TabPanel key={index}>{element}</TabPanel>

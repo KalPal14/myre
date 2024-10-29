@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
-import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
+import { IBaseWorkspaceRo, ICreateHighlightRo } from '~libs/ro/highlight-extension';
 import { CreateHighlightDto } from '~libs/dto/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
@@ -25,6 +25,7 @@ export default function CreateHighlight(): JSX.Element {
 		'createdHighlight',
 		null
 	);
+	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
 
 	const [selectedRange, setSelectedRange] = useState<Range | null>(null);
 	const [mouseСoordinates, setMouseСoordinates] = useState({
@@ -79,8 +80,22 @@ export default function CreateHighlight(): JSX.Element {
 
 	async function createHighlight(color: string, note?: string): Promise<void> {
 		if (!selectedRange) return;
+		if (!currentWorkspace) {
+			toast(
+				<Toast
+					title="Error creating highlight"
+					description="user is not authorised"
+				/>
+			);
+			return;
+		}
 
-		const newHighlightData = buildCreateHighlightRo(selectedRange, color, note);
+		const newHighlightData = buildCreateHighlightRo(
+			currentWorkspace.id,
+			selectedRange,
+			color,
+			note
+		);
 		if (!newHighlightData) {
 			return;
 		}

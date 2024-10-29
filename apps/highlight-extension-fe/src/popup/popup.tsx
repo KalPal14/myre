@@ -4,6 +4,7 @@ import { Button, Tooltip } from '@chakra-ui/react';
 import './popup.scss';
 
 import { IBaseUserRo } from '~libs/ro/iam';
+import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import openTab from '~/highlight-extension-fe/common/helpers/open-tab.helper';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
@@ -16,11 +17,16 @@ import LoginSection from './components/login-section';
 export default function Popup(): JSX.Element {
 	const [jwt, setJwt] = useCrossExtState<string | null>('jwt', null);
 	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
+	const [, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>(
+		'currentWorkspace',
+		null
+	);
 	const [isExtActive, setIsExtActive] = useCrossExtState<boolean>('isExtActive', true);
 
 	async function logout(): Promise<void> {
 		setJwt(null);
 		setCurrentUser(null);
+		setCurrentWorkspace(null);
 	}
 
 	return (

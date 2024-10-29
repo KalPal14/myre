@@ -5,6 +5,7 @@ import { Button, Collapse } from '@chakra-ui/react';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { UsersRegisterDto } from '~libs/dto/iam';
 import { IBaseUserRo, IRegistrationRo } from '~libs/ro/iam';
+import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
@@ -23,6 +24,10 @@ export default function LoginForm(): JSX.Element {
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
 	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
+	const [, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>(
+		'currentWorkspace',
+		null
+	);
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
@@ -37,9 +42,10 @@ export default function LoginForm(): JSX.Element {
 			return;
 		}
 
-		const { jwt, ...restUserInfo } = resp;
+		const { jwt, user, workspace } = resp;
 		setJwt(jwt);
-		setCurrentUser(restUserInfo);
+		setCurrentUser(user);
+		setCurrentWorkspace(workspace);
 	}
 
 	function handleErr(err: HTTPError): void {

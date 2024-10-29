@@ -4,7 +4,12 @@ import { Heading } from '@chakra-ui/react';
 
 import { PAGES_FULL_URLS, HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
-import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
+import {
+	IBaseHighlightRo,
+	IDeleteHighlightRo,
+	IUpdateHighlightRo,
+	TGetPageRo,
+} from '~libs/ro/highlight-extension';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
@@ -38,6 +43,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 		null
 	);
 	const [unfoundHighlightsIds] = useCrossExtState<number[]>('unfoundHighlightsIds', []);
+	const [currentWorkspace] = useCrossExtState<IBaseHighlightRo | null>('currentWorkspace', null);
 
 	const { control, register, setValue, watch } = useForm<IChangeHighlightForm>({
 		values: {
@@ -75,17 +81,20 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 	useEffect(() => {
 		getHighlights();
-	}, [pageUrl]);
+	}, [pageUrl, currentWorkspace]);
 
 	function findFieldIndex(id: number): number {
 		return fields.findIndex((field) => field.highlight.id === id);
 	}
 
 	async function getHighlights(): Promise<void> {
-		if (!pageUrl) return;
+		if (!pageUrl || !currentWorkspace) {
+			setValue('highlights', []);
+			return;
+		}
+
 		const resp = await new ApiServise().get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
-			// TODO
-			workspaceId: '1',
+			workspaceId: currentWorkspace.id.toString(),
 			url: pageUrl,
 		});
 		if (resp instanceof HTTPError) return;

@@ -1,3 +1,3 @@
 export interface IChangePasswordRo {
-	passwordUpdatedAt: string;
+	passwordUpdatedAt: Date;
 }

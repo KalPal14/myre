@@ -8,6 +8,7 @@ import setInitialTextToHighlightPerent from './for-DOM-changes/set-initial-text-
 
 // TODO переименовать на buildCreateHighlightDto
 export default function buildCreateHighlightRo(
+	workspaceId: number,
 	range: Range,
 	color: string,
 	note?: string
@@ -37,8 +38,7 @@ export default function buildCreateHighlightRo(
 	const endNodeIndex = sameToEndContainerPerent.indexOf(endContainerPerent);
 
 	return {
-		// TODO workspaceId
-		workspaceId: 1,
+		workspaceId,
 		pageUrl: getPageUrl(),
 		startOffset: calculateOffset(range.startContainer, startContainerPerent, range.startOffset),
 		endOffset: calculateOffset(range.endContainer, endContainerPerent, range.endOffset),

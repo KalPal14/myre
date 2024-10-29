@@ -12,7 +12,12 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
-import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
+import {
+	IBaseWorkspaceRo,
+	IGetPagesRoItem,
+	IUpdatePageRo,
+	TGetPageRo,
+} from '~libs/ro/highlight-extension';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
@@ -47,6 +52,8 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 		setError,
 	} = useFormReturnValue;
 
+	// TODO: убрать бойлер код в виде указания типа для useCrossExtState и defaultValue
+	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
 	const [, setUpdatedPages] = useCrossExtState<IUpdatedPagesUrlsExtState>('updatedPages', {
 		urls: [],
 	});
@@ -65,11 +72,12 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function checkExistingPagesWithNewURL(url: string): Promise<boolean> {
-		const pageWithNewUrl = await new ApiServise().get<GetPageDto, TGetPageRo>(
-			PAGES_FULL_URLS.get,
-			// TODO
-			{ workspaceId: '1', url: getPageUrl(url) }
-		);
+		if (!currentWorkspace) return false;
+
+		const pageWithNewUrl = await new ApiServise().get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+			workspaceId: currentWorkspace.id.toString(),
+			url: getPageUrl(url),
+		});
 		if (pageWithNewUrl instanceof HTTPError) {
 			handleErr(pageWithNewUrl);
 			return false;
