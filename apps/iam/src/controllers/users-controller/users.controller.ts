@@ -14,8 +14,8 @@ import {
 	ChangeEmailDto,
 	ChangePasswordDto,
 	ChangeUsernameDto,
-	UsersLoginDto,
-	UsersRegisterDto,
+	LoginDto,
+	RegistrationDto,
 } from '~libs/dto/iam';
 import { USERS_ENDPOINTS } from '~libs/routes/iam';
 
@@ -47,13 +47,13 @@ export class UsersController extends BaseController implements IUsersController 
 				path: USERS_ENDPOINTS.login,
 				method: 'post',
 				func: this.login,
-				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(UsersLoginDto)],
+				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(LoginDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.register,
 				method: 'post',
 				func: this.register,
-				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(UsersRegisterDto)],
+				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(RegistrationDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.logout,
@@ -87,7 +87,7 @@ export class UsersController extends BaseController implements IUsersController 
 		this.ok(res, this.layoutUserInfoRes(result));
 	};
 
-	login: TController<null, UsersLoginDto> = async ({ body }, res) => {
+	login: TController<null, LoginDto> = async ({ body }, res) => {
 		const result = await this.usersService.validate(body);
 		generateJwt(result, this.jwtKey)
 			.then((jwt) => {
@@ -100,7 +100,7 @@ export class UsersController extends BaseController implements IUsersController 
 	};
 
 	// TODO
-	register: TController<null, UsersRegisterDto> = async ({ body }, res) => {
+	register: TController<null, RegistrationDto> = async ({ body }, res) => {
 		const result = await this.usersService.create(body);
 		generateJwt(result.user, this.jwtKey)
 			.then((jwt) => {

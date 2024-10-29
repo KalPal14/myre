@@ -16,7 +16,7 @@ import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.hel
 
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
 import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
-import buildCreateHighlightRo from '../helpers/build-create-highlight-ro.helper';
+import buildCreateHighlightDto from '../helpers/build-create-highlight-ro.helper';
 
 import HighlightsController from './highlights-controller';
 
@@ -90,7 +90,7 @@ export default function CreateHighlight(): JSX.Element {
 			return;
 		}
 
-		const newHighlightData = buildCreateHighlightRo(
+		const newHighlightData = buildCreateHighlightDto(
 			currentWorkspace.id,
 			selectedRange,
 			color,

@@ -128,7 +128,6 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 		if (!dataToUpdate.length) return;
 
-		// TODO: IUpdateHighlightRo[] заменить на IIndividualUpdateHighlightsRo
 		await new ApiServise().patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
 			HIGHLIGHTS_FULL_URLS.individualUpdateMany,
 			{

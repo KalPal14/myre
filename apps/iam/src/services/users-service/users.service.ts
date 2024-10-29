@@ -7,8 +7,8 @@ import {
 	ChangeEmailDto,
 	ChangePasswordDto,
 	ChangeUsernameDto,
-	UsersLoginDto,
-	UsersRegisterDto,
+	LoginDto,
+	RegistrationDto,
 } from '~libs/dto/iam';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
@@ -47,7 +47,7 @@ export class UsersService implements IUsersService {
 	// TODO: обновить тесты
 	// TODO
 	async create(
-		registerDto: UsersRegisterDto
+		registerDto: RegistrationDto
 	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
 		let existingUser = await this.usersRepository.findBy({ email: registerDto.email });
 		if (existingUser) {
@@ -98,7 +98,7 @@ export class UsersService implements IUsersService {
 		});
 	}
 
-	async validate({ userIdentifier, password }: UsersLoginDto): Promise<UserModel> {
+	async validate({ userIdentifier, password }: LoginDto): Promise<UserModel> {
 		let existingUser = null;
 		if (userIdentifier.includes('@')) {
 			existingUser = await this.usersRepository.findBy({ email: userIdentifier });

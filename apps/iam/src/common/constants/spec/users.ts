@@ -1,5 +1,5 @@
 import { JWT_PAYLOAD, random } from '~libs/common';
-import { UsersLoginDto, UsersRegisterDto } from '~libs/dto/iam';
+import { LoginDto, RegistrationDto } from '~libs/dto/iam';
 
 import { UserModel } from '~/iam/prisma/client';
 import { User } from '~/iam/domain/user/user';
@@ -17,13 +17,13 @@ export const USER_MODEL: UserModel = {
 	password: '$2a$13$kk2.WnMMchuXJEETn1dak.fQDgjLMu.3mO44dGv50C5qx1/oP.9wa',
 };
 
-export const CREATE_USER_DTO = (): UsersRegisterDto => ({
+export const CREATE_USER_DTO = (): RegistrationDto => ({
 	email: `new_${random()}@test.com`,
 	username: `new_new_${random()}`,
 	password: USER.password,
 });
 
-export const LOGIN_USER_DTO: UsersLoginDto = {
+export const LOGIN_USER_DTO: LoginDto = {
 	userIdentifier: USER.username,
 	password: USER.password,
 };

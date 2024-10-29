@@ -3,7 +3,7 @@ import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
 
 import { HTTPError, IConfigService } from '~libs/express-core';
-import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, UsersLoginDto } from '~libs/dto/iam';
+import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, LoginDto } from '~libs/dto/iam';
 import { JWT_PAYLOAD } from '~libs/common/index';
 
 import { UserModel } from '~/iam/prisma/client';
@@ -109,7 +109,7 @@ describe('UsersService', () => {
 
 	describe('login', () => {
 		describe('login by email', () => {
-			const LOGIN_DTO: UsersLoginDto = {
+			const LOGIN_DTO: LoginDto = {
 				userIdentifier: USER.email,
 				password: USER.password,
 			};

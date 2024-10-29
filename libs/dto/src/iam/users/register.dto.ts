@@ -2,7 +2,7 @@ import { IsEmail, Matches, MinLength } from 'class-validator';
 
 import { USERNAME } from '~libs/common';
 
-export class UsersRegisterDto {
+export class RegistrationDto {
 	@IsEmail({}, { message: 'Enter a valid email' })
 	email: string;
 

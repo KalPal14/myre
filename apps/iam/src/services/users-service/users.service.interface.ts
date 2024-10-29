@@ -3,8 +3,8 @@ import {
 	ChangeEmailDto,
 	ChangePasswordDto,
 	ChangeUsernameDto,
-	UsersLoginDto,
-	UsersRegisterDto,
+	LoginDto,
+	RegistrationDto,
 } from '~libs/dto/iam';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 
@@ -14,9 +14,9 @@ export interface IUsersService {
 	get: (id: number) => Promise<UserModel>;
 	// TODO
 	create: (
-		registerDto: UsersRegisterDto
+		registerDto: RegistrationDto
 	) => Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }>;
-	validate: (loginDto: UsersLoginDto) => Promise<UserModel>;
+	validate: (loginDto: LoginDto) => Promise<UserModel>;
 
 	changePassword: (user: IJwtPayload, payload: ChangePasswordDto) => Promise<UserModel>;
 	changeEmail: (user: IJwtPayload, payload: ChangeEmailDto) => Promise<UserModel>;

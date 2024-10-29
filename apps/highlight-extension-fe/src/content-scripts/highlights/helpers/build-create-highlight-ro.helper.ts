@@ -6,8 +6,7 @@ import findElementsByText from './to-receive-DOM-data/find-elements-by-text.help
 import getHighlightPerent from './to-receive-DOM-data/get-highlight-perent.helper';
 import setInitialTextToHighlightPerent from './for-DOM-changes/set-initial-text-to-highlight-perent.helper';
 
-// TODO переименовать на buildCreateHighlightDto
-export default function buildCreateHighlightRo(
+export default function buildCreateHighlightDto(
 	workspaceId: number,
 	range: Range,
 	color: string,

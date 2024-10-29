@@ -5,8 +5,8 @@ import {
 	ChangeEmailDto,
 	ChangePasswordDto,
 	ChangeUsernameDto,
-	UsersLoginDto,
-	UsersRegisterDto,
+	LoginDto,
+	RegistrationDto,
 } from '~libs/dto/iam';
 
 export interface IUsersController {
@@ -14,8 +14,8 @@ export interface IUsersController {
 
 	getUserInfo: TController;
 
-	login: TController<null, UsersLoginDto>;
-	register: TController<null, UsersRegisterDto>;
+	login: TController<null, LoginDto>;
+	register: TController<null, RegistrationDto>;
 	logout: TController;
 
 	changePassword: TController<null, ChangePasswordDto>;

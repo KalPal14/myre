@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
-import { UsersRegisterDto } from '~libs/dto/iam';
+import { RegistrationDto } from '~libs/dto/iam';
 import { IBaseUserRo, IRegistrationRo } from '~libs/ro/iam';
 import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 
@@ -20,7 +20,7 @@ export default function LoginForm(): JSX.Element {
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<UsersRegisterDto>();
+	} = useForm<RegistrationDto>();
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
 	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
@@ -31,9 +31,8 @@ export default function LoginForm(): JSX.Element {
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
-	// TODO: UsersRegisterDto IRegistrationRo ???
-	async function onSubmit(formValues: UsersRegisterDto): Promise<void> {
-		const resp = await new ApiServise().post<UsersRegisterDto, IRegistrationRo>(
+	async function onSubmit(formValues: RegistrationDto): Promise<void> {
+		const resp = await new ApiServise().post<RegistrationDto, IRegistrationRo>(
 			USERS_FULL_URLS.register,
 			formValues
 		);
@@ -52,7 +51,7 @@ export default function LoginForm(): JSX.Element {
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof UsersRegisterDto, {
+				setError(property as keyof RegistrationDto, {
 					message: errors.join(),
 				});
 			},

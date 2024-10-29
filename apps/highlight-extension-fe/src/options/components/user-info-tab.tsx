@@ -9,7 +9,6 @@ import ChangePasswordForm from './change-password-form';
 import ChangeUsernameForm from './change-username-form';
 
 export default function UserInfoTab(): JSX.Element {
-	// TODO: подумать над заменой широкого использования на fe стороне "Base" dto/ro
 	const [currentUser, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
 
 	return (

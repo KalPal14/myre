@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
-import { UsersLoginDto } from '~libs/dto/iam';
+import { LoginDto } from '~libs/dto/iam';
 import { IBaseUserRo, ILoginRo } from '~libs/ro/iam';
 import { IBaseWorkspaceRo, TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
@@ -21,7 +21,7 @@ export default function LoginForm(): JSX.Element {
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<UsersLoginDto>();
+	} = useForm<LoginDto>();
 
 	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
 	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
@@ -32,9 +32,8 @@ export default function LoginForm(): JSX.Element {
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
-	// TODO: мне не нравиться как рядом выглядят UsersLoginDto и ILoginRo
-	async function onSubmit(formValues: UsersLoginDto): Promise<void> {
-		const loginResp = await new ApiServise().post<UsersLoginDto, ILoginRo>(
+	async function onSubmit(formValues: LoginDto): Promise<void> {
+		const loginResp = await new ApiServise().post<LoginDto, ILoginRo>(
 			USERS_FULL_URLS.login,
 			formValues
 		);
@@ -62,7 +61,7 @@ export default function LoginForm(): JSX.Element {
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof UsersLoginDto, {
+				setError(property as keyof LoginDto, {
 					message: errors.join(),
 				});
 			},
