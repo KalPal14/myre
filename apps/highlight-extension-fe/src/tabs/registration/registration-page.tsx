@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { Text, Heading } from '@chakra-ui/react';
 
 import './registration.scss';
-import RegistrationForm from './components/registration-form';
 
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
 import HighAlert from '~/highlight-extension-fe/common/ui/alerts/high-alert';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+
+import RegistrationForm from './components/registration-form';
 
 export default function RegistrationPage(): JSX.Element {
 	const [jwt] = useCrossExtState<string | null>('jwt', null);

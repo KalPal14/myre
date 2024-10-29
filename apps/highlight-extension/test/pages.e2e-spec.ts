@@ -3,11 +3,10 @@ import request from 'supertest';
 
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { random } from '~libs/common/index';
+import { USERS_URLS } from '~libs/routes/iam';
+import { PAGES_URLS, HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 
 import { bootstrap } from '~/highlight-extension/main';
-import { USERS_URLS } from '~libs/routes/iam';
-import { PAGES_URLS } from '~libs/routes/highlight-extension';
-import { HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 import { bootstrap as iamBootstrap } from '~/iam/main';
 import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
 import {

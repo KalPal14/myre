@@ -1,5 +1,10 @@
 {
 	"root": true,
+	"ignorePatterns": [
+		"**/*.scss",
+		"**/*.png",
+		"**/*.json"
+	],
 	"parser": "@typescript-eslint/parser",
 	"plugins": [
 		"@typescript-eslint",

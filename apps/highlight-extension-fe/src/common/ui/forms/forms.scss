@@ -1,12 +1,11 @@
 .accordionForm {
+	&_item {
+		border: 2px solid #d3d3d3 !important;
+		border-radius: 10px;
+	}
 
-   &_item {
-      border: 2px solid #d3d3d3 !important;
-      border-radius: 10px;
-   }
-
-   &_formBtnsContainer {
-      display: flex;
-      justify-content: flex-end;
-   }
+	&_formBtnsContainer {
+		display: flex;
+		justify-content: flex-end;
+	}
 }
