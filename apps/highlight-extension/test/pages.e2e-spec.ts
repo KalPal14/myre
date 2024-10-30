@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import request from 'supertest';
+import { v4 } from 'uuid';
 
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
-import { random } from '~libs/common/index';
 import { USERS_URLS } from '~libs/routes/iam';
 import { PAGES_URLS, HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 
@@ -36,7 +36,7 @@ describe('Pages', () => {
 			it('return updated page', async () => {
 				const newHighlightRes = await request(app)
 					.post(HIGHLIGHTS_URLS.create)
-					.send({ ...CREATE_HIGHLIGHT_DTO, pageUrl: PAGE.url + random() })
+					.send({ ...CREATE_HIGHLIGHT_DTO, pageUrl: PAGE.url + v4() })
 					.set('Authorization', `Bearer ${jwt}`);
 				const pageId = newHighlightRes.body.pageId;
 				const DTO: UpdatePageDto = {
@@ -79,7 +79,7 @@ describe('Pages', () => {
 			it('return { id: null }', async () => {
 				const DTO: GetPageDto = {
 					workspaceId: PAGE.workspaceId.toString(),
-					url: PAGE.url + random(),
+					url: PAGE.url + v4(),
 				};
 
 				const res = await request(app)

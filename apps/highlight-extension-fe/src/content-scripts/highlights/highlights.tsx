@@ -6,8 +6,6 @@ import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
 import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
-import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
-import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
@@ -15,6 +13,7 @@ import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.hel
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 
 import Toast from '../common/ui/toasts/toast';
+import { apiHandler } from '../common/api.handler';
 
 import InteractionWithHighlight from './components/interaction-with-highlight';
 import drawHighlight from './helpers/for-DOM-changes/draw-highlight.helper';
@@ -34,34 +33,13 @@ export default function Highlights(): JSX.Element {
 
 	useEffect(() => {
 		if (!isExtActive || !currentWorkspace) return;
-		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
-		apiRequestDispatcher<GetPageDto>({
-			contentScriptsHandler: 'getPageHandler',
-			method: 'get',
-			url: PAGES_FULL_URLS.get,
-			data: {
-				workspaceId: currentWorkspace.id.toString(),
-				url: getPageUrl(),
-			},
-		});
-
-		return (): void => {
-			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
-		};
+		getPage(currentWorkspace.id);
 	}, [isExtActive, currentWorkspace]);
 
 	useEffect(() => {
 		if (componentBeforeGettingPageInfo.current) return;
 		if (jwt && isExtActive && currentWorkspace) {
-			apiRequestDispatcher<GetPageDto>({
-				contentScriptsHandler: 'getPageHandler',
-				method: 'get',
-				url: PAGES_FULL_URLS.get,
-				data: {
-					workspaceId: currentWorkspace.id.toString(),
-					url: getPageUrl(),
-				},
-			});
+			getPage(currentWorkspace.id);
 		}
 
 		if (!isExtActive) {
@@ -94,23 +72,19 @@ export default function Highlights(): JSX.Element {
 		}
 	}, [updatedPages]);
 
-	function apiResponseMsgHandler({
-		serviceWorkerHandler,
-		contentScriptsHandler,
-		data,
-		isDataHttpError,
-	}: IApiRequestOutcomeMsg): void {
-		if (serviceWorkerHandler !== 'apiRequest') return;
-		switch (contentScriptsHandler) {
-			case 'getPageHandler':
-				if (isDataHttpError) {
-					getPageErrHandler(data as HTTPError);
-					return;
-				}
-				getPageHandler(data as TGetPageRo);
-				componentBeforeGettingPageInfo.current = false;
-				return;
-		}
+	function getPage(workspaceId: number): void {
+		apiHandler<GetPageDto, TGetPageRo>({
+			msg: {
+				method: 'get',
+				url: PAGES_FULL_URLS.get,
+				data: {
+					workspaceId: workspaceId.toString(),
+					url: getPageUrl(),
+				},
+			},
+			onSuccess: getPageHandler,
+			onError: getPageErrHandler,
+		});
 	}
 
 	function getPageErrHandler(err: HTTPError): void {
@@ -136,6 +110,7 @@ export default function Highlights(): JSX.Element {
 	}
 
 	function getPageHandler(page: TGetPageRo): void {
+		componentBeforeGettingPageInfo.current = false;
 		if (page.id === null) return;
 		drawHighlightsFromDto(page.highlights);
 	}

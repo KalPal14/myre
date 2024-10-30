@@ -1,4 +1,6 @@
-import { JWT_PAYLOAD, random } from '~libs/common';
+import { v4 } from 'uuid';
+
+import { JWT_PAYLOAD } from '~libs/common';
 import { LoginDto, RegistrationDto } from '~libs/dto/iam';
 
 import { UserModel } from '~/iam/prisma/client';
@@ -18,8 +20,8 @@ export const USER_MODEL: UserModel = {
 };
 
 export const CREATE_USER_DTO = (): RegistrationDto => ({
-	email: `new_${random()}@test.com`,
-	username: `new_new_${random()}`,
+	email: `new_${v4()}@test.com`,
+	username: `new_new_${v4()}`,
 	password: USER.password,
 });
 

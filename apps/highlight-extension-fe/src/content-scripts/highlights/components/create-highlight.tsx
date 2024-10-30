@@ -3,10 +3,7 @@ import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
-import { CreateHighlightDto } from '~libs/dto/highlight-extension';
 
-import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
-import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import Toast from '~/highlight-extension-fe/content-scripts/common/ui/toasts/toast';
@@ -16,6 +13,7 @@ import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.hel
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
 import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import buildCreateHighlightDto from '../helpers/build-create-highlight-ro.helper';
+import { apiHandler } from '../../common/api.handler';
 
 import HighlightsController from './highlights-controller';
 
@@ -31,11 +29,9 @@ export default function CreateHighlight(): JSX.Element {
 
 	useEffect(() => {
 		document.addEventListener('mouseup', selectionHandler);
-		chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
 
 		return (): void => {
 			document.removeEventListener('mouseup', selectionHandler);
-			chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
 		};
 	}, []);
 
@@ -54,24 +50,6 @@ export default function CreateHighlight(): JSX.Element {
 			x: clientX,
 			y: pageY,
 		});
-	}
-
-	function apiResponseMsgHandler({
-		serviceWorkerHandler,
-		contentScriptsHandler,
-		data,
-		isDataHttpError,
-	}: IApiRequestOutcomeMsg): void {
-		if (serviceWorkerHandler !== 'apiRequest') return;
-		switch (contentScriptsHandler) {
-			case 'createHighlightHandler':
-				if (isDataHttpError) {
-					createHighlightErrHandler(data as HTTPError);
-					return;
-				}
-				createHighlightRespHandler(data as ICreateHighlightRo);
-				return;
-		}
 	}
 
 	async function createHighlight(color: string, note?: string): Promise<void> {
@@ -95,12 +73,23 @@ export default function CreateHighlight(): JSX.Element {
 		if (!newHighlightData) {
 			return;
 		}
-		apiRequestDispatcher<CreateHighlightDto>({
-			contentScriptsHandler: 'createHighlightHandler',
-			url: HIGHLIGHTS_FULL_URLS.create,
-			method: 'post',
-			data: newHighlightData,
+
+		apiHandler({
+			msg: {
+				url: HIGHLIGHTS_FULL_URLS.create,
+				method: 'post',
+				data: newHighlightData,
+			},
+			onSuccess: createHighlightRespHandler,
+			onError: createHighlightErrHandler,
 		});
+	}
+
+	function createHighlightRespHandler(highlight: ICreateHighlightRo): void {
+		setCreatedHighlight({ highlight, pageUrl: getPageUrl() });
+		const highlightRange = createRangeFromHighlightRo(highlight);
+		drawHighlight(highlightRange, highlight);
+		setSelectedRange(null);
 	}
 
 	function createHighlightErrHandler(err: HTTPError): void {
@@ -123,13 +112,6 @@ export default function CreateHighlight(): JSX.Element {
 				);
 			},
 		});
-	}
-
-	function createHighlightRespHandler(highlight: ICreateHighlightRo): void {
-		setCreatedHighlight({ highlight, pageUrl: getPageUrl() });
-		const highlightRange = createRangeFromHighlightRo(highlight);
-		drawHighlight(highlightRange, highlight);
-		setSelectedRange(null);
 	}
 
 	async function onControllerClose(color: string, note?: string): Promise<void> {
