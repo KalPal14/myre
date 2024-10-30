@@ -8,7 +8,7 @@ import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import openTabDispatcher from '~/highlight-extension-fe/service-worker/handlers/open-tab/open-tab.dispatcher';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import TrashSVG from '~/highlight-extension-fe/assets/imgs/svg/trash';
@@ -44,7 +44,7 @@ export default function HighlightsController({
 			note,
 		},
 	});
-	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 
 	const [showNoteField, setShowNoteField] = useState(Boolean(note));
 	const [colors, setColors] = useState(DEF_COLORS);

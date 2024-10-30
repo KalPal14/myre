@@ -11,9 +11,7 @@ import { GetHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extens
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
-import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
@@ -25,15 +23,9 @@ import IHighlightElementData from '../types/highlight-element-data-interface';
 import HighlightsController from './highlights-controller';
 
 export default function InteractionWithHighlight(): JSX.Element {
-	const [, setUpdatdHighlight] = useCrossExtState<IUpdatedHighlightExtState | null>(
-		'updatedHighlight',
-		null
-	);
-	const [deletedHighlight, setDeletedHighlight] =
-		useCrossExtState<IDeletedHighlightExtState | null>('deletedHighlight', null);
-	const [scrollHighlightId, setScrollHighlightId] = useCrossExtState<
-		`web-highlight-${number}` | null
-	>('scrollHighlightId', null);
+	const [, setUpdatdHighlight] = useCrossExtState('updatedHighlight');
+	const [deletedHighlight, setDeletedHighlight] = useCrossExtState('deletedHighlight');
+	const [scrollHighlightId, setScrollHighlightId] = useCrossExtState('scrollHighlightId');
 
 	const highlightElementRef = useRef<IHighlightElementData | null>(null);
 	const highlightElementToSetRef = useRef<IHighlightElementData | null>(null);

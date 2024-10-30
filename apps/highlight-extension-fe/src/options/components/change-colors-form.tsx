@@ -4,7 +4,7 @@ import { useToast } from '@chakra-ui/react';
 
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { IBaseWorkspaceRo, IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
+import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
@@ -12,7 +12,7 @@ import ColorField from '~/highlight-extension-fe/common/ui/fields/color-field';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';
 
@@ -43,7 +43,7 @@ export default function ChangeColorsForm({
 	});
 	const { fields } = useFieldArrayReturn;
 
-	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 
 	async function onSubmit(formValues: IChangeColorsForm): Promise<boolean> {
 		if (!currentWorkspace) return false;

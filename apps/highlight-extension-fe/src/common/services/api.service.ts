@@ -1,7 +1,5 @@
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 
-import CHROME_STOREGE_KEYS from '../constants/chrome-storage-keys';
-
 import IApiServise from './api.service.interface';
 
 export default class ApiServise implements IApiServise {
@@ -31,7 +29,7 @@ export default class ApiServise implements IApiServise {
 
 	async get<DTO, RO>(url: string, data?: DTO): Promise<RO | HTTPError> {
 		try {
-			const { jwt } = await chrome.storage.local.get(CHROME_STOREGE_KEYS.jwt);
+			const { jwt } = await chrome.storage.local.get('jwt');
 			const params = data ? `?${this.createSearchParams(data)}` : '';
 			const resp = await fetch(`${url}${params}`, {
 				...this.initRequest,
@@ -56,7 +54,7 @@ export default class ApiServise implements IApiServise {
 		data?: DTO
 	): Promise<RO | HTTPError> {
 		try {
-			const { jwt } = await chrome.storage.local.get(CHROME_STOREGE_KEYS.jwt);
+			const { jwt } = await chrome.storage.local.get('jwt');
 			const resp = await fetch(`${url}`, {
 				...this.initRequest,
 				headers: {

@@ -11,7 +11,7 @@ import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export interface IChangeEmailFormProps {
 	currentEmail: string;
@@ -35,7 +35,7 @@ export default function ChangeEmailForm({
 		setError,
 	} = useFormReturnValue;
 
-	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
+	const [, setJwt] = useCrossExtState('jwt');
 
 	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
 		const resp = await new ApiServise().patch<ChangeEmailDto, IChangeEmailRo>(

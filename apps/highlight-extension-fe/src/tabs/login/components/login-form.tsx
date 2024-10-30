@@ -4,8 +4,8 @@ import { Button, Collapse } from '@chakra-ui/react';
 
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { LoginDto } from '~libs/dto/iam';
-import { IBaseUserRo, ILoginRo } from '~libs/ro/iam';
-import { IBaseWorkspaceRo, TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
+import { ILoginRo } from '~libs/ro/iam';
+import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
@@ -13,7 +13,7 @@ import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export default function LoginForm(): JSX.Element {
 	const {
@@ -23,12 +23,9 @@ export default function LoginForm(): JSX.Element {
 		setError,
 	} = useForm<LoginDto>();
 
-	const [, setJwt] = useCrossExtState<string | null>('jwt', null);
-	const [, setCurrentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
-	const [, setCurrentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>(
-		'currentWorkspace',
-		null
-	);
+	const [, setJwt] = useCrossExtState('jwt');
+	const [, setCurrentUser] = useCrossExtState('currentUser');
+	const [, setCurrentWorkspace] = useCrossExtState('currentWorkspace');
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 

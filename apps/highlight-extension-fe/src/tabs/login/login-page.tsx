@@ -6,12 +6,12 @@ import './login.scss';
 
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
 import HighAlert from '~/highlight-extension-fe/common/ui/alerts/high-alert';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import LoginForm from './components/login-form';
 
 export default function LoginPage(): JSX.Element {
-	const [jwt] = useCrossExtState<string | null>('jwt', null);
+	const [jwt] = useCrossExtState('jwt');
 
 	return (
 		<div className="loginPage">

@@ -4,15 +4,14 @@ import { isEqual } from 'lodash';
 
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
-import { TGetPageRo, IBaseHighlightRo, IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
+import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
-import IUpdatedPagesUrlsExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-pages-urls-ext-state.interface';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 
 import Toast from '../common/ui/toasts/toast';
@@ -27,13 +26,11 @@ export default function Highlights(): JSX.Element {
 	const updatedPagesUrlsRerendersCount = useRef(0);
 	const prevHighlights = useRef<IBaseHighlightRo[] | null>(null);
 
-	const [jwt] = useCrossExtState<null | string>('jwt', null);
-	const [, setUnfoundHighlightsIds] = useCrossExtState<number[]>('unfoundHighlightsIds', []);
-	const [updatedPages] = useCrossExtState<IUpdatedPagesUrlsExtState>('updatedPages', {
-		urls: [],
-	});
-	const [isExtActive] = useCrossExtState<boolean>('isExtActive', true);
-	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
+	const [jwt] = useCrossExtState('jwt', null);
+	const [, setUnfoundHighlightsIds] = useCrossExtState('unfoundHighlightsIds', []);
+	const [updatedPages] = useCrossExtState('updatedPages');
+	const [isExtActive] = useCrossExtState('isExtActive');
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 
 	useEffect(() => {
 		if (!isExtActive || !currentWorkspace) return;

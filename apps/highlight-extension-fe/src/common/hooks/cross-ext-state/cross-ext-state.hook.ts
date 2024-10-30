@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import CHROME_STOREGE_KEYS from '../constants/chrome-storage-keys';
+import { DEFAULT_VALUES } from './default-values';
+import { ICrossExtStateDescriptor } from './types/cross-ext-state-descriptor.interface';
 
-export default function useCrossExtState<TState>(
-	stateKey: keyof typeof CHROME_STOREGE_KEYS,
-	defaultValue: TState
-): [TState, Dispatch<SetStateAction<TState>>] {
+export default function useCrossExtState<K extends keyof ICrossExtStateDescriptor>(
+	stateKey: K,
+	defaultValue: ICrossExtStateDescriptor[K] = DEFAULT_VALUES[stateKey]
+): [ICrossExtStateDescriptor[K], Dispatch<SetStateAction<ICrossExtStateDescriptor[K]>>] {
 	const isNewSession = useRef(true);
 
 	const [state, setState] = useState(defaultValue);

@@ -27,8 +27,7 @@ import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import ConfirmationModal from '~/highlight-extension-fe/common/ui/modals/confirmation-modal';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
-import IUpdatedPagesUrlsExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-pages-urls-ext-state.interface';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import IDataForPageUpdating from '../types/data-for-page-updating.interface';
 import IChangePageUrlForm from '../types/change-page-url-form.interface';
@@ -52,11 +51,8 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 		setError,
 	} = useFormReturnValue;
 
-	// TODO: убрать бойлер код в виде указания типа для useCrossExtState и defaultValue
-	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
-	const [, setUpdatedPages] = useCrossExtState<IUpdatedPagesUrlsExtState>('updatedPages', {
-		urls: [],
-	});
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [, setUpdatedPages] = useCrossExtState('updatedPages');
 
 	const [dataForPageUpdating, setDataForPageUpdating] = useState<IDataForPageUpdating | null>();
 

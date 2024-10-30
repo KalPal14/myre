@@ -4,20 +4,12 @@ import { Heading } from '@chakra-ui/react';
 
 import { PAGES_FULL_URLS, HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
-import {
-	IBaseHighlightRo,
-	IDeleteHighlightRo,
-	IUpdateHighlightRo,
-	TGetPageRo,
-} from '~libs/ro/highlight-extension';
+import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
-import ICreatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
-import IDeletedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/deleted-highlight-ext-state.interface';
-import IUpdatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/updated-highlight-ext-state.interface';
 
 import THighlightsTabName from '../types/highlights-tab-name.type';
 import IChangeHighlightForm from '../types/change-highlight-form.interface';
@@ -32,18 +24,11 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	const pageUrl = new URL(window.location.href).searchParams.get('url');
 	const createdHighlightRerendersCount = useRef(0);
 
-	const [createdHighlight] = useCrossExtState<ICreatedHighlightExtState | null>(
-		'createdHighlight',
-		null
-	);
-	const [deletedHighlight, setDeletedHighlight] =
-		useCrossExtState<IDeletedHighlightExtState | null>('deletedHighlight', null);
-	const [updatedHighlight] = useCrossExtState<IUpdatedHighlightExtState | null>(
-		'updatedHighlight',
-		null
-	);
-	const [unfoundHighlightsIds] = useCrossExtState<number[]>('unfoundHighlightsIds', []);
-	const [currentWorkspace] = useCrossExtState<IBaseHighlightRo | null>('currentWorkspace', null);
+	const [createdHighlight] = useCrossExtState('createdHighlight');
+	const [deletedHighlight, setDeletedHighlight] = useCrossExtState('deletedHighlight');
+	const [updatedHighlight] = useCrossExtState('updatedHighlight');
+	const [unfoundHighlightsIds] = useCrossExtState('unfoundHighlightsIds');
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 
 	const { control, register, setValue, watch } = useForm<IChangeHighlightForm>({
 		values: {

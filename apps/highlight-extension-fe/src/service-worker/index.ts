@@ -1,5 +1,3 @@
-import CHROME_STOREGE_KEYS from '~/highlight-extension-fe/common/constants/chrome-storage-keys';
-
 import openTabHandler from './handlers/open-tab/open-tab.handler';
 import apiRequestHandler from './handlers/api-request/api-request.handler';
 import IBaseMsg from './types/base.msg.interface';
@@ -26,7 +24,7 @@ chrome.runtime.onMessage.addListener(async function <DTO>(
 
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 	if (!tab.url || !tabId) return;
-	await chrome.storage.local.set({ [CHROME_STOREGE_KEYS.unfoundHighlightsIds]: [] });
+	await chrome.storage.local.set({ ['unfoundHighlightsIds']: [] });
 	chrome.sidePanel.setOptions({
 		tabId,
 		path: `sidepanel.html?url=${tab.url}`,

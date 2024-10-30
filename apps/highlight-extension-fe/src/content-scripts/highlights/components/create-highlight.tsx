@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
-import { IBaseWorkspaceRo, ICreateHighlightRo } from '~libs/ro/highlight-extension';
+import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 import { CreateHighlightDto } from '~libs/dto/highlight-extension';
 
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import Toast from '~/highlight-extension-fe/content-scripts/common/ui/toasts/toast';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
-import ICreatedHighlightExtState from '~/highlight-extension-fe/common/types/cross-ext-state/created-highlight-ext-state.interface';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
@@ -21,11 +20,8 @@ import buildCreateHighlightDto from '../helpers/build-create-highlight-ro.helper
 import HighlightsController from './highlights-controller';
 
 export default function CreateHighlight(): JSX.Element {
-	const [, setCreatedHighlight] = useCrossExtState<ICreatedHighlightExtState | null>(
-		'createdHighlight',
-		null
-	);
-	const [currentWorkspace] = useCrossExtState<IBaseWorkspaceRo | null>('currentWorkspace', null);
+	const [, setCreatedHighlight] = useCrossExtState('createdHighlight');
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 
 	const [selectedRange, setSelectedRange] = useState<Range | null>(null);
 	const [mouseСoordinates, setMouseСoordinates] = useState({

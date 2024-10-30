@@ -10,17 +10,15 @@ import {
 	Tabs,
 } from '@chakra-ui/react';
 
-import { IBaseUserRo } from '~libs/ro/iam';
-
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import setUrlSearchParam from '~/highlight-extension-fe/common/helpers/set-url-search-param.helper';
 import getUrlSearchParam from '~/highlight-extension-fe/common/helpers/get-url-search-param.helper';
 
 import tabsList from './constants/tabs-list';
 
 const OptionsPage = (): JSX.Element => {
-	const [currentUser] = useCrossExtState<IBaseUserRo | null>('currentUser', null);
-	const [currentWorkspace] = useCrossExtState<IBaseUserRo | null>('currentWorkspace', null);
+	const [currentUser] = useCrossExtState('currentUser');
+	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 	const [activeTabIndex, setActiveTabIndex] = useState(0);
 
 	useEffect(() => {
