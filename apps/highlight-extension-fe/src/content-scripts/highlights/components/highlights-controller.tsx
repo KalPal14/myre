@@ -55,7 +55,6 @@ export default function HighlightsController({
 
 	useEffect(() => {
 		if (currentWorkspace?.colors.length) {
-			// TODO
 			setColors(currentWorkspace.colors);
 			firstColorRef.current = currentWorkspace.colors[0];
 			return;
