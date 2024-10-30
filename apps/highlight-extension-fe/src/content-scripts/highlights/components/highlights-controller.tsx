@@ -37,7 +37,7 @@ export default function HighlightsController({
 	onControllerClose,
 	onDeleteClick = (): void => {},
 }: IHighlightsControllerProps): JSX.Element {
-	const firstColorRef = useRef(DEF_COLORS[0].color);
+	const firstColorRef = useRef(DEF_COLORS[0]);
 
 	const { register, watch } = useForm<{ note?: string }>({
 		values: {
@@ -56,12 +56,12 @@ export default function HighlightsController({
 	useEffect(() => {
 		if (currentWorkspace?.colors.length) {
 			// TODO
-			setColors(currentWorkspace.colors.map((color) => ({ color })));
+			setColors(currentWorkspace.colors);
 			firstColorRef.current = currentWorkspace.colors[0];
 			return;
 		}
 		setColors(DEF_COLORS);
-		firstColorRef.current = DEF_COLORS[0].color;
+		firstColorRef.current = DEF_COLORS[0];
 	}, [currentWorkspace?.colors]);
 
 	useEffect(() => {
@@ -153,7 +153,7 @@ export default function HighlightsController({
 						}}
 					>
 						<ul className="highlighController_colors">
-							{colors.map(({ color }, index) => (
+							{colors.map((color, index) => (
 								<li
 									key={index}
 									className="highlighController_color"

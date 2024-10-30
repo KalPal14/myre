@@ -11,15 +11,14 @@ import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable
 import ColorField from '~/highlight-extension-fe/common/ui/fields/color-field';
 import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import IColor from '~/highlight-extension-fe/common/constants/default-values/types/color.interface';
 import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state.hook';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';
 
 export interface IChangeColorsFormProps {
-	currentColors: IColor[];
-	onSuccess: (colors: IColor[]) => void;
+	currentColors: string[];
+	onSuccess: (colors: string[]) => void;
 }
 
 export default function ChangeColorsForm({
@@ -34,7 +33,7 @@ export default function ChangeColorsForm({
 	});
 	const useFormReturnValue = useForm<IChangeColorsForm>({
 		values: {
-			colors: currentColors,
+			colors: currentColors.map((color) => ({ color })),
 		},
 	});
 	const { register, control, setError } = useFormReturnValue;
@@ -64,7 +63,7 @@ export default function ChangeColorsForm({
 			title: 'Colors has been successfully saved',
 			status: 'success',
 		});
-		onSuccess(resp.colors.map((color) => ({ color })));
+		onSuccess(resp.colors);
 		return true;
 	}
 
@@ -93,7 +92,7 @@ export default function ChangeColorsForm({
 
 	const accordionButtonText = (
 		<div className="options_colors">
-			{currentColors.map(({ color }, index) => (
+			{currentColors.map((color, index) => (
 				<div
 					key={index}
 					className="options_colorsItem"

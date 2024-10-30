@@ -13,19 +13,15 @@ export default function ColorsTab(): JSX.Element {
 		null
 	);
 
-	// TODO: разобраться зачем я вообще использую IColors[]
-	// скорее всего это связано с формой, но возможно для простоты можно это убрать
-	const colorsFormFormat = currentWorkspace?.colors.map((color) => ({ color }));
-
 	return (
 		<section className="options_colorsTab">
 			{currentWorkspace && (
 				<ChangeColorsForm
-					currentColors={colorsFormFormat?.length ? colorsFormFormat : DEF_COLORS}
+					currentColors={currentWorkspace.colors.length ? currentWorkspace.colors : DEF_COLORS}
 					onSuccess={(colors) =>
 						setCurrentWorkspace({
 							...currentWorkspace,
-							colors: colors.map(({ color }) => color),
+							colors,
 						})
 					}
 				/>

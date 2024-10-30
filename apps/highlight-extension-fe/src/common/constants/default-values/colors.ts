@@ -1,17 +1,1 @@
-export const DEF_COLORS = [
-	{
-		color: '#E53E3E',
-	},
-	{
-		color: '#D69E2E',
-	},
-	{
-		color: '#38A169',
-	},
-	{
-		color: '#3182CE',
-	},
-	{
-		color: '#718096',
-	},
-];
+export const DEF_COLORS = ['#E53E3E', '#D69E2E', '#38A169', '#3182CE', '#718096'];
