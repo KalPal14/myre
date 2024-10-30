@@ -31,6 +31,7 @@ export class HighlightsRepository implements IHighlightsRepository {
 	findManyBy(findData: Partial<HighlightModel>): Promise<HighlightModel[]> {
 		return this.prismaService.client.highlightModel.findMany({
 			where: findData,
+			orderBy: { order: 'asc' },
 		});
 	}
 
@@ -38,6 +39,7 @@ export class HighlightsRepository implements IHighlightsRepository {
 		return this.prismaService.client.highlightModel.findMany({
 			where: findData,
 			include: { startContainer: true, endContainer: true },
+			orderBy: { order: 'asc' },
 		});
 	}
 
@@ -47,6 +49,7 @@ export class HighlightsRepository implements IHighlightsRepository {
 		return this.prismaService.client.highlightModel.findMany({
 			where: toWhereIn(findData),
 			include: { startContainer: true, endContainer: true },
+			orderBy: { order: 'asc' },
 		});
 	}
 
