@@ -169,7 +169,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 		apiHandler<null, IDeleteHighlightRo>({
 			msg: {
 				url: HIGHLIGHTS_FULL_URLS.delete(currentHighlightElement.highlightId),
-				method: 'delete',
+				method: 'apiDelete',
 			},
 			onSuccess: deleteHighlightRespHandler,
 		});

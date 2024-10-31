@@ -7,12 +7,10 @@ import { LoginDto } from '~libs/dto/iam';
 import { ILoginRo } from '~libs/ro/iam';
 import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { httpErrHandler, HTTPError, get, post } from '~libs/common';
 
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export default function LoginForm(): JSX.Element {
@@ -30,10 +28,7 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
-		const loginResp = await new ApiServise().post<LoginDto, ILoginRo>(
-			USERS_FULL_URLS.login,
-			formValues
-		);
+		const loginResp = await post<LoginDto, ILoginRo>(USERS_FULL_URLS.login, formValues);
 		if (loginResp instanceof HTTPError) {
 			handleErr(loginResp);
 			return;
@@ -41,9 +36,11 @@ export default function LoginForm(): JSX.Element {
 
 		const { jwt, ...userData } = loginResp;
 
-		const workspacesResp = await new ApiServise({
-			headers: { Authorization: `Bearer ${jwt}` },
-		}).get<null, TGetOwnersWorkspacesRo>(WORKSPACES_FULL_URLS.getAllOwners);
+		const workspacesResp = await get<null, TGetOwnersWorkspacesRo>(
+			WORKSPACES_FULL_URLS.getAllOwners,
+			null,
+			{ headers: { Authorization: `Bearer ${jwt}` } }
+		);
 		if (workspacesResp instanceof HTTPError) {
 			handleErr(workspacesResp);
 			return;

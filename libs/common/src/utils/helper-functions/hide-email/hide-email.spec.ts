@@ -1,4 +1,4 @@
-import { hideEmail } from './hide-email.helper';
+import { hideEmail } from './hide-email';
 
 describe('hideEmail Helper', () => {
 	describe('pass email username of 3 characters or shorter', () => {

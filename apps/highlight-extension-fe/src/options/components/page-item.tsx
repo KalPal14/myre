@@ -12,19 +12,12 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
-import {
-	IBaseWorkspaceRo,
-	IGetPagesRoItem,
-	IUpdatePageRo,
-	TGetPageRo,
-} from '~libs/ro/highlight-extension';
+import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
+import { HTTPError, get, httpErrHandler, patch } from '~libs/common';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import ConfirmationModal from '~/highlight-extension-fe/common/ui/modals/confirmation-modal';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
@@ -70,7 +63,7 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	async function checkExistingPagesWithNewURL(url: string): Promise<boolean> {
 		if (!currentWorkspace) return false;
 
-		const pageWithNewUrl = await new ApiServise().get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const pageWithNewUrl = await get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: getPageUrl(url),
 		});
@@ -84,10 +77,9 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function updatePage(pageId: number, url: string): Promise<boolean | void> {
-		const resp = await new ApiServise().patch<UpdatePageDto, IUpdatePageRo>(
-			PAGES_FULL_URLS.update(pageId),
-			{ url: getPageUrl(url) }
-		);
+		const resp = await patch<UpdatePageDto, IUpdatePageRo>(PAGES_FULL_URLS.update(pageId), {
+			url: getPageUrl(url),
+		});
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return;

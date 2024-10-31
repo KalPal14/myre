@@ -5,10 +5,9 @@ import { isEqual } from 'lodash';
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
 import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
+import { httpErrHandler, HTTPError } from '~libs/common';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 

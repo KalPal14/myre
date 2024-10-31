@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
+import { HTTPError } from '~libs/common';
+
 import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
 import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';

@@ -3,11 +3,10 @@ import toast from 'react-hot-toast';
 
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
+import { httpErrHandler, HTTPError } from '~libs/common';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import Toast from '~/highlight-extension-fe/content-scripts/common/ui/toasts/toast';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';

@@ -5,12 +5,10 @@ import { useForm } from 'react-hook-form';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangeEmailDto } from '~libs/dto/iam';
 import { IChangeEmailRo } from '~libs/ro/iam';
+import { httpErrHandler, HTTPError, patch } from '~libs/common';
 
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export interface IChangeEmailFormProps {
@@ -38,7 +36,7 @@ export default function ChangeEmailForm({
 	const [, setJwt] = useCrossExtState('jwt');
 
 	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
-		const resp = await new ApiServise().patch<ChangeEmailDto, IChangeEmailRo>(
+		const resp = await patch<ChangeEmailDto, IChangeEmailRo>(
 			USERS_FULL_URLS.changeEmail,
 			formValues
 		);

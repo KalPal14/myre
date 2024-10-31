@@ -2,13 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Heading } from '@chakra-ui/react';
 
-import { PAGES_FULL_URLS, HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import { HIGHLIGHTS_FULL_URLS, PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
 import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
+import { apiDelete, get, patch, HTTPError } from '~libs/common';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
 
 import THighlightsTabName from '../types/highlights-tab-name.type';
@@ -78,7 +77,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 			return;
 		}
 
-		const resp = await new ApiServise().get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const resp = await get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: pageUrl,
 		});
@@ -93,7 +92,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	async function onDeleteHighlight(index: number): Promise<void> {
 		const { highlight } = fields[index];
 
-		const resp = await new ApiServise().delete<null, IDeleteHighlightRo>(
+		const resp = await apiDelete<null, IDeleteHighlightRo>(
 			HIGHLIGHTS_FULL_URLS.delete(highlight.id)
 		);
 		if (resp instanceof HTTPError) return;
@@ -113,7 +112,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 		if (!dataToUpdate.length) return;
 
-		await new ApiServise().patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
+		await patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
 			HIGHLIGHTS_FULL_URLS.individualUpdateMany,
 			{
 				highlights: dataToUpdate,

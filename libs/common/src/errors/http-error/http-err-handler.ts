@@ -7,7 +7,7 @@ interface IHttpErrHandler {
 	onUnhandledErr?: () => void;
 }
 
-export default function httpErrHandler({
+export function httpErrHandler({
 	err,
 	onValidationErr,
 	onErrWithMsg,

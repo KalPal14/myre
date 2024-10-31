@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsUrl, ValidateNested, IsNumber, IsString, Validate, IsDefined } from 'class-validator';
 
-import { IsColor } from '~libs/common/index';
+import { IsColor } from '~libs/common';
 
 import { ContainerDto } from './common/container.dto';
 

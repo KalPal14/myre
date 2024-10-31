@@ -5,12 +5,10 @@ import { useForm } from 'react-hook-form';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangeUsernameDto } from '~libs/dto/iam';
 import { IChangeUsernameRo } from '~libs/ro/iam';
+import { httpErrHandler, HTTPError, patch } from '~libs/common';
 
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 
 export interface IChangeusernameFormProps {
 	currentUsername: string;
@@ -35,7 +33,7 @@ export default function ChangeUsernameForm({
 	} = useFormReturnValue;
 
 	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
-		const resp = await new ApiServise().patch<ChangeUsernameDto, IChangeUsernameRo>(
+		const resp = await patch<ChangeUsernameDto, IChangeUsernameRo>(
 			USERS_FULL_URLS.changeUsername,
 			formValues
 		);

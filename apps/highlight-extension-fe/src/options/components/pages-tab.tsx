@@ -4,8 +4,8 @@ import { Accordion } from '@chakra-ui/react';
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { TGetPagesRo } from '~libs/ro/highlight-extension';
 import { GetPagesDto } from '~libs/dto/highlight-extension';
+import { get } from '~libs/common';
 
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import PageItem from './page-item';
@@ -22,10 +22,9 @@ export default function PagesTab(): JSX.Element {
 	async function getPagesInfo(): Promise<void> {
 		if (!currentWorkspace) return;
 
-		const resp = await new ApiServise().get<GetPagesDto, TGetPagesRo>(
-			PAGES_FULL_URLS.getPagesShortInfo,
-			{ workspaceId: currentWorkspace.id.toString() }
-		);
+		const resp = await get<GetPagesDto, TGetPagesRo>(PAGES_FULL_URLS.getPagesShortInfo, {
+			workspaceId: currentWorkspace.id.toString(),
+		});
 		if (resp instanceof Error) return;
 		setPages(resp.filter(({ highlightsCount }) => highlightsCount));
 	}

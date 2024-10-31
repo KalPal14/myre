@@ -6,12 +6,10 @@ import date from 'date-and-time';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangePasswordDto } from '~libs/dto/iam';
 import { IChangePasswordRo } from '~libs/ro/iam';
+import { httpErrHandler, HTTPError, patch } from '~libs/common';
 
-import ApiServise from '~/highlight-extension-fe/common/services/api.service';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import { HTTPError } from '~/highlight-extension-fe/errors/http-error/http-error';
-import httpErrHandler from '~/highlight-extension-fe/errors/http-error/http-err-handler';
 
 export interface IChangePasswordFormProps {
 	passwordUpdatedAt: Date | null;
@@ -36,7 +34,7 @@ export default function ChangePasswordForm({
 	} = useFormReturnValue;
 
 	async function onSubmit(formValues: ChangePasswordDto): Promise<boolean> {
-		const resp = await new ApiServise().patch<ChangePasswordDto, IChangePasswordRo>(
+		const resp = await patch<ChangePasswordDto, IChangePasswordRo>(
 			USERS_FULL_URLS.changePassword,
 			formValues
 		);
