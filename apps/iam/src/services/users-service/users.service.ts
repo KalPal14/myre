@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { IJwtPayload } from '~libs/common';
-import { HTTPError, IJwtService } from '~libs/express-core';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -13,6 +11,9 @@ import {
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
+// TODO HTTPError as RespHttpError
+import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common/index';
+import { IJwtService, HTTPError } from '~libs/express-core';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -65,29 +66,19 @@ export class UsersService implements IUsersService {
 				username: newUser.username,
 			});
 
-			const body: CreateWorkspaceDto = {
-				name: `${newUser.username}'s workspace`,
-				colors: [],
-			};
-			try {
-				const resp = await fetch(WORKSPACES_FULL_URLS.create, {
-					method: 'POST',
-					body: JSON.stringify(body),
-					headers: {
-						'Content-Type': 'application/json; charset=utf-8',
-						Authorization: `Bearer ${jwt}`,
-					},
-				});
+			const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
+				WORKSPACES_FULL_URLS.create,
+				{
+					name: `${newUser.username}'s workspace`,
+					colors: [],
+				},
+				{ headers: { Authorization: `Bearer ${jwt}` } }
+			);
+			console.log('workspace', workspace);
 
-				const workspace = await resp.json();
-				if (!workspace.id) {
-					throw new Error();
-				}
+			if (workspace instanceof RespHttpError) throw new Error();
 
-				return { user: newUserEntity, workspace };
-			} catch {
-				throw new Error();
-			}
+			return { user: newUserEntity, workspace };
 		});
 	}
 

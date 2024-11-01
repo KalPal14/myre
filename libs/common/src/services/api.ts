@@ -36,7 +36,12 @@ async function fetchLayout<DTO, RO>(
 	init?: RequestInit
 ): Promise<RO | HTTPError> {
 	try {
-		const { jwt } = await chrome.storage.local.get('jwt');
+		// TODO
+		let jwt: any = null;
+		if (chrome) {
+			const a = await chrome.storage.local.get('jwt');
+			jwt = a.jwt;
+		}
 		const params = query ? `?${createSearchParams(query)}` : '';
 		const resp = await fetch(`${url}${params}`, {
 			...init,

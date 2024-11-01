@@ -1,4 +1,4 @@
-import * as api from '~libs/common/utils/helper-functions/api';
+import * as api from '~libs/common/services/api';
 
 import IBaseMsg from '../base.msg.interface';
 
