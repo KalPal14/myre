@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
+import { HTTPError, IJwtService } from '~libs/express-core';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -13,7 +14,6 @@ import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 // TODO HTTPError as RespHttpError
 import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common/index';
-import { IJwtService, HTTPError } from '~libs/express-core';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -74,7 +74,6 @@ export class UsersService implements IUsersService {
 				},
 				{ headers: { Authorization: `Bearer ${jwt}` } }
 			);
-			console.log('workspace', workspace);
 
 			if (workspace instanceof RespHttpError) throw new Error();
 

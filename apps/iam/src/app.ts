@@ -8,7 +8,7 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import { ILogger, IExceptionFilter, IConfigService, IMiddleware } from '~libs/express-core';
+import { ILogger, IExceptionFilter, IMiddleware } from '~libs/express-core';
 import { USERS_BASE_ROUTE } from '~libs/routes/iam';
 
 import { TYPES } from '~/iam/common/constants/types';
@@ -26,15 +26,14 @@ export default class App {
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.JwtAuthMiddleware) private jwtAuthMiddleware: IMiddleware
 	) {
 		this.app = express();
 	}
 
 	useMiddleware(): void {
-		const cookieSecret = this.configService.get('COOCKIE_KEY');
-		const clientUrl = this.configService.get('H_EXT_FE_URL');
+		const cookieSecret = process.env.COOCKIE_KEY;
+		const clientUrl = process.env.H_EXT_FE_URL;
 
 		this.app.use(
 			cors({

@@ -1,7 +1,9 @@
+import '~libs/express-core/config';
+
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { expressCoreBindings, IConfigService } from '~libs/express-core';
+import { expressCoreBindings } from '~libs/express-core';
 
 import { TYPES } from '~/iam/common/constants/types';
 import App from '~/iam/app';
@@ -16,12 +18,11 @@ export async function bootstrap(mode: 'test' | 'dev' | 'prod'): Promise<App> {
 	container.load(userBindings);
 
 	const app = container.get<App>(TYPES.App);
-	const configService = container.get<IConfigService>(TYPES.ConfigService);
 
 	if (mode === 'test') {
 		await app.init(mode);
 	} else {
-		const port = configService.get('IAM_PORT');
+		const port = process.env.IAM_PORT!;
 		await app.init(mode, +port);
 	}
 

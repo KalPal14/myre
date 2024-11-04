@@ -45,8 +45,7 @@ export abstract class BaseApiService implements IBaseApiService {
 				return await resp.json();
 			}
 			return new HTTPError(resp.status, await resp.json());
-		} catch (e) {
-			console.log('ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', e);
+		} catch {
 			return new HTTPError(500, 'Unknown error');
 		}
 	}

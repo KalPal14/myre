@@ -59,7 +59,6 @@ export class WorkspacesController extends BaseController implements IWorkspacesC
 	};
 
 	create: TController<null, CreateWorkspaceDto> = async ({ user, body }, res) => {
-		console.log('WORKSPACE CONTROLLER!!! CREATE!!!!');
 		const result = await this.workspacesService.create(user.id, body);
 		this.ok(res, result);
 	};

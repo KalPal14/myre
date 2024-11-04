@@ -11,7 +11,6 @@ export class JwtAuthMiddleware implements IMiddleware {
 	constructor(@inject(EXPRESS_CORE_TYPES.JwtService) private jwtService: IJwtService) {}
 
 	execute(req: Request, res: Response, next: NextFunction): void {
-		console.log('req.headers', req.headers);
 		if (!req.headers.authorization) return next();
 		const jwt = req.headers.authorization.split(' ')[1];
 		if (!jwt) return next();

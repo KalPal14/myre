@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
 
-import { HTTPError, IConfigService } from '~libs/express-core';
+import { HTTPError } from '~libs/express-core';
 import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, LoginDto } from '~libs/dto/iam';
 import { JWT_PAYLOAD } from '~libs/common/index';
 
@@ -28,10 +28,6 @@ const usersRepositoryMock: IUsersRepository = {
 	update: jest.fn(),
 };
 
-const configServiceMock: IConfigService = {
-	get: jest.fn(),
-};
-
 const container = new Container();
 let usersService: IUsersService;
 let usersRepository: IUsersRepository;
@@ -40,7 +36,6 @@ beforeAll(() => {
 	container.bind<IUsersService>(TYPES.UsersService).to(UsersService);
 	container.bind<IUserFactory>(TYPES.UserFactory).to(UserFactory);
 	container.bind<IUsersRepository>(TYPES.UsersRepository).toConstantValue(usersRepositoryMock);
-	container.bind<IConfigService>(TYPES.ConfigService).toConstantValue(configServiceMock);
 
 	usersService = container.get<IUsersService>(TYPES.UsersService);
 	usersRepository = container.get<IUsersRepository>(TYPES.UsersRepository);
