@@ -5,7 +5,7 @@ import { Heading } from '@chakra-ui/react';
 import { HIGHLIGHTS_FULL_URLS, PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
 import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
-import { apiDelete, get, patch, HTTPError } from '~libs/common';
+import { chromeExtApi, HTTPError } from '~libs/common';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
@@ -77,7 +77,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 			return;
 		}
 
-		const resp = await get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const resp = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: pageUrl,
 		});
@@ -92,7 +92,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	async function onDeleteHighlight(index: number): Promise<void> {
 		const { highlight } = fields[index];
 
-		const resp = await apiDelete<null, IDeleteHighlightRo>(
+		const resp = await chromeExtApi.delete<null, IDeleteHighlightRo>(
 			HIGHLIGHTS_FULL_URLS.delete(highlight.id)
 		);
 		if (resp instanceof HTTPError) return;
@@ -112,7 +112,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 
 		if (!dataToUpdate.length) return;
 
-		await patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
+		await chromeExtApi.patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
 			HIGHLIGHTS_FULL_URLS.individualUpdateMany,
 			{
 				highlights: dataToUpdate,

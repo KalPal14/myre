@@ -97,7 +97,6 @@ export class UsersController extends BaseController implements IUsersController 
 			.catch((err) => this.send(res, 500, { err }));
 	};
 
-	// TODO
 	register: TController<null, RegistrationDto> = async ({ body }, res) => {
 		const result = await this.usersService.create(body);
 		this.jwtService

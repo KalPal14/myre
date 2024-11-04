@@ -7,7 +7,7 @@ import { LoginDto } from '~libs/dto/iam';
 import { ILoginRo } from '~libs/ro/iam';
 import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
-import { httpErrHandler, HTTPError, get, post } from '~libs/common';
+import { chromeExtApi, httpErrHandler, HTTPError } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
@@ -28,7 +28,10 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
-		const loginResp = await post<LoginDto, ILoginRo>(USERS_FULL_URLS.login, formValues);
+		const loginResp = await chromeExtApi.post<LoginDto, ILoginRo>(
+			USERS_FULL_URLS.login,
+			formValues
+		);
 		if (loginResp instanceof HTTPError) {
 			handleErr(loginResp);
 			return;
@@ -36,7 +39,7 @@ export default function LoginForm(): JSX.Element {
 
 		const { jwt, ...userData } = loginResp;
 
-		const workspacesResp = await get<null, TGetOwnersWorkspacesRo>(
+		const workspacesResp = await chromeExtApi.get<null, TGetOwnersWorkspacesRo>(
 			WORKSPACES_FULL_URLS.getAllOwners,
 			null,
 			{ headers: { Authorization: `Bearer ${jwt}` } }

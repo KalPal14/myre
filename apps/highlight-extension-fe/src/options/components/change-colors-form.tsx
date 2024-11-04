@@ -5,7 +5,7 @@ import { useToast } from '@chakra-ui/react';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
-import { httpErrHandler, patch, HTTPError } from '~libs/common';
+import { httpErrHandler, chromeExtApi, HTTPError } from '~libs/common';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
@@ -47,7 +47,7 @@ export default function ChangeColorsForm({
 		if (!currentWorkspace) return false;
 
 		const newColors = formValues.colors.map(({ color }) => color);
-		const resp = await patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
+		const resp = await chromeExtApi.patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
 			WORKSPACES_FULL_URLS.update(currentWorkspace.id),
 			{
 				colors: newColors,

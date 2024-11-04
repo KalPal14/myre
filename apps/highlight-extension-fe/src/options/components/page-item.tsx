@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
-import { HTTPError, get, httpErrHandler, patch } from '~libs/common';
+import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
 
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
@@ -63,7 +63,7 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	async function checkExistingPagesWithNewURL(url: string): Promise<boolean> {
 		if (!currentWorkspace) return false;
 
-		const pageWithNewUrl = await get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const pageWithNewUrl = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: getPageUrl(url),
 		});
@@ -77,9 +77,12 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function updatePage(pageId: number, url: string): Promise<boolean | void> {
-		const resp = await patch<UpdatePageDto, IUpdatePageRo>(PAGES_FULL_URLS.update(pageId), {
-			url: getPageUrl(url),
-		});
+		const resp = await chromeExtApi.patch<UpdatePageDto, IUpdatePageRo>(
+			PAGES_FULL_URLS.update(pageId),
+			{
+				url: getPageUrl(url),
+			}
+		);
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return;

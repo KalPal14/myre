@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangeUsernameDto } from '~libs/dto/iam';
 import { IChangeUsernameRo } from '~libs/ro/iam';
-import { httpErrHandler, HTTPError, patch } from '~libs/common';
+import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
@@ -33,7 +33,7 @@ export default function ChangeUsernameForm({
 	} = useFormReturnValue;
 
 	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
-		const resp = await patch<ChangeUsernameDto, IChangeUsernameRo>(
+		const resp = await chromeExtApi.patch<ChangeUsernameDto, IChangeUsernameRo>(
 			USERS_FULL_URLS.changeUsername,
 			formValues
 		);

@@ -6,7 +6,7 @@ import date from 'date-and-time';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangePasswordDto } from '~libs/dto/iam';
 import { IChangePasswordRo } from '~libs/ro/iam';
-import { httpErrHandler, HTTPError, patch } from '~libs/common';
+import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
@@ -34,7 +34,7 @@ export default function ChangePasswordForm({
 	} = useFormReturnValue;
 
 	async function onSubmit(formValues: ChangePasswordDto): Promise<boolean> {
-		const resp = await patch<ChangePasswordDto, IChangePasswordRo>(
+		const resp = await chromeExtApi.patch<ChangePasswordDto, IChangePasswordRo>(
 			USERS_FULL_URLS.changePassword,
 			formValues
 		);

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangeEmailDto } from '~libs/dto/iam';
 import { IChangeEmailRo } from '~libs/ro/iam';
-import { httpErrHandler, HTTPError, patch } from '~libs/common';
+import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
@@ -36,7 +36,7 @@ export default function ChangeEmailForm({
 	const [, setJwt] = useCrossExtState('jwt');
 
 	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
-		const resp = await patch<ChangeEmailDto, IChangeEmailRo>(
+		const resp = await chromeExtApi.patch<ChangeEmailDto, IChangeEmailRo>(
 			USERS_FULL_URLS.changeEmail,
 			formValues
 		);

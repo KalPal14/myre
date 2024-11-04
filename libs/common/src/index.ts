@@ -23,7 +23,6 @@ export * from './utils/dto-validation-rules/is-user-identifier';
 
 // /utils/helper-functions
 export * from './utils/helper-functions/hide-email/hide-email';
-export * from './services/api';
 
 // /utils/obj-conventers
 export * from './utils/obj-conventers/to-where-in/to-where-in';

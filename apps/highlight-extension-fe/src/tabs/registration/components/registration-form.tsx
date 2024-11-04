@@ -5,7 +5,7 @@ import { Button, Collapse } from '@chakra-ui/react';
 import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { RegistrationDto } from '~libs/dto/iam';
 import { IRegistrationRo } from '~libs/ro/iam';
-import { post, HTTPError, httpErrHandler } from '~libs/common';
+import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
@@ -26,7 +26,10 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: RegistrationDto): Promise<void> {
-		const resp = await post<RegistrationDto, IRegistrationRo>(USERS_FULL_URLS.register, formValues);
+		const resp = await chromeExtApi.post<RegistrationDto, IRegistrationRo>(
+			USERS_FULL_URLS.register,
+			formValues
+		);
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return;

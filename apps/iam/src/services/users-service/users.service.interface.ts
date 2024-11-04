@@ -12,7 +12,6 @@ import { UserModel } from '~/iam/prisma/client';
 
 export interface IUsersService {
 	get: (id: number) => Promise<UserModel>;
-	// TODO
 	create: (
 		registerDto: RegistrationDto
 	) => Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }>;
