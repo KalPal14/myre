@@ -3,7 +3,7 @@ import '~libs/express-core/config';
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { expressCoreBindings } from '~libs/express-core';
+import { expressCoreBindings, IConfigService } from '~libs/express-core';
 
 import App from '~/highlight-extension/app';
 import { TYPES } from '~/highlight-extension/common/constants/types';
@@ -24,11 +24,12 @@ export async function bootstrap(mode: 'test' | 'dev' | 'prod'): Promise<App> {
 	container.load(nodesBindings);
 
 	const app = container.get<App>(TYPES.App);
+	const configService = container.get<IConfigService>(TYPES.ConfigService);
 
 	if (mode === 'test') {
 		await app.init(mode);
 	} else {
-		const port = process.env.H_EXT_PORT!;
+		const port = configService.get('H_EXT_PORT');
 		await app.init(mode, +port);
 	}
 

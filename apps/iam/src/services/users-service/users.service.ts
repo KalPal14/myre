@@ -13,7 +13,7 @@ import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 // TODO HTTPError as RespHttpError
-import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common/index';
+import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';

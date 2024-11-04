@@ -16,6 +16,8 @@ export * from './middlewares/route-guard/types/user.role.type';
 // services
 export * from './services/jwt-service/jwt.service';
 export * from './services/jwt-service/jwt.service.interface';
+export * from './services/config-service/config.service';
+export * from './services/config-service/config.service.interface';
 export * from './services/logger-service/logger.service';
 export * from './services/logger-service/logger.service.interface';
 export * from './services/prisma-service/prisma.service';

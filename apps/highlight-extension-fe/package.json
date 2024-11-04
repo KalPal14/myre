@@ -43,12 +43,6 @@
 		"date-and-time": "^3.1.1",
 		"framer-motion": "^11.0.12",
 		"lodash": "^4.17.21",
-<<<<<<< HEAD
-=======
-		"os-browserify": "^0.3.0",
-		"path-browserify": "^1.0.1",
-		"process": "^0.11.10",
->>>>>>> ff369ef (WIP: env config)
 		"react-hook-form": "^7.51.0",
 		"react-hot-toast": "^2.4.1",
 		"react-router-dom": "6.2",
