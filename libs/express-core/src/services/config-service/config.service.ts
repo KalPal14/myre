@@ -21,7 +21,6 @@ export class ConfigService implements IConfigService {
 		const envFilePath = path.resolve(__dirname, `../../../../../.env.${envName}`);
 
 		const env: DotenvParseOutput = parse(readFileSync(envFilePath));
-
 		if (!Object.keys(env).length) {
 			this.loggerService.err(
 				`[ConfigService] Failed to parse .env.${envName} file. It may be missing or empty.`

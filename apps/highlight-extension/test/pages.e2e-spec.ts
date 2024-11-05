@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import request from 'supertest';
 import { v4 } from 'uuid';
 
+import { configEnv } from '~libs/express-core/config';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { USERS_URLS } from '~libs/routes/iam';
 import { PAGES_URLS, HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
@@ -16,6 +17,8 @@ import {
 import { PAGE, PAGE_MODEL } from '~/highlight-extension/common/constants/spec/pages';
 
 import type { Express } from 'express';
+
+configEnv();
 
 let app: Express;
 let jwt: string;

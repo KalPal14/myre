@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import request from 'supertest';
 
+import { configEnv } from '~libs/express-core/config';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -19,6 +20,8 @@ import {
 	USER,
 	USER_MODEL,
 } from '~/iam/common/constants/spec/users';
+
+configEnv();
 
 let application: App;
 

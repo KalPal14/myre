@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import request from 'supertest';
 
+import { configEnv } from '~libs/express-core/config';
 import { UpdateHighlightDto } from '~libs/dto/highlight-extension';
 import { HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 import { USERS_URLS } from '~libs/routes/iam';
@@ -17,6 +18,8 @@ import { PAGE } from '~/highlight-extension/common/constants/spec/pages';
 import { END_NODE, START_NODE } from '~/highlight-extension/common/constants/spec/nodes';
 
 import type { Express } from 'express';
+
+configEnv();
 
 let app: Express;
 let jwt: string;

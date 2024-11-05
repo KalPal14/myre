@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import request from 'supertest';
 
+import { configEnv } from '~libs/express-core/config';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { USERS_URLS } from '~libs/routes/iam';
@@ -14,6 +15,8 @@ import { bootstrap as iamBootstrap } from '~/iam/main';
 import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
 
 import type { Express } from 'express';
+
+configEnv();
 
 let app: Express;
 let jwt: string;
