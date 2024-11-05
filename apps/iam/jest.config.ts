@@ -11,6 +11,7 @@ const config: Config.InitialOptions = {
 		'^~libs/express-core': '<rootDir>/../../libs/express-core/src',
 		'^~libs/common': '<rootDir>/../../libs/common/src',
 		'^~libs/dto/(.*)$': '<rootDir>/../../libs/dto/src/$1',
+		'^~libs/routes/(.*)$': '<rootDir>/../../libs/routes/src/$1',
 	},
 	modulePathIgnorePatterns: ['<rootDir>/test'],
 };

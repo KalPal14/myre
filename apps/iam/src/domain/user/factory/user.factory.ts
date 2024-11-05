@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { IConfigService } from '~libs/express-core';
 
-import { TYPES } from '~/highlight-extension/common/constants/types';
+import { TYPES } from '~/iam/common/constants/types';
 
 import { User } from '../user';
 

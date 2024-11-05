@@ -42,7 +42,6 @@ export class UsersService implements IUsersService {
 	}
 
 	// TODO: обновить тесты
-	// TODO
 	async create(
 		registerDto: RegistrationDto
 	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
@@ -60,12 +59,12 @@ export class UsersService implements IUsersService {
 			const newUserEntity = await tx.userModel.create({ data: newUser });
 			// TODO: я бы как-то без jwt это сделал бы
 			// TODO: NODE_TLS_REJECT_UNAUTHORIZED=0 убрать
+
 			const jwt = await this.jwtService.generate({
 				id: newUserEntity.id,
 				email: newUser.email,
 				username: newUser.username,
 			});
-
 			const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
 				WORKSPACES_FULL_URLS.create,
 				{
