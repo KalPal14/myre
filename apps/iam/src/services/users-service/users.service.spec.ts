@@ -20,7 +20,7 @@ import {
 	USER,
 	USER_MODEL,
 } from '~/iam/common/constants/spec/users';
-import { prismaServiceMock } from '~/iam/utils/mocks/prisma.service.mock';
+import { prismaServiceMock } from '~/iam/common/mocks/prisma.service.mock';
 
 import { IUsersService } from './users.service.interface';
 import { UsersService } from './users.service';
