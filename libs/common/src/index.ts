@@ -7,9 +7,6 @@ export * from './errors/http-error/http-error';
 export * from './errors/http-error/http-error-payload.type';
 export * from './errors/http-error/http-err-handler';
 
-// mocks
-export * from './mocks/prisma-entity.mock';
-
 // services
 export * from './services/api-service/api.servise';
 export * from './services/api-service/chrome-ext-api.service';
