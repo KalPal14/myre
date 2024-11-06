@@ -6,8 +6,6 @@
   },
   "include": [
     "src/**/*",
-    "prisma/seed/**/*",
-    "prisma/client/**/*",
     "../../global-types/*"
   ],
 }

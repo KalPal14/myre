@@ -8,8 +8,8 @@ const config: Config.InitialOptions = {
 	coverageDirectory: 'coverage_e2e',
 	moduleNameMapper: {
 		// apps
-		'^~/highlight-extension/prisma/(.*)$': '<rootDir>/prisma/$1',
-		'^~/highlight-extension/(.*)$': '<rootDir>/src/$1',
+		'^~/highlight-extension/prisma/(.*)$': '<rootDir>/../highlight-extension/prisma/$1',
+		'^~/highlight-extension/(.*)$': '<rootDir>/../highlight-extension/src/$1',
 		'^~/iam/prisma/(.*)$': '<rootDir>/../iam/prisma/$1',
 		'^~/iam/(.*)$': '<rootDir>/../iam/src/$1',
 		// libs

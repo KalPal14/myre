@@ -1,5 +1,4 @@
 /node_modules
-/dist
 
 prisma/client
 prisma/migrations
@@ -7,5 +6,3 @@ prisma/migrations
 host-key.pem
 host.pem
 
-.env.dev
-.env.test
