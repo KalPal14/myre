@@ -13,7 +13,7 @@ import { hideEmail, TEmail } from '~libs/common';
 import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
-import App from '~/iam/app';
+import { bootstrap as hExtBootstrap } from '~/highlight-extension/main';
 import {
 	CREATE_USER_DTO,
 	LOGIN_USER_DTO,
@@ -21,16 +21,57 @@ import {
 	USER_MODEL,
 } from '~/iam/common/constants/spec/users';
 
+import type { Express } from 'express';
+
 configEnv();
 
-let application: App;
+let app: Express;
+let hExtApp: Express;
+
+jest.mock('~libs/common', () => ({
+	...jest.requireActual('~libs/common'),
+	api: {
+		post: jest.fn().mockImplementation(async (url, data, options) => {
+			const resp = await request(hExtApp)
+				.post(url)
+				.set(options?.headers || {})
+				.send(data);
+			return resp.body;
+		}),
+	},
+}));
 
 beforeAll(async () => {
-	application = await bootstrap('test');
+	const application = await bootstrap('test');
+	const hExtApplication = await hExtBootstrap('test');
+	app = application.app;
+
+	hExtApp = hExtApplication.app;
 });
 
 describe('Users', () => {
 	describe('registration', () => {
+		describe('pass new email and username', () => {
+			it('return jwt token and created user and workspace', async () => {
+				const DTO = CREATE_USER_DTO();
+
+				const res = await request(app).post(USERS_URLS.register).send(DTO);
+
+				expect(res.statusCode).toBe(201);
+				expect(res.body.jwt).toBeDefined();
+				expect(res.body).toMatchObject({
+					user: {
+						username: DTO.username,
+						email: hideEmail(DTO.email as TEmail),
+					},
+					workspace: {
+						name: `${DTO.username}'s workspace`,
+						colors: [],
+					},
+				});
+			});
+		});
+
 		describe('pass email address of existing user', () => {
 			it('return error message', async () => {
 				const DTO: RegistrationDto = {
@@ -39,7 +80,7 @@ describe('Users', () => {
 					password: USER.password,
 				};
 
-				const res = await request(application.app).post(USERS_URLS.register).send(DTO);
+				const res = await request(app).post(USERS_URLS.register).send(DTO);
 
 				expect(res.statusCode).toBe(422);
 				expect(res.body).toEqual({ err: 'user with this email already exists' });
@@ -54,7 +95,7 @@ describe('Users', () => {
 					password: USER.password,
 				};
 
-				const res = await request(application.app).post(USERS_URLS.register).send(DTO);
+				const res = await request(app).post(USERS_URLS.register).send(DTO);
 
 				expect(res.statusCode).toBe(422);
 				expect(res.body).toEqual([
@@ -78,7 +119,7 @@ describe('Users', () => {
 					password: USER.password,
 				};
 
-				const res = await request(application.app).post(USERS_URLS.login).send(LOGIN_DTO);
+				const res = await request(app).post(USERS_URLS.login).send(LOGIN_DTO);
 
 				const { jwt, ...userInfo } = res.body;
 				expect(res.statusCode).toBe(200);
@@ -94,7 +135,7 @@ describe('Users', () => {
 
 		describe('pass correct username and password', () => {
 			it('return jwt token and user info', async () => {
-				const res = await request(application.app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
+				const res = await request(app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 
 				const { jwt, ...userInfo } = res.body;
 				expect(res.statusCode).toBe(200);
@@ -116,7 +157,7 @@ describe('Users', () => {
 					password: NEW_USER.password,
 				};
 
-				const res = await request(application.app).post(USERS_URLS.login).send(LOGGIN_DTO);
+				const res = await request(app).post(USERS_URLS.login).send(LOGGIN_DTO);
 
 				expect(res.statusCode).toBe(422);
 				expect(res.body).toEqual({ err: 'There is no user with this email' });
@@ -131,7 +172,7 @@ describe('Users', () => {
 					password: NEW_USER.password,
 				};
 
-				const res = await request(application.app).post(USERS_URLS.login).send(LOGIN_DTO);
+				const res = await request(app).post(USERS_URLS.login).send(LOGIN_DTO);
 
 				expect(res.statusCode).toBe(422);
 				expect(res.body).toEqual({ err: 'There is no user with this username' });
@@ -145,7 +186,7 @@ describe('Users', () => {
 					password: USER.password + '123',
 				};
 
-				const res = await request(application.app).post(USERS_URLS.login).send(LOGIN_DTO);
+				const res = await request(app).post(USERS_URLS.login).send(LOGIN_DTO);
 
 				expect(res.statusCode).toBe(422);
 				expect(res.body).toEqual({ err: 'Incorrect password' });
@@ -154,11 +195,9 @@ describe('Users', () => {
 
 		describe('already logged in user is trying to log in', () => {
 			it('return unauthorised error', async () => {
-				const prevLoginRes = await request(application.app)
-					.post(USERS_URLS.login)
-					.send(LOGIN_USER_DTO);
+				const prevLoginRes = await request(app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.post(USERS_URLS.login)
 					.set('Authorization', `Bearer ${prevLoginRes.body.jwt}`)
 					.send(LOGIN_USER_DTO);
@@ -171,9 +210,9 @@ describe('Users', () => {
 	describe('logout', () => {
 		describe('logged in user tries to log out', () => {
 			it('return success message', async () => {
-				const loginRes = await request(application.app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
+				const loginRes = await request(app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.post(USERS_URLS.logout)
 					.set('Authorization', `Bearer ${loginRes.body.jwt}`);
 
@@ -184,7 +223,7 @@ describe('Users', () => {
 
 		describe('unlogged user tries to log out', () => {
 			it('return unauthorised error', async () => {
-				const res = await request(application.app).post(USERS_URLS.logout);
+				const res = await request(app).post(USERS_URLS.logout);
 
 				expect(res.statusCode).toBe(401);
 			});
@@ -200,9 +239,9 @@ describe('Users', () => {
 			};
 
 			it('return new passwordUpdatedAt', async () => {
-				const newUserRes = await request(application.app).post(USERS_URLS.register).send(NEW_USER);
+				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.patch(USERS_URLS.changePassword)
 					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
 					.send(CHANGE_PASSWORD_DTO);
@@ -217,12 +256,12 @@ describe('Users', () => {
 		describe('pass correct new email', () => {
 			it('return new email and jwt token', async () => {
 				const NEW_USER = CREATE_USER_DTO();
-				const newUserRes = await request(application.app).post(USERS_URLS.register).send(NEW_USER);
+				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
 				const CHANGE_EMAIL_DTO: ChangeEmailDto = {
 					newEmail: CREATE_USER_DTO().email,
 				};
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.patch(USERS_URLS.changeEmail)
 					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
 					.send(CHANGE_EMAIL_DTO);
@@ -238,12 +277,12 @@ describe('Users', () => {
 		describe('pass correct new username', () => {
 			it('return new username and jwt token', async () => {
 				const NEW_USER = CREATE_USER_DTO();
-				const newUserRes = await request(application.app).post(USERS_URLS.register).send(NEW_USER);
+				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
 				const CHANGE_USERNAME_DTO: ChangeUsernameDto = {
 					newUsername: CREATE_USER_DTO().username,
 				};
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.patch(USERS_URLS.changeUsername)
 					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
 					.send(CHANGE_USERNAME_DTO);
@@ -258,10 +297,10 @@ describe('Users', () => {
 	describe('get user info', () => {
 		describe('a logged in user is trying to retrieve their data', () => {
 			it('return user info', async () => {
-				const loginRes = await request(application.app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
+				const loginRes = await request(app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 				const { jwt, ...loggedUserInfo } = loginRes.body;
 
-				const res = await request(application.app)
+				const res = await request(app)
 					.get(USERS_URLS.getUserInfo)
 					.set('Authorization', `Bearer ${jwt}`);
 
