@@ -29,7 +29,7 @@ export abstract class BaseApiService implements IBaseApiService {
 		init?: RequestInit
 	): Promise<RO | HTTPError> {
 		try {
-			const jwt = this.getJwt();
+			const jwt = await this.getJwt();
 			const params = query ? `?${this.createSearchParams(query)}` : '';
 			const resp = await fetch(`${url}${params}`, {
 				...init,

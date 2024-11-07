@@ -9,6 +9,7 @@ import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 
 import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
+import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export interface IChangeusernameFormProps {
 	currentUsername: string;
@@ -32,6 +33,8 @@ export default function ChangeUsernameForm({
 		setError,
 	} = useFormReturnValue;
 
+	const [, setJwt] = useCrossExtState('jwt');
+
 	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
 		const resp = await chromeExtApi.patch<ChangeUsernameDto, IChangeUsernameRo>(
 			USERS_FULL_URLS.changeUsername,
@@ -43,9 +46,7 @@ export default function ChangeUsernameForm({
 			return false;
 		}
 
-		await chrome.storage.local.set({
-			token: resp.jwt,
-		});
+		setJwt(resp.jwt);
 		onSuccess(resp.username);
 		toast({
 			title: 'Username has been successfully changed',
