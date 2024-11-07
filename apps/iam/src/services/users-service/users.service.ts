@@ -41,7 +41,6 @@ export class UsersService implements IUsersService {
 		return user;
 	}
 
-	// TODO: обновить тесты
 	async create(
 		registerDto: RegistrationDto
 	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
