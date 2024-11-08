@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 
 import { RouteGuard, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
-import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
+import { GetPageDto, GetPagesDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { PAGES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
@@ -24,7 +24,7 @@ export class PagesController extends BaseController implements IPagesController 
 				path: PAGES_ENDPOINTS.getPagesShortInfo,
 				method: 'get',
 				func: this.getPagesShortInfo,
-				middlewares: [new RouteGuard('user')],
+				middlewares: [new RouteGuard('user'), new ValidateMiddleware(GetPagesDto, 'query')],
 			},
 			{
 				path: PAGES_ENDPOINTS.update,
@@ -35,8 +35,8 @@ export class PagesController extends BaseController implements IPagesController 
 		]);
 	}
 
-	getFullInfo: TController<null, null, GetPageDto> = async ({ user, query }, res) => {
-		const result = await this.pagesServise.getFullInfo(query.url, user.id);
+	getFullInfo: TController<null, null, GetPageDto> = async ({ query }, res) => {
+		const result = await this.pagesServise.getFullInfo(query.url, +query.workspaceId);
 
 		if (!result) {
 			this.ok(res, { id: null });
@@ -46,8 +46,8 @@ export class PagesController extends BaseController implements IPagesController 
 		this.ok(res, result);
 	};
 
-	getPagesShortInfo: TController = async ({ user }, res) => {
-		const result = await this.pagesServise.getPagesShortInfo(user.id);
+	getPagesShortInfo: TController<null, null, GetPagesDto> = async ({ query }, res) => {
+		const result = await this.pagesServise.getPagesShortInfo(+query.workspaceId);
 		this.ok(res, result);
 	};
 
