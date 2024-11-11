@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
 
-import { api, generateJwt } from '~libs/common';
-import { HTTPError, IConfigService } from '~libs/express-core';
+import { api } from '~libs/common';
+import { HTTPError, IConfigService, IJwtService } from '~libs/express-core';
 import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, LoginDto } from '~libs/dto/iam';
 import { JWT_PAYLOAD } from '~libs/common/index';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
@@ -34,6 +34,11 @@ const configServiceMock: IConfigService = {
 	get: jest.fn(),
 };
 
+const jwtServiceMock: IJwtService = {
+	verify: jest.fn(),
+	generate: jest.fn(),
+};
+
 const prismaServiceMock = {
 	client: {
 		userModel: {
@@ -45,7 +50,6 @@ const prismaServiceMock = {
 
 jest.mock('~libs/common', () => ({
 	...jest.requireActual('~libs/common'),
-	generateJwt: jest.fn(),
 	api: {
 		post: jest.fn(),
 	},
@@ -54,18 +58,19 @@ jest.mock('~libs/common', () => ({
 const container = new Container();
 let usersService: IUsersService;
 let usersRepository: IUsersRepository;
-let configService: IConfigService;
+let jwtService: IJwtService;
 
 beforeAll(() => {
 	container.bind<IUsersService>(TYPES.UsersService).to(UsersService);
 	container.bind<IUserFactory>(TYPES.UserFactory).to(UserFactory);
 	container.bind<IUsersRepository>(TYPES.UsersRepository).toConstantValue(usersRepositoryMock);
 	container.bind<IConfigService>(TYPES.ConfigService).toConstantValue(configServiceMock);
+	container.bind<IJwtService>(TYPES.JwtService).toConstantValue(jwtServiceMock);
 	container.bind<typeof prismaServiceMock>(TYPES.PrismaService).toConstantValue(prismaServiceMock);
 
 	usersService = container.get<IUsersService>(TYPES.UsersService);
 	usersRepository = container.get<IUsersRepository>(TYPES.UsersRepository);
-	configService = container.get<IConfigService>(TYPES.ConfigService);
+	jwtService = container.get<IJwtService>(TYPES.JwtService);
 });
 
 beforeEach(() => {
@@ -78,7 +83,6 @@ describe('UsersService', () => {
 
 		describe('pass new email and username', () => {
 			it('return created user and workspace', async () => {
-				const mockJwtKey = 'mock-jwt-key';
 				const mockJwt = 'mock-jwt-token';
 				const mockWorkspaceResponse = { id: 1, name: `${CREATE_DTO.username}'s workspace` };
 				usersRepositoryMock.findBy = jest.fn().mockReturnValue(null);
@@ -88,8 +92,7 @@ describe('UsersService', () => {
 						...user.data,
 					})
 				);
-				configService.get = jest.fn().mockReturnValue(mockJwtKey);
-				(generateJwt as jest.Mock).mockResolvedValue(mockJwt);
+				jwtService.generate = jest.fn().mockReturnValue(mockJwt);
 				(api.post as jest.Mock).mockResolvedValue(mockWorkspaceResponse);
 				const hashSpy = jest.spyOn(bcryptjs, 'hash');
 
@@ -105,10 +108,6 @@ describe('UsersService', () => {
 					},
 					workspace: mockWorkspaceResponse,
 				});
-				expect(generateJwt).toHaveBeenCalledWith(
-					{ id: USER_MODEL.id, email: CREATE_DTO.email, username: CREATE_DTO.username },
-					mockJwtKey
-				);
 				expect(api.post).toHaveBeenCalledWith(
 					WORKSPACES_FULL_URLS.create,
 					{
