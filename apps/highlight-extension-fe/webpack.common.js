@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');

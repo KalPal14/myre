@@ -19,7 +19,6 @@ export * from './utils/dto-validation-rules/is-user-identifier';
 
 // /utils/helper-functions
 export * from './utils/helper-functions/hide-email/hide-email';
-export * from './utils/helper-functions/generate-jwt';
 export * from './utils/helper-functions/api';
 
 // /utils/obj-conventers

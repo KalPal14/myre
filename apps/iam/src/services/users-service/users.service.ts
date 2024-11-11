@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { generateJwt, IJwtPayload } from '~libs/common';
-import { HTTPError, IConfigService } from '~libs/express-core';
+import { IJwtPayload } from '~libs/common';
+import { HTTPError, IJwtService } from '~libs/express-core';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -24,16 +24,12 @@ import { IUsersService } from './users.service.interface';
 
 @injectable()
 export class UsersService implements IUsersService {
-	private jwtKey: string;
-
 	constructor(
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
-		@inject(TYPES.ConfigService) private configService: IConfigService
-	) {
-		this.jwtKey = this.configService.get('JWT_KEY');
-	}
+		@inject(TYPES.JwtService) private jwtService: IJwtService
+	) {}
 
 	async get(id: number): Promise<UserModel> {
 		const user = await this.usersRepository.findBy({ id });
@@ -63,14 +59,11 @@ export class UsersService implements IUsersService {
 			const newUserEntity = await tx.userModel.create({ data: newUser });
 			// TODO: я бы как-то без jwt это сделал бы
 			// TODO: NODE_TLS_REJECT_UNAUTHORIZED=0 убрать
-			const jwt = await generateJwt(
-				{
-					id: newUserEntity.id,
-					email: newUser.email,
-					username: newUser.username,
-				},
-				this.jwtKey
-			);
+			const jwt = await this.jwtService.generate({
+				id: newUserEntity.id,
+				email: newUser.email,
+				username: newUser.username,
+			});
 
 			const body: CreateWorkspaceDto = {
 				name: `${newUser.username}'s workspace`,

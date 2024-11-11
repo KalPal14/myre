@@ -5,11 +5,11 @@ import {
 	HTTPError,
 	RouteGuard,
 	ValidateMiddleware,
-	IConfigService,
+	IJwtService,
 	TController,
 	BaseController,
 } from '~libs/express-core';
-import { hideEmail, generateJwt, TEmail } from '~libs/common';
+import { hideEmail, TEmail } from '~libs/common';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -28,14 +28,11 @@ import { IUsersController } from './users.controller.interface';
 
 @injectable()
 export class UsersController extends BaseController implements IUsersController {
-	private jwtKey: string;
-
 	constructor(
 		@inject(TYPES.UsersService) private usersService: IUsersService,
-		@inject(TYPES.ConfigService) private configService: IConfigService
+		@inject(TYPES.JwtService) private jwtService: IJwtService
 	) {
 		super();
-		this.jwtKey = this.configService.get('JWT_KEY');
 		this.bindRoutes([
 			{
 				path: USERS_ENDPOINTS.getUserInfo,
@@ -89,7 +86,8 @@ export class UsersController extends BaseController implements IUsersController 
 
 	login: TController<null, LoginDto> = async ({ body }, res) => {
 		const result = await this.usersService.validate(body);
-		generateJwt(result, this.jwtKey)
+		this.jwtService
+			.generate(result)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,
@@ -102,7 +100,8 @@ export class UsersController extends BaseController implements IUsersController 
 	// TODO
 	register: TController<null, RegistrationDto> = async ({ body }, res) => {
 		const result = await this.usersService.create(body);
-		generateJwt(result.user, this.jwtKey)
+		this.jwtService
+			.generate(result.user)
 			.then((jwt) => {
 				this.created(res, {
 					jwt,
@@ -133,7 +132,8 @@ export class UsersController extends BaseController implements IUsersController 
 
 	changeEmail: TController<null, ChangeEmailDto> = async ({ user, body }, res) => {
 		const result = await this.usersService.changeEmail(user, body);
-		generateJwt(result, this.jwtKey)
+		this.jwtService
+			.generate(result)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,
@@ -145,7 +145,8 @@ export class UsersController extends BaseController implements IUsersController 
 
 	changeUsername: TController<null, ChangeUsernameDto> = async ({ user, body }, res) => {
 		const result = await this.usersService.changeUsername(user, body);
-		generateJwt(result, this.jwtKey)
+		this.jwtService
+			.generate(result)
 			.then((jwt) => {
 				this.ok(res, {
 					jwt,

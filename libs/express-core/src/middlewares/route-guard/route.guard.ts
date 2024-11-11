@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
+
+import { IJwtPayload } from '~libs/common';
 
 import { IMiddleware } from '../common/types/middleware.interface';
 
@@ -29,7 +30,7 @@ export class RouteGuard implements IMiddleware {
 		});
 	}
 
-	private isFitsRole(reqUser: JwtPayload): boolean {
+	private isFitsRole(reqUser: IJwtPayload | undefined): boolean {
 		switch (this.role) {
 			case 'user':
 				return this.isUser(reqUser);
@@ -38,11 +39,11 @@ export class RouteGuard implements IMiddleware {
 		}
 	}
 
-	private isUser(reqUser: JwtPayload): boolean {
+	private isUser(reqUser: IJwtPayload | undefined): boolean {
 		return !!reqUser;
 	}
 
-	private isGuest(reqUser: JwtPayload): boolean {
+	private isGuest(reqUser: IJwtPayload | undefined): boolean {
 		return !reqUser;
 	}
 }

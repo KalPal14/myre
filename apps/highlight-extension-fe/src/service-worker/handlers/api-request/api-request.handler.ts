@@ -1,5 +1,5 @@
 import * as api from '~libs/common/utils/helper-functions/api';
-import { HTTPError } from '~libs/common';
+import { HTTPError } from '~libs/common/errors/http-error/http-error';
 
 import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
 import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';

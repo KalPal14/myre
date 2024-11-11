@@ -8,7 +8,7 @@ import { inject, injectable } from 'inversify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import { ILogger, IExceptionFilter, IConfigService, JwtAuthMiddleware } from '~libs/express-core';
+import { ILogger, IExceptionFilter, IConfigService, IMiddleware } from '~libs/express-core';
 import { USERS_BASE_ROUTE } from '~libs/routes/iam';
 
 import { TYPES } from '~/iam/common/constants/types';
@@ -26,13 +26,13 @@ export default class App {
 		@inject(TYPES.UsersController) private usersController: IUsersController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
-		@inject(TYPES.ConfigService) private configService: IConfigService
+		@inject(TYPES.ConfigService) private configService: IConfigService,
+		@inject(TYPES.JwtAuthMiddleware) private jwtAuthMiddleware: IMiddleware
 	) {
 		this.app = express();
 	}
 
 	useMiddleware(): void {
-		const jwtSecret = this.configService.get('JWT_KEY');
 		const cookieSecret = this.configService.get('COOCKIE_KEY');
 		const clientUrl = this.configService.get('H_EXT_FE_URL');
 
@@ -46,8 +46,7 @@ export default class App {
 		this.app.use(bodyParser.json());
 		this.app.use(cookieParser(cookieSecret));
 
-		const jwtAuthMiddleware = new JwtAuthMiddleware(jwtSecret);
-		this.app.use(jwtAuthMiddleware.execute.bind(jwtAuthMiddleware));
+		this.app.use(this.jwtAuthMiddleware.execute.bind(this.jwtAuthMiddleware));
 	}
 
 	useRoutes(): void {
