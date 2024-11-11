@@ -1,4 +1,4 @@
-import type { ChromeExtApiService } from '~libs/common';
+import type { ChromeExtApiService } from '~libs/common/services/api-service/chrome-ext-api.service';
 
 import IBaseMsg from '../base.msg.interface';
 
