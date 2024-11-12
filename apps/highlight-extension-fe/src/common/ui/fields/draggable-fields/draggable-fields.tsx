@@ -5,15 +5,13 @@ import { ArrayPath, FieldArray, FieldValues, UseFieldArrayReturn } from 'react-h
 
 import '../fields.scss';
 
-import TJsxContent from '~/highlight-extension-fe/common/types/jsx-content.type';
-
 import DraggableItem from './draggable-fields-item';
 
 export interface IDraggableFieldsProps<Fields extends FieldValues> {
 	useFieldArrayReturn: UseFieldArrayReturn<Fields>;
 	fieldsList: (JSX.Element | null)[];
 	addBtn?: {
-		text: TJsxContent;
+		text: JSX.Element | string;
 		value: FieldArray<Fields, ArrayPath<Fields>> | FieldArray<Fields, ArrayPath<Fields>>[];
 	};
 	showDeleteBtn?: boolean;

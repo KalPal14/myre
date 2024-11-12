@@ -15,13 +15,11 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 import './forms.scss';
 import { AngleUpSVG, PencilSquareSVG } from '~libs/react-core';
 
-import TJsxContent from '~/highlight-extension-fe/common/types/jsx-content.type';
-
 export interface IAccordionFormProps<Form extends FieldValues> {
 	children: JSX.Element;
 	useFormReturnValue: UseFormReturn<Form>;
 	onSubmitHandler: (formValue: Form) => Promise<boolean | void>;
-	accordionButtonText: TJsxContent;
+	accordionButtonText: JSX.Element | string;
 	tooltipLabel?: string;
 	labelText?: string;
 }
