@@ -19,3 +19,6 @@ export * from './ui/fields/draggable-fields/draggable-fields';
 export * from './ui/fields/text-field';
 export * from './ui/forms/accordion-form';
 export * from './ui/modals/confirmation-modal';
+
+// content-scripts-ui
+export * from './content-scripts-ui/toasts/toast';

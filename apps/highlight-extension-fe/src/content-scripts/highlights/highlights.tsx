@@ -7,12 +7,11 @@ import { GetPageDto } from '~libs/dto/highlight-extension';
 import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
 import { apiHandler } from '~libs/client-core';
+import { Toast } from '~libs/react-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
-
-import Toast from '../common/ui/toasts/toast';
 
 import InteractionWithHighlight from './components/interaction-with-highlight';
 import drawHighlight from './helpers/for-DOM-changes/draw-highlight.helper';
