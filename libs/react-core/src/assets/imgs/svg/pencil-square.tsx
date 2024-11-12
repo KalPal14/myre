@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function AngleDownSVG({
+export function PencilSquareSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',
@@ -22,7 +22,11 @@ export default function AngleDownSVG({
 			onClick={onClick}
 		>
 			<path
-				d="M8.00003 8.1716L3.41424 3.58582L0.585815 6.41424L8.00003 13.8285L15.4142 6.41424L12.5858 3.58582L8.00003 8.1716Z"
+				d="M13 0L16 3L9 10H6V7L13 0Z"
+				fill={color}
+			/>
+			<path
+				d="M1 1V15H15V9H13V13H3V3H7V1H1Z"
 				fill={color}
 			/>
 		</svg>

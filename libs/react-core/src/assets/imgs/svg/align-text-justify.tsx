@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function PencilSquareSVG({
+export function AlignTextJustifySVG({
 	width = 18,
 	height = 18,
 	fill = 'none',
@@ -22,11 +22,19 @@ export default function PencilSquareSVG({
 			onClick={onClick}
 		>
 			<path
-				d="M13 0L16 3L9 10H6V7L13 0Z"
+				d="M15 1H1V3H15V1Z"
 				fill={color}
 			/>
 			<path
-				d="M1 1V15H15V9H13V13H3V3H7V1H1Z"
+				d="M1 5H15V7H1V5Z"
+				fill={color}
+			/>
+			<path
+				d="M15 9H1V11H15V9Z"
+				fill={color}
+			/>
+			<path
+				d="M11 13H1V15H11V13Z"
 				fill={color}
 			/>
 		</svg>

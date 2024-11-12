@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function ArrowRightToLineSVG({
+export function GripVerticalSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',
@@ -22,11 +22,27 @@ export default function ArrowRightToLineSVG({
 			onClick={onClick}
 		>
 			<path
-				d="M7 13V10H0L1.74846e-07 6L7 6L7 3L8 3L13 8L8 13H7Z"
+				d="M3 4V0H7V4L3 4Z"
 				fill={color}
 			/>
 			<path
-				d="M14 14V2L16 2V14H14Z"
+				d="M3 6V10H7L7 6H3Z"
+				fill={color}
+			/>
+			<path
+				d="M9 6V10H13V6H9Z"
+				fill={color}
+			/>
+			<path
+				d="M9 0V4L13 4V0H9Z"
+				fill={color}
+			/>
+			<path
+				d="M3 16V12H7V16H3Z"
+				fill={color}
+			/>
+			<path
+				d="M9 12V16H13V12H9Z"
 				fill={color}
 			/>
 		</svg>

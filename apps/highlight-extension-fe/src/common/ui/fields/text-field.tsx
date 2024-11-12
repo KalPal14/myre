@@ -12,8 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { FieldError, FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-import EyeSlashSVG from '~/highlight-extension-fe/assets/imgs/svg/eye-slash';
-import EyeSVG from '~/highlight-extension-fe/assets/imgs/svg/eye';
+import { EyeSlashSVG, EyeSVG } from '~libs/react-core';
 
 export interface ITextFieldProps<FormFields extends FieldValues> {
 	register: UseFormRegister<FormFields>;

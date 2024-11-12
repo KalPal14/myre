@@ -87,6 +87,7 @@ module.exports = {
 			// Libs
 			'~libs/common': path.resolve(__dirname, '../../libs/common/src'),
 			'~libs/dto': path.resolve(__dirname, '../../libs/dto/src'),
+			'~libs/react-core': path.resolve(__dirname, '../../libs/react-core/src'),
 			'~libs/ro': path.resolve(__dirname, '../../libs/ro/src'),
 			'~libs/routes': path.resolve(__dirname, '../../libs/routes/src'),
 		},

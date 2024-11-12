@@ -3,9 +3,9 @@ import { UseFormRegister } from 'react-hook-form';
 import { Divider, Text, Tooltip } from '@chakra-ui/react';
 
 import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
+import { ExclamationOctagonSVG } from '~libs/react-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import ExclamationOctagonSVG from '~/highlight-extension-fe/assets/imgs/svg/exclamation-octagon';
 
 import IChangeHighlightForm from '../types/change-highlight-form.interface';
 

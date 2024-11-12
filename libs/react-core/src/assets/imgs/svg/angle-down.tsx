@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function AlignTextJustifySVG({
+export function AngleDownSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',
@@ -22,19 +22,7 @@ export default function AlignTextJustifySVG({
 			onClick={onClick}
 		>
 			<path
-				d="M15 1H1V3H15V1Z"
-				fill={color}
-			/>
-			<path
-				d="M1 5H15V7H1V5Z"
-				fill={color}
-			/>
-			<path
-				d="M15 9H1V11H15V9Z"
-				fill={color}
-			/>
-			<path
-				d="M11 13H1V15H11V13Z"
+				d="M8.00003 8.1716L3.41424 3.58582L0.585815 6.41424L8.00003 13.8285L15.4142 6.41424L12.5858 3.58582L8.00003 8.1716Z"
 				fill={color}
 			/>
 		</svg>

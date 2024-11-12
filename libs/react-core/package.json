@@ -1,0 +1,16 @@
+{
+	"name": "react-core",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc && tsc-alias"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/react": "^18.0.9",
+		"react": "^18.1.0"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": ""
+}

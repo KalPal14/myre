@@ -33,16 +33,22 @@
             "libs/common/src/*"
          ],
          "~libs/common": [
-            "libs/common/src"
+            "libs/common/src/index"
          ],
          "~libs/dto/*": [
             "libs/dto/src/*"
          ],
          "~libs/express-core": [
-            "libs/express-core/src"
+            "libs/express-core/src/index"
          ],
          "~libs/express-core/*": [
             "libs/express-core/src/*"
+         ],
+         "~libs/react-core": [
+            "libs/react-core/src/index"
+         ],
+         "~libs/react-core/*": [
+            "libs/react-core/src/*"
          ],
          "~libs/ro/*": [
             "libs/ro/src/*"

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function AngleUpSVG({
+export function ExclamationOctagonSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',
-	color = '#4a4a4a',
+	color = '#ffdd00',
 	cursor,
 	onClick,
 }: ISVGProps): JSX.Element {
@@ -22,7 +22,9 @@ export default function AngleUpSVG({
 			onClick={onClick}
 		>
 			<path
-				d="M8.00003 7.82842L12.5858 12.4142L15.4142 9.58578L8.00003 2.17157L0.585815 9.58578L3.41424 12.4142L8.00003 7.82842Z"
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M0 11.25L4.75 16H11.25L16 11.25V4.75L11.25 0H4.75L0 4.75V11.25ZM7 3V9H9V3H7ZM7 11V13H9V11H7Z"
 				fill={color}
 			/>
 		</svg>

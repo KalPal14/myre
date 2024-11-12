@@ -1,7 +1,6 @@
 import React from 'react';
 
-import GripVerticalSVG from '~/highlight-extension-fe/assets/imgs/svg/grip-vertical';
-import TrashSVG from '~/highlight-extension-fe/assets/imgs/svg/trash';
+import { GripVerticalSVG, TrashSVG } from '~libs/react-core';
 
 export interface IDraggableItemProps {
 	field: JSX.Element;

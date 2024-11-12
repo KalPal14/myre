@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ISVGProps } from '~/highlight-extension-fe/common/types/svg-props';
+import { ISVGProps } from './types/svg-props';
 
-export default function EyeSlashSVG({
+export function EyeSlashSVG({
 	width = 18,
 	height = 18,
 	fill = 'none',

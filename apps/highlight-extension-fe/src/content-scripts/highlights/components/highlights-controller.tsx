@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import cl from 'classnames';
 
-import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
+import { TrashSVG, ArrowRightToLineSVG, AlignTextJustifySVG, CogSVG } from '~libs/react-core';
 
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
@@ -11,10 +11,6 @@ import openTabDispatcher from '~/highlight-extension-fe/service-worker/handlers/
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
-import TrashSVG from '~/highlight-extension-fe/assets/imgs/svg/trash';
-import ArrowRightToLineSVG from '~/highlight-extension-fe/assets/imgs/svg/arrow-right-to-line';
-import AlignTextJustifySVG from '~/highlight-extension-fe/assets/imgs/svg/align-text-justify';
-import CogSVG from '~/highlight-extension-fe/assets/imgs/svg/cog';
 
 import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
 

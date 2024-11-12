@@ -13,9 +13,9 @@ import {
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import './forms.scss';
+import { AngleUpSVG, PencilSquareSVG } from '~libs/react-core';
+
 import TJsxContent from '~/highlight-extension-fe/common/types/jsx-content.type';
-import PencilSquareSVG from '~/highlight-extension-fe/assets/imgs/svg/pencil-square';
-import AngleUpSVG from '~/highlight-extension-fe/assets/imgs/svg/angle-up';
 
 export interface IAccordionFormProps<Form extends FieldValues> {
 	children: JSX.Element;
