@@ -29,6 +29,12 @@
             "apps/iam/*"
          ],
          // libs
+         "~libs/client-core": [
+            "libs/client-core/src/index"
+         ],
+         "~libs/client-core/*": [
+            "libs/client-core/src/*"
+         ],
          "~libs/common/*": [
             "libs/common/src/*"
          ],

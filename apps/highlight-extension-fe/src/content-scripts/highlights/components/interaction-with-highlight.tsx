@@ -8,6 +8,7 @@ import {
 	TGetHighlightsRo,
 } from '~libs/ro/highlight-extension';
 import { GetHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extension';
+import { apiHandler } from '~libs/client-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
@@ -17,7 +18,6 @@ import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
 import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import createHighlighterElement from '../helpers/for-DOM-changes/create-highlighter-element.helper';
 import IHighlightElementData from '../types/highlight-element-data-interface';
-import { apiHandler } from '../../common/api.handler';
 
 import HighlightsController from './highlights-controller';
 

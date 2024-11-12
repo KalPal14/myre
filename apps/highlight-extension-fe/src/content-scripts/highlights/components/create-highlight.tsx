@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
+import { apiHandler } from '~libs/client-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import Toast from '~/highlight-extension-fe/content-scripts/common/ui/toasts/toast';
@@ -12,7 +13,6 @@ import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.hel
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
 import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
 import buildCreateHighlightDto from '../helpers/build-create-highlight-ro.helper';
-import { apiHandler } from '../../common/api.handler';
 
 import HighlightsController from './highlights-controller';
 

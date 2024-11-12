@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@chakra-ui/react';
 
-import openTab from '~/highlight-extension-fe/common/helpers/open-tab.helper';
+import { openTab } from '~libs/client-core';
 import { FULL_TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
 
 export default function LoginSection(): JSX.Element {

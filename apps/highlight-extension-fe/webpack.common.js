@@ -85,6 +85,7 @@ module.exports = {
 			// Apps
 			'~/highlight-extension-fe': path.resolve(__dirname, '../../apps/highlight-extension-fe/src'),
 			// Libs
+			'~libs/client-core': path.resolve(__dirname, '../../libs/client-core/src'),
 			'~libs/common': path.resolve(__dirname, '../../libs/common/src'),
 			'~libs/dto': path.resolve(__dirname, '../../libs/dto/src'),
 			'~libs/react-core': path.resolve(__dirname, '../../libs/react-core/src'),
