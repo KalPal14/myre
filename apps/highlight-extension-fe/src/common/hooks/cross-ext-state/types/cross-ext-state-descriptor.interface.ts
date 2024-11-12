@@ -1,10 +1,10 @@
 import { IBaseWorkspaceRo } from '~libs/ro/highlight-extension';
 import { IBaseUserRo } from '~libs/ro/iam';
 
-import IDeletedHighlightExtState from '../../../types/cross-ext-state/deleted-highlight-ext-state.interface';
-import IUpdatedHighlightExtState from '../../../types/cross-ext-state/updated-highlight-ext-state.interface';
-import IUpdatedPagesUrlsExtState from '../../../types/cross-ext-state/updated-pages-urls-ext-state.interface';
-import ICreateHighlightExtState from '../../../types/cross-ext-state/created-highlight-ext-state.interface';
+import IUpdatedHighlightExtState from './values/updated-highlight-ext-state.interface';
+import IUpdatedPagesUrlsExtState from './values/updated-pages-urls-ext-state.interface';
+import ICreateHighlightExtState from './values/created-highlight-ext-state.interface';
+import IDeletedHighlightExtState from './values/deleted-highlight-ext-state.interface';
 
 export interface ICrossExtStateDescriptor {
 	jwt: string | null;
