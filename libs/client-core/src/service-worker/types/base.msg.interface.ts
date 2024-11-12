@@ -1,4 +1,4 @@
-export default interface IBaseMsg {
+export interface IBaseMsg {
 	serviceWorkerHandler: string;
 	contentScriptsHandler?: string;
 }

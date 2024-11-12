@@ -1,10 +1,9 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
 import { chromeExtApi } from '~libs/common/services/api-service/chrome-ext-api.service';
+import { IApiRequestIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/api-request.income-msg.interface';
+import { IApiRequestOutcomeMsg } from '~libs/client-core/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 
-import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
-import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
-
-export default async function apiRequestHandler<DTO>(
+export async function apiRequestHandler<DTO>(
 	{ method, url, data, contentScriptsHandler, serviceWorkerHandler }: IApiRequestIncomeMsg<DTO>,
 	sender: chrome.runtime.MessageSender
 ): Promise<void> {

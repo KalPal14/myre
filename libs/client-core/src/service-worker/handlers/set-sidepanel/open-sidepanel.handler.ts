@@ -1,6 +1,6 @@
-import ISetSidepanelIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/set-sidepanel.income-msg.interface';
+import { ISetSidepanelIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/set-sidepanel.income-msg.interface';
 
-export default async function setSidepanelHandler(
+export async function setSidepanelHandler(
 	{ url, enabled }: ISetSidepanelIncomeMsg,
 	sender: chrome.runtime.MessageSender
 ): Promise<void> {

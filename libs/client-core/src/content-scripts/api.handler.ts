@@ -2,9 +2,9 @@ import { v4 } from 'uuid';
 
 import { HTTPError } from '~libs/common';
 
-import apiRequestDispatcher from '~/highlight-extension-fe/service-worker/handlers/api-request/api-request.dispatcher';
-import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
-import IApiRequestOutcomeMsg from '~/highlight-extension-fe/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
+import { apiRequestDispatcher } from '../service-worker/handlers/api-request/api-request.dispatcher';
+import { IApiRequestIncomeMsg } from '../service-worker/types/income-msgs/api-request.income-msg.interface';
+import { IApiRequestOutcomeMsg } from '../service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 
 export interface IApiHandlerParams<DTO, RO> {
 	msg: Omit<IApiRequestIncomeMsg<DTO>, 'serviceWorkerHandler' | 'contentScriptsHandler'>;

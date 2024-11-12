@@ -1,6 +1,6 @@
-import IApiRequestIncomeMsg from '~/highlight-extension-fe/service-worker/types/income-msgs/api-request.income-msg.interface';
+import { IApiRequestIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/api-request.income-msg.interface';
 
-export default function apiRequestDispatcher<DTO = undefined>({
+export function apiRequestDispatcher<DTO = undefined>({
 	contentScriptsHandler,
 	url,
 	method,
