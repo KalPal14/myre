@@ -6,9 +6,8 @@ import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangeEmailDto } from '~libs/dto/iam';
 import { IChangeEmailRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
+import { TextField, AccordionForm } from '~libs/react-core';
 
-import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export interface IChangeEmailFormProps {

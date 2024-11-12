@@ -24,7 +24,7 @@ export interface IAccordionFormProps<Form extends FieldValues> {
 	labelText?: string;
 }
 
-export default function AccordionForm<Form extends FieldValues>({
+export function AccordionForm<Form extends FieldValues>({
 	children,
 	useFormReturnValue,
 	onSubmitHandler,

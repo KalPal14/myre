@@ -11,7 +11,7 @@ export interface IHighAlertProps {
 	className?: string;
 }
 
-export default function HighAlert({
+export function HighAlert({
 	title,
 	description,
 	status = 'success',

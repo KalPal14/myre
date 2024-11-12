@@ -20,7 +20,7 @@ export interface IConfirmationModalProps {
 	onConfirm: () => void;
 }
 
-export default function ConfirmationModal({
+export function ConfirmationModal({
 	isOpen,
 	header,
 	body,

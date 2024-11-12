@@ -6,10 +6,8 @@ import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, chromeExtApi, HTTPError } from '~libs/common';
+import { AccordionForm, DraggableFields, ColorField } from '~libs/react-core';
 
-import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
-import ColorField from '~/highlight-extension-fe/common/ui/fields/color-field';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';

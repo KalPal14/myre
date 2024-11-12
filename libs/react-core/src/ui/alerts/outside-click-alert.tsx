@@ -8,7 +8,7 @@ export interface IOutsideClickAlertProps {
 	mb?: string | number;
 }
 
-export default function OutsideClickAlert({
+export function OutsideClickAlert({
 	msg,
 	onClose,
 	status = 'error',

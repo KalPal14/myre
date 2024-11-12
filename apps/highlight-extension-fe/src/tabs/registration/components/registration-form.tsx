@@ -6,9 +6,8 @@ import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { RegistrationDto } from '~libs/dto/iam';
 import { IRegistrationRo } from '~libs/ro/iam';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
+import { TextField, OutsideClickAlert } from '~libs/react-core';
 
-import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export default function LoginForm(): JSX.Element {

@@ -25,7 +25,7 @@ export interface ITextFieldProps<FormFields extends FieldValues> {
 	helperText?: string;
 }
 
-export default function TextField<FormFields extends FieldValues>({
+export function TextField<FormFields extends FieldValues>({
 	register,
 	validationOptions = {},
 	errors,

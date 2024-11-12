@@ -15,11 +15,9 @@ import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
+import { AccordionForm, TextField, ConfirmationModal } from '~libs/react-core';
 
-import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
-import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
 import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
-import ConfirmationModal from '~/highlight-extension-fe/common/ui/modals/confirmation-modal';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import IDataForPageUpdating from '../types/data-for-page-updating.interface';

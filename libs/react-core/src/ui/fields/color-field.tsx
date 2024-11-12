@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-export interface ITextFieldProps<FormFields extends FieldValues> {
+export interface IColorFieldProps<FormFields extends FieldValues> {
 	register: UseFormRegister<FormFields>;
 	name: Path<FormFields>;
 	label?: string;
@@ -10,13 +10,13 @@ export interface ITextFieldProps<FormFields extends FieldValues> {
 	inputCl?: string;
 }
 
-export default function ColorField<FormFields extends FieldValues>({
+export function ColorField<FormFields extends FieldValues>({
 	register,
 	name,
 	label,
 	formControlCl,
 	inputCl,
-}: ITextFieldProps<FormFields>): JSX.Element {
+}: IColorFieldProps<FormFields>): JSX.Element {
 	return (
 		<FormControl className={formControlCl}>
 			{label && (

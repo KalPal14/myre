@@ -4,8 +4,9 @@ import { Text, Heading } from '@chakra-ui/react';
 
 import './registration.scss';
 
+import { HighAlert } from '~libs/react-core';
+
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
-import HighAlert from '~/highlight-extension-fe/common/ui/alerts/high-alert';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import RegistrationForm from './components/registration-form';

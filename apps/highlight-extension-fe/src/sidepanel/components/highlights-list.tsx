@@ -6,9 +6,9 @@ import { HIGHLIGHTS_FULL_URLS, PAGES_FULL_URLS } from '~libs/routes/highlight-ex
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
 import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { chromeExtApi, HTTPError } from '~libs/common';
+import { DraggableFields } from '~libs/react-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import DraggableFields from '~/highlight-extension-fe/common/ui/fields/draggable-fields/draggable-fields';
 
 import THighlightsTabName from '../types/highlights-tab-name.type';
 import IChangeHighlightForm from '../types/change-highlight-form.interface';

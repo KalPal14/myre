@@ -5,7 +5,7 @@ import { ArrayPath, FieldArray, FieldValues, UseFieldArrayReturn } from 'react-h
 
 import '../fields.scss';
 
-import DraggableItem from './draggable-fields-item';
+import { DraggableItem } from './draggable-fields-item';
 
 export interface IDraggableFieldsProps<Fields extends FieldValues> {
 	useFieldArrayReturn: UseFieldArrayReturn<Fields>;
@@ -19,7 +19,7 @@ export interface IDraggableFieldsProps<Fields extends FieldValues> {
 	onSortEnd?: () => void;
 }
 
-export default function DraggableFields<Fields extends FieldValues>({
+export function DraggableFields<Fields extends FieldValues>({
 	useFieldArrayReturn,
 	fieldsList,
 	addBtn,

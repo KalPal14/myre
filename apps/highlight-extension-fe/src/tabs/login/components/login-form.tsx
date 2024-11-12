@@ -8,9 +8,8 @@ import { ILoginRo } from '~libs/ro/iam';
 import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
 import { chromeExtApi, httpErrHandler, HTTPError } from '~libs/common';
+import { TextField, OutsideClickAlert } from '~libs/react-core';
 
-import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import OutsideClickAlert from '~/highlight-extension-fe/common/ui/alerts/outside-click-alert';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export default function LoginForm(): JSX.Element {

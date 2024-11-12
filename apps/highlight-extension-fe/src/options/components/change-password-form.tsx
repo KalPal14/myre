@@ -7,9 +7,7 @@ import { USERS_FULL_URLS } from '~libs/routes/iam';
 import { ChangePasswordDto } from '~libs/dto/iam';
 import { IChangePasswordRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
-
-import TextField from '~/highlight-extension-fe/common/ui/fields/text-field';
-import AccordionForm from '~/highlight-extension-fe/common/ui/forms/accordion-form';
+import { TextField, AccordionForm } from '~libs/react-core';
 
 export interface IChangePasswordFormProps {
 	passwordUpdatedAt: Date | null;

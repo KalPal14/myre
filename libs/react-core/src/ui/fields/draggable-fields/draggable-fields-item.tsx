@@ -9,7 +9,7 @@ export interface IDraggableItemProps {
 	onDelete?: (index: number) => void;
 }
 
-export default function DraggableItem({
+export function DraggableItem({
 	field,
 	index,
 	onDelete,
