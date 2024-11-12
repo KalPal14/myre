@@ -4,13 +4,13 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import cl from 'classnames';
 
 import { TrashSVG, ArrowRightToLineSVG, AlignTextJustifySVG, CogSVG } from '~libs/react-core';
+import { getPageUrl } from '~libs/client-core';
 
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
 import openTabDispatcher from '~/highlight-extension-fe/service-worker/handlers/open-tab/open-tab.dispatcher';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import setSidepanelDispatcher from '~/highlight-extension-fe/service-worker/handlers/set-sidepanel/open-sidepanel.dispatcher';
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
 

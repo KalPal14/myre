@@ -8,10 +8,9 @@ import {
 	TGetHighlightsRo,
 } from '~libs/ro/highlight-extension';
 import { GetHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extension';
-import { apiHandler } from '~libs/client-core';
+import { apiHandler, getPageUrl } from '~libs/client-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';

@@ -16,8 +16,8 @@ import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-e
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
 import { AccordionForm, TextField, ConfirmationModal } from '~libs/react-core';
+import { getPageUrl } from '~libs/client-core';
 
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 import IDataForPageUpdating from '../types/data-for-page-updating.interface';

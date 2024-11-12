@@ -1,6 +1,5 @@
 import { CreateHighlightDto } from '~libs/dto/highlight-extension';
-
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
+import { getPageUrl } from '~libs/client-core';
 
 import findElementsByText from './to-receive-DOM-data/find-elements-by-text.helper';
 import getHighlightPerent from './to-receive-DOM-data/get-highlight-perent.helper';

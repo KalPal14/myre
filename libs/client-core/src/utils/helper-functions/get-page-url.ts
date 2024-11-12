@@ -1,4 +1,4 @@
-export default function getPageUrl(str: string = location.href): string {
+export function getPageUrl(str: string = location.href): string {
 	try {
 		const url = new URL(str);
 		if (url.hash.startsWith('#/')) {

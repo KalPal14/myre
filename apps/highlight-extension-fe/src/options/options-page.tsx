@@ -10,9 +10,9 @@ import {
 	Tabs,
 } from '@chakra-ui/react';
 
+import { getUrlSearchParam, setUrlSearchParam } from '~libs/client-core';
+
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import setUrlSearchParam from '~/highlight-extension-fe/common/helpers/set-url-search-param.helper';
-import getUrlSearchParam from '~/highlight-extension-fe/common/helpers/get-url-search-param.helper';
 
 import tabsList from './constants/tabs-list';
 

@@ -4,11 +4,10 @@ import toast from 'react-hot-toast';
 import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
-import { apiHandler } from '~libs/client-core';
+import { apiHandler, getPageUrl } from '~libs/client-core';
 import { Toast } from '~libs/react-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import getPageUrl from '~/highlight-extension-fe/common/helpers/get-page-url.helper';
 
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
 import createRangeFromHighlightRo from '../helpers/for-DOM-changes/create-range-from-highlight-dto.helper';
