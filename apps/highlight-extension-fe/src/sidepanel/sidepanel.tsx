@@ -2,9 +2,9 @@ import React from 'react';
 import { Tooltip } from '@chakra-ui/react';
 
 import { CogSVG } from '~libs/react-core';
+import { openTab } from '~libs/client-core';
 
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
-import { openTab } from '~libs/client-core';
 
 import HighlightsListTabs from './components/highlights-list-tabs';
 
