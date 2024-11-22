@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	testRegex: 'e2e-spec.ts',
-	coverageDirectory: 'coverage_e2e',
+	coverageDirectory: 'coverage',
 	moduleNameMapper: {
 		// apps,
 		'^~/freq-words/(.*)$': '<rootDir>/../freq-words/src/$1',

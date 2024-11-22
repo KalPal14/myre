@@ -3,6 +3,9 @@
 # compiled output
 dist
 
+# jest
+coverage
+
 # dependencies
 node_modules
 

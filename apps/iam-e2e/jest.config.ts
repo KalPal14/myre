@@ -4,7 +4,7 @@ const config: Config.InitialOptions = {
 	verbose: true,
 	preset: 'ts-jest',
 	testRegex: 'e2e-spec.ts',
-	coverageDirectory: 'coverage_e2e',
+	coverageDirectory: 'coverage',
 	moduleNameMapper: {
 		// apps
 		'^~/iam/prisma/(.*)$': '<rootDir>/../iam/prisma/$1',

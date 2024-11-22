@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	testRegex: 'e2e-spec.ts',
-	coverageDirectory: 'coverage_e2e',
+	coverageDirectory: 'coverage',
 	moduleNameMapper: {
 		// apps
 		'^~/highlight-extension/prisma/(.*)$': '<rootDir>/../highlight-extension/prisma/$1',
