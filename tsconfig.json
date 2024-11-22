@@ -17,6 +17,9 @@
       "baseUrl": "./",
       "paths": {
          // apps
+         "~/freq-words/*": [
+            "apps/freq-words/src/*",
+         ],
          "~/highlight-extension/*": [
             "apps/highlight-extension/src/*",
             "apps/highlight-extension/*"
