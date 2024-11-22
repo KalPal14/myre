@@ -1,6 +1,27 @@
 version: "3.8"
 
 services:
+  freq-words-dev-db:
+    container_name: freq-words-dev-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=freq-words-dev
+    ports:
+      - "5430:5432"
+  freq-words-test-db:
+    container_name: freq-words-test-db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=freq-words-test
+    ports:
+      - "5431:5432"
+
   highlight-extension-dev-db:
     container_name: highlight-extension-dev-db
     image: postgres
