@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppModule } from '~/freq-words/app.module';
 
@@ -10,19 +9,7 @@ describe('AppController (e2e)', () => {
 
 	beforeEach(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
-			imports: [
-				AppModule,
-				TypeOrmModule.forRoot({
-					type: 'postgres',
-					host: 'localhost',
-					port: 5431, // TODO: take from env
-					username: 'postgres',
-					password: 'postgres',
-					database: 'postgres',
-					autoLoadEntities: true,
-					synchronize: true, // TODO: in dev true, in prod false
-				}),
-			],
+			imports: [AppModule],
 		}).compile();
 
 		app = moduleFixture.createNestApplication();

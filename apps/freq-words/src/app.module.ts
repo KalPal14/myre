@@ -1,20 +1,26 @@
+import { join } from 'path';
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
 	imports: [
+		ConfigModule.forRoot({
+			envFilePath: join(__dirname, `../../../.env.${process.env.NODE_ENV || 'dev'}`),
+		}),
 		TypeOrmModule.forRoot({
 			type: 'postgres',
-			host: 'localhost',
-			port: 5430, // TODO: take from env
-			username: 'postgres',
-			password: 'postgres',
-			database: 'postgres',
+			host: process.env.FREQ_WORDS_HOST,
+			port: +process.env.FREQ_WORDS_DB_PORT!,
+			username: process.env.FREQ_WORDS_DB_USERNAME,
+			password: process.env.FREQ_WORDS_DB_PASSWORD,
+			database: process.env.FREQ_WORDS_DB_NAME,
 			autoLoadEntities: true,
-			synchronize: true, // TODO: in dev true, in prod false
+			synchronize: process.env.NODE_ENV !== 'prod',
 		}),
 	],
 	controllers: [AppController],
