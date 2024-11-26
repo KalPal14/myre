@@ -2,8 +2,5 @@
 	"$schema": "https://json.schemastore.org/nest-cli",
 	"collection": "@nestjs/schematics",
 	"sourceRoot": "src",
-	"entryFile": "apps/freq-words/src/main",
-	"compilerOptions": {
-		"deleteOutDir": true
-	}
+	"entryFile": "apps/freq-words/src/main"
 }
