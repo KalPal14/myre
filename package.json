@@ -30,6 +30,7 @@
 		"libs/*"
 	],
 	"dependencies": {
+		"dotenv-cli": "^7.4.4",
 		"lodash": "^4.17.21",
 		"uuid": "^11.0.2"
 	}

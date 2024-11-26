@@ -1,4 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post, Query } from '@nestjs/common';
+
+import { GetHighlightsDto, CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 
 import { AppService } from './app.service';
 
@@ -6,8 +8,8 @@ import { AppService } from './app.service';
 export class AppController {
 	constructor(private readonly appService: AppService) {}
 
-	@Get()
-	getHello(): string {
-		return this.appService.getHello();
+	@Post()
+	getHello(@Body() body: CreateWorkspaceDto, @Query() query: GetHighlightsDto): any {
+		return { resp: this.appService.getHello(), body, query };
 	}
 }
