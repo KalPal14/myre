@@ -10,7 +10,11 @@ import { AppService } from './app.service';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			envFilePath: join(__dirname, `../../../../.env.${process.env.NODE_ENV || 'dev'}`),
+			envFilePath: join(
+				__dirname,
+				process.env.NODE_ENV !== 'test' ? '..' : '',
+				`../../../.env.${process.env.NODE_ENV || 'dev'}`
+			),
 		}),
 		TypeOrmModule.forRoot({
 			type: 'postgres',

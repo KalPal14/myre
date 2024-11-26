@@ -4,11 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test:e2e": "NODE_ENV=test IS_RUN_E2E=true jest",
-		"migrate-db": "dotenv -e ../../.env.test npx prisma migrate dev",
-		"reset-db": "dotenv -e ../../.env.test  prisma migrate reset",
-		"seed-db": "dotenv -e ../../.env.test npx prisma db seed",
-		"studio-db": "dotenv -e ../../.env.test npx prisma studio"
+		"test:e2e": "NODE_ENV=test IS_RUN_E2E=true jest"
 	},
 	"author": "",
 	"license": "ISC",

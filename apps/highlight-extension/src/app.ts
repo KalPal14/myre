@@ -54,7 +54,7 @@ export default class App {
 		this.app.use(bodyParser.json());
 		this.app.use(cookieParser(cookieSecret));
 
-		this.app.use(this.jwtAuthMiddleware.execute.bind(this.jwtAuthMiddleware));
+		this.app.use(this.jwtAuthMiddleware.use.bind(this.jwtAuthMiddleware));
 	}
 
 	useRoutes(): void {

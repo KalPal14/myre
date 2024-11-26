@@ -33,7 +33,7 @@ export abstract class BaseController {
 
 	protected bindRoutes(routes: IRouteController[]): void {
 		routes.forEach((route) => {
-			const middlewares = route.middlewares?.map((m) => m.execute.bind(m));
+			const middlewares = route.middlewares?.map((m) => m.use.bind(m));
 			const handler: TController = async (req, res, next) => {
 				try {
 					await route.func.bind(this)(req, res, next);

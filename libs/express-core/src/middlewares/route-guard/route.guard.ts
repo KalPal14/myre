@@ -20,7 +20,7 @@ export class RouteGuard implements IMiddleware {
 		}
 	}
 
-	execute(req: Request, res: Response, next: NextFunction): void {
+	use(req: Request, res: Response, next: NextFunction): void {
 		const isFitsRole = this.isFitsRole(req.user);
 		if (isFitsRole) {
 			return next();

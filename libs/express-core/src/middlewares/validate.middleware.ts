@@ -18,7 +18,7 @@ export class ValidateMiddleware implements IMiddleware {
 		private validateMode: 'body' | 'query' = 'body'
 	) {}
 
-	execute(req: Request, res: Response, next: NextFunction): void {
+	use(req: Request, res: Response, next: NextFunction): void {
 		const instance = plainToClass(this.classToValidate, req[this.validateMode]);
 		validate(instance, {
 			skipMissingProperties: false,
