@@ -53,6 +53,12 @@
          "~libs/express-core/*": [
             "libs/express-core/src/*"
          ],
+         "~libs/nest-core": [
+            "libs/nest-core/src/index"
+         ],
+         "~libs/nest-core/*": [
+            "libs/nest-core/src/*"
+         ],
          "~libs/react-core": [
             "libs/react-core/src/index"
          ],

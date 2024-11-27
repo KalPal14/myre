@@ -8,12 +8,14 @@ export * from './exceptions/exception-filter/exception.filter';
 
 // middlewares
 export * from './middlewares/common/types/middleware.interface';
-export * from './middlewares/jwt-auth.middleware';
+export * from './middlewares/jwt-auth/base-jwt-auth.middleware';
+export * from './middlewares/jwt-auth/jwt-auth.middleware';
 export * from './middlewares/validate.middleware';
 export * from './middlewares/route-guard/route.guard';
 export * from './middlewares/route-guard/types/user.role.type';
 
 // services
+export * from './services/jwt-service/base-jwt.service';
 export * from './services/jwt-service/jwt.service';
 export * from './services/jwt-service/jwt.service.interface';
 export * from './services/config-service/config.service';
