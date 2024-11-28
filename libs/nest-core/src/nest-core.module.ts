@@ -1,10 +1,11 @@
 import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 
 import { JwtAuthMiddleware } from './middlewares/jwt-auth/jwt-auth.middleware';
 import { JwtService } from './services/jwt-service/jwt.service';
 import { ValidationException } from './exceptions/validation.exception';
+import { RoleGuard } from './guards/role/role.guard';
 
 @Module({
 	imports: [ConfigModule],
@@ -26,6 +27,10 @@ import { ValidationException } from './exceptions/validation.exception';
 					enableImplicitConversion: true,
 				},
 			}),
+		},
+		{
+			provide: APP_GUARD,
+			useClass: RoleGuard,
 		},
 	],
 })
