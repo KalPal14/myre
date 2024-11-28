@@ -82,7 +82,7 @@ describe('Users', () => {
 
 				const res = await request(app).post(USERS_URLS.register).send(DTO);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual({ err: 'user with this email already exists' });
 			});
 		});
@@ -97,11 +97,10 @@ describe('Users', () => {
 
 				const res = await request(app).post(USERS_URLS.register).send(DTO);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual([
 					{
 						property: 'username',
-						value: DTO.username,
 						errors: [
 							'The username field must contain only uppercase and lowercase letters, as well as the symbols - and _.',
 						],
@@ -159,7 +158,7 @@ describe('Users', () => {
 
 				const res = await request(app).post(USERS_URLS.login).send(LOGGIN_DTO);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual({ err: 'There is no user with this email' });
 			});
 		});
@@ -174,7 +173,7 @@ describe('Users', () => {
 
 				const res = await request(app).post(USERS_URLS.login).send(LOGIN_DTO);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual({ err: 'There is no user with this username' });
 			});
 		});
@@ -188,7 +187,7 @@ describe('Users', () => {
 
 				const res = await request(app).post(USERS_URLS.login).send(LOGIN_DTO);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual({ err: 'Incorrect password' });
 			});
 		});

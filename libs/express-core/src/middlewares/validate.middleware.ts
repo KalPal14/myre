@@ -2,15 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { plainToClass } from 'class-transformer';
 import { ValidationError, validate } from 'class-validator';
 
+import { IServerValidationErrMsg } from '~libs/common';
+
 import { IMiddleware } from './common/types/middleware.interface';
 
 import type { ClassConstructor } from 'class-transformer';
-
-interface IErrMsg {
-	property: string;
-	value: string | 'undefined';
-	errors: string[];
-}
 
 export class ValidateMiddleware implements IMiddleware {
 	constructor(
@@ -27,7 +23,7 @@ export class ValidateMiddleware implements IMiddleware {
 		}).then((errors) => {
 			if (errors.length > 0) {
 				const errorsMsg = this.constructErrorsMsg(errors);
-				res.status(422).send(errorsMsg);
+				res.status(400).send(errorsMsg);
 				return;
 			}
 			next();
@@ -37,7 +33,7 @@ export class ValidateMiddleware implements IMiddleware {
 	private constructErrorsMsg(
 		errors: ValidationError[],
 		parentProperties: string[] = []
-	): IErrMsg[] {
+	): IServerValidationErrMsg[] {
 		return errors
 			.map((err) => {
 				if (err.children?.length) {
@@ -47,7 +43,6 @@ export class ValidateMiddleware implements IMiddleware {
 					property: parentProperties.length
 						? `${parentProperties.join('.')}.${err.property}`
 						: err.property,
-					value: err.value || 'undefined',
 					errors: Object.values(err.constraints || {}),
 				};
 			})

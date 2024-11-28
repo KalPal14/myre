@@ -53,7 +53,7 @@ export class PagesServise implements IPagesServise {
 	async create({ url, workspaceId }: CreatePageDto): Promise<PageModel> {
 		const existingPage = await this.pagesRepository.findBy({ url, workspaceId });
 		if (existingPage) {
-			throw new HTTPError(422, 'This page already exists');
+			throw new HTTPError(400, 'This page already exists');
 		}
 
 		const newPage = this.pageFactory.create({ workspaceId, url });
@@ -66,7 +66,7 @@ export class PagesServise implements IPagesServise {
 			throw new HTTPError(404, `page #${pageId} not found`);
 		}
 		if (currentPage.url === url) {
-			throw new HTTPError(422, 'The new URL cannot be the same as the current one');
+			throw new HTTPError(400, 'The new URL cannot be the same as the current one');
 		}
 
 		const pageToMerge = await this.pagesRepository.deepFindBy({ url, workspaceId });

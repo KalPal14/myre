@@ -98,10 +98,9 @@ describe('Workspaces', () => {
 					.send(INCORRECT_DTO)
 					.set('Authorization', `Bearer ${jwt}`);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body[0]).toEqual({
 					property: 'colors',
-					value: 'undefined',
 					errors: ['This field must contain an array of colors in rgb or hex format'],
 				});
 			});

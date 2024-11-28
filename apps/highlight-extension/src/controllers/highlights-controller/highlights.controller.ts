@@ -73,7 +73,7 @@ export class HighlightsController extends BaseController implements IHighlightsC
 
 	update: TController<{ id: string }, UpdateHighlightDto> = async ({ params, body }, res, next) => {
 		if (!Object.keys(body).length) {
-			return next(new HTTPError(422, 'Highlight change data is empty'));
+			return next(new HTTPError(400, 'Highlight change data is empty'));
 		}
 
 		const result = await this.highlightsService.update(+params.id, body);

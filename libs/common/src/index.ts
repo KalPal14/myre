@@ -15,6 +15,7 @@ export * from './services/api-service/chrome-ext-api.service';
 export * from './types/batch-payload.interface';
 export * from './types/email.type';
 export * from './types/jwt-payload.interface';
+export * from './types/server-validation-err-msg.interface';
 
 // utils/dto-validation-rules
 export * from './utils/dto-validation-rules/is-color';

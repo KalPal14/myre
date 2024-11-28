@@ -51,11 +51,10 @@ describe('Highlits', () => {
 					.set('Authorization', `Bearer ${jwt}`)
 					.send({ ...CREATE_HIGHLIGHT_DTO, color: 'color' });
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body).toEqual([
 					{
 						property: 'color',
-						value: 'color',
 						errors: ['The color field must contain a valid RGB or HEX color'],
 					},
 				]);
@@ -104,7 +103,7 @@ describe('Highlits', () => {
 					.get(HIGHLIGHTS_URLS.getMany)
 					.set('Authorization', `Bearer ${jwt}`);
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 				expect(res.body.length).toBeDefined();
 			});
 		});
@@ -290,7 +289,7 @@ describe('Highlits', () => {
 						],
 					});
 
-				expect(res.statusCode).toBe(422);
+				expect(res.statusCode).toBe(400);
 			});
 		});
 	});

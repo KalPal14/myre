@@ -35,7 +35,7 @@ export class UsersService implements IUsersService {
 	async get(id: number): Promise<UserModel> {
 		const user = await this.usersRepository.findBy({ id });
 		if (!user) {
-			throw new HTTPError(422, `user #${id} not found`);
+			throw new HTTPError(400, `user #${id} not found`);
 		}
 
 		return user;
@@ -46,11 +46,11 @@ export class UsersService implements IUsersService {
 	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
 		let existingUser = await this.usersRepository.findBy({ email: registerDto.email });
 		if (existingUser) {
-			throw new HTTPError(422, 'user with this email already exists');
+			throw new HTTPError(400, 'user with this email already exists');
 		}
 		existingUser = await this.usersRepository.findBy({ username: registerDto.username });
 		if (existingUser) {
-			throw new HTTPError(422, 'user with this username already exists');
+			throw new HTTPError(400, 'user with this username already exists');
 		}
 
 		return await this.prismaService.client.$transaction(async (tx) => {
@@ -84,19 +84,19 @@ export class UsersService implements IUsersService {
 		if (userIdentifier.includes('@')) {
 			existingUser = await this.usersRepository.findBy({ email: userIdentifier });
 			if (!existingUser) {
-				throw new HTTPError(422, 'There is no user with this email');
+				throw new HTTPError(400, 'There is no user with this email');
 			}
 		} else {
 			existingUser = await this.usersRepository.findBy({ username: userIdentifier });
 			if (!existingUser) {
-				throw new HTTPError(422, 'There is no user with this username');
+				throw new HTTPError(400, 'There is no user with this username');
 			}
 		}
 
 		const user = this.userFactory.createWithHashPassword(existingUser);
 		const isPasswordTrue = await user.comperePassword(password);
 		if (!isPasswordTrue) {
-			throw new HTTPError(422, 'Incorrect password');
+			throw new HTTPError(400, 'Incorrect password');
 		}
 		return existingUser;
 	}
@@ -108,7 +108,7 @@ export class UsersService implements IUsersService {
 		const validatedUser = await this.validate({ userIdentifier: email || username, password });
 
 		if (password === newPassword) {
-			throw new HTTPError(422, 'new password cannot be the same as the old one');
+			throw new HTTPError(400, 'new password cannot be the same as the old one');
 		}
 
 		const user = await this.userFactory.create({ ...validatedUser, password: newPassword });
@@ -120,12 +120,12 @@ export class UsersService implements IUsersService {
 
 	async changeEmail({ id, email }: IJwtPayload, { newEmail }: ChangeEmailDto): Promise<UserModel> {
 		if (newEmail === email) {
-			throw new HTTPError(422, 'new email cannot be the same as the old one');
+			throw new HTTPError(400, 'new email cannot be the same as the old one');
 		}
 
 		const userWithSameEmail = await this.usersRepository.findBy({ email: newEmail });
 		if (userWithSameEmail) {
-			throw new HTTPError(422, `account with this email already exists`);
+			throw new HTTPError(400, `account with this email already exists`);
 		}
 
 		return this.usersRepository.update(id, {
@@ -138,12 +138,12 @@ export class UsersService implements IUsersService {
 		{ newUsername }: ChangeUsernameDto
 	): Promise<UserModel> {
 		if (newUsername === username) {
-			throw new HTTPError(422, 'new username cannot be the same as the old one');
+			throw new HTTPError(400, 'new username cannot be the same as the old one');
 		}
 
 		const userWithSameUsername = await this.usersRepository.findBy({ username: newUsername });
 		if (userWithSameUsername) {
-			throw new HTTPError(422, `account with this username already exists`);
+			throw new HTTPError(400, `account with this username already exists`);
 		}
 
 		return this.usersRepository.update(id, {
