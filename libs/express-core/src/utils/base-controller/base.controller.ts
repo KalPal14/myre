@@ -3,6 +3,8 @@ import { Response, Router } from 'express';
 import { injectable } from 'inversify';
 
 import { TController } from '~libs/express-core/types/controller.type';
+import { RoleGuard } from '~libs/express-core/middlewares/role-guard/role.guard';
+import { IMiddleware } from '~libs/express-core/middlewares/common/types/middleware.interface';
 
 import { IRouteController } from './types/route.interface';
 
@@ -33,7 +35,8 @@ export abstract class BaseController {
 
 	protected bindRoutes(routes: IRouteController[]): void {
 		routes.forEach((route) => {
-			const middlewares = route.middlewares?.map((m) => m.use.bind(m));
+			const middlewares = this.buildMiddleweres(route.middlewares);
+			const middlewareHandlers = middlewares.map((m) => m.use.bind(m));
 			const handler: TController = async (req, res, next) => {
 				try {
 					await route.func.bind(this)(req, res, next);
@@ -41,8 +44,20 @@ export abstract class BaseController {
 					next(err);
 				}
 			};
-			const pipeline = middlewares ? [...middlewares, handler] : handler;
+			const pipeline = [...middlewareHandlers, handler];
 			this._router[route.method](route.path, pipeline);
 		});
+	}
+
+	private buildMiddleweres(passedMiddleware?: IMiddleware[]): IMiddleware[] {
+		if (!passedMiddleware) {
+			return [new RoleGuard('user')];
+		}
+
+		const isHaveRouteGuard = passedMiddleware.map((m) => m instanceof RoleGuard).includes(true);
+		if (!isHaveRouteGuard) {
+			return [new RoleGuard('user'), ...passedMiddleware];
+		}
+		return passedMiddleware;
 	}
 }

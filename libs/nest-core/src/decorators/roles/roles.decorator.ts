@@ -1,6 +1,6 @@
 import { CustomDecorator, SetMetadata } from '@nestjs/common';
 
-import { TRole } from '~libs/express-core';
+import { TRole } from '~libs/common';
 
 export const ROLES_KEY = 'role';
 

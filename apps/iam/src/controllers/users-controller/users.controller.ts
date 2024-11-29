@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import {
 	HTTPError,
-	RouteGuard,
+	RoleGuard,
 	ValidateMiddleware,
 	IJwtService,
 	TController,
@@ -38,43 +38,41 @@ export class UsersController extends BaseController implements IUsersController 
 				path: USERS_ENDPOINTS.getUserInfo,
 				method: 'get',
 				func: this.getUserInfo,
-				middlewares: [new RouteGuard('user')],
 			},
 			{
 				path: USERS_ENDPOINTS.login,
 				method: 'post',
 				func: this.login,
-				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(LoginDto)],
+				middlewares: [new RoleGuard('guest'), new ValidateMiddleware(LoginDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.register,
 				method: 'post',
 				func: this.register,
-				middlewares: [new RouteGuard('guest'), new ValidateMiddleware(RegistrationDto)],
+				middlewares: [new RoleGuard('guest'), new ValidateMiddleware(RegistrationDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.logout,
 				method: 'post',
 				func: this.logout,
-				middlewares: [new RouteGuard('user')],
 			},
 			{
 				path: USERS_ENDPOINTS.changePassword,
 				method: 'patch',
 				func: this.changePassword,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(ChangePasswordDto)],
+				middlewares: [new ValidateMiddleware(ChangePasswordDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.changeEmail,
 				method: 'patch',
 				func: this.changeEmail,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(ChangeEmailDto)],
+				middlewares: [new ValidateMiddleware(ChangeEmailDto)],
 			},
 			{
 				path: USERS_ENDPOINTS.changeUsername,
 				method: 'patch',
 				func: this.changeUsername,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(ChangeUsernameDto)],
+				middlewares: [new ValidateMiddleware(ChangeUsernameDto)],
 			},
 		]);
 	}

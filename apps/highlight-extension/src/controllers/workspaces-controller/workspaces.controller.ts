@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { BaseController, RouteGuard, TController, ValidateMiddleware } from '~libs/express-core';
+import { BaseController, RoleGuard, TController, ValidateMiddleware } from '~libs/express-core';
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
@@ -19,31 +19,28 @@ export class WorkspacesController extends BaseController implements IWorkspacesC
 				path: WORKSPACES_ENDPOINTS.get,
 				method: 'get',
 				func: this.get,
-				middlewares: [new RouteGuard('user')],
 			},
 			{
 				path: WORKSPACES_ENDPOINTS.getAllOwners,
 				method: 'get',
 				func: this.getAllOwners,
-				middlewares: [new RouteGuard('user')],
 			},
 			{
 				path: WORKSPACES_ENDPOINTS.create,
 				method: 'post',
 				func: this.create,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(CreateWorkspaceDto)],
+				middlewares: [new ValidateMiddleware(CreateWorkspaceDto)],
 			},
 			{
 				path: WORKSPACES_ENDPOINTS.update,
 				method: 'patch',
 				func: this.update,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(UpdateWorkspaceDto)],
+				middlewares: [new ValidateMiddleware(UpdateWorkspaceDto)],
 			},
 			{
 				path: WORKSPACES_ENDPOINTS.delete,
 				method: 'delete',
 				func: this.delete,
-				middlewares: [new RouteGuard('user')],
 			},
 		]);
 	}

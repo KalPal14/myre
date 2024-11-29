@@ -4,7 +4,7 @@ import { ValidationError, validate } from 'class-validator';
 
 import { IServerValidationErrMsg } from '~libs/common';
 
-import { IMiddleware } from './common/types/middleware.interface';
+import { IMiddleware } from '../common/types/middleware.interface';
 
 import type { ClassConstructor } from 'class-transformer';
 

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { RouteGuard, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
+import { RoleGuard, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
 import { GetPageDto, GetPagesDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { PAGES_ENDPOINTS } from '~libs/routes/highlight-extension';
 
@@ -18,19 +18,19 @@ export class PagesController extends BaseController implements IPagesController 
 				path: PAGES_ENDPOINTS.get,
 				method: 'get',
 				func: this.getFullInfo,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(GetPageDto, 'query')],
+				middlewares: [new ValidateMiddleware(GetPageDto, 'query')],
 			},
 			{
 				path: PAGES_ENDPOINTS.getPagesShortInfo,
 				method: 'get',
 				func: this.getPagesShortInfo,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(GetPagesDto, 'query')],
+				middlewares: [new ValidateMiddleware(GetPagesDto, 'query')],
 			},
 			{
 				path: PAGES_ENDPOINTS.update,
 				method: 'patch',
 				func: this.update,
-				middlewares: [new RouteGuard('user'), new ValidateMiddleware(UpdatePageDto)],
+				middlewares: [new ValidateMiddleware(UpdatePageDto)],
 			},
 		]);
 	}

@@ -201,7 +201,7 @@ describe('Users', () => {
 					.set('Authorization', `Bearer ${prevLoginRes.body.jwt}`)
 					.send(LOGIN_USER_DTO);
 
-				expect(res.statusCode).toBe(401);
+				expect(res.statusCode).toBe(403);
 			});
 		});
 	});
@@ -224,7 +224,7 @@ describe('Users', () => {
 			it('return unauthorised error', async () => {
 				const res = await request(app).post(USERS_URLS.logout);
 
-				expect(res.statusCode).toBe(401);
+				expect(res.statusCode).toBe(403);
 			});
 		});
 	});

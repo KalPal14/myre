@@ -21,7 +21,7 @@ export class AppController {
 
 	@Roles('guest')
 	@Get()
-	getHello(@Req() req: Request): any {
-		return { user: req.user ?? null, resp: this.appService.getHello() };
+	getHello(): any {
+		return this.appService.getHello();
 	}
 }

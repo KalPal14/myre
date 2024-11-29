@@ -10,9 +10,8 @@ export * from './exceptions/exception-filter/exception.filter';
 export * from './middlewares/common/types/middleware.interface';
 export * from './middlewares/jwt-auth/base-jwt-auth.middleware';
 export * from './middlewares/jwt-auth/jwt-auth.middleware';
-export * from './middlewares/validate.middleware';
-export * from './middlewares/route-guard/route.guard';
-export * from './middlewares/route-guard/types/user.role.type';
+export * from './middlewares/validate/validate.middleware';
+export * from './middlewares/role-guard/role.guard';
 
 // services
 export * from './services/jwt-service/base-jwt.service';

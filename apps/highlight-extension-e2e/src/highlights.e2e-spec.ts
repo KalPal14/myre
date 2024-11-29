@@ -40,7 +40,7 @@ describe('Highlits', () => {
 			it('return unauthorized error', async () => {
 				const res = await request(app).post(HIGHLIGHTS_URLS.create).send(CREATE_HIGHLIGHT_DTO);
 
-				expect(res.statusCode).toBe(401);
+				expect(res.statusCode).toBe(403);
 			});
 		});
 

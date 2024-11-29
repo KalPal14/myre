@@ -1,5 +1,6 @@
 // constants
 export * from './constants/regexp';
+export * from './constants/role-guard-msgs';
 export * from './constants/spec/jwt-payload';
 
 //errors
