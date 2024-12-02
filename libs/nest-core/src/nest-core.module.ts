@@ -6,6 +6,7 @@ import { JwtAuthMiddleware } from './middlewares/jwt-auth/jwt-auth.middleware';
 import { JwtService } from './services/jwt-service/jwt.service';
 import { ValidationException } from './exceptions/validation.exception';
 import { RoleGuard } from './guards/role/role.guard';
+import { AiService } from './services/ai/ai.service';
 
 @Module({
 	imports: [ConfigModule],
@@ -32,7 +33,9 @@ import { RoleGuard } from './guards/role/role.guard';
 			provide: APP_GUARD,
 			useClass: RoleGuard,
 		},
+		AiService,
 	],
+	exports: [AiService],
 })
 export class NestCoreModule implements NestModule {
 	configure(consumer: MiddlewareConsumer): void {

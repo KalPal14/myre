@@ -2,13 +2,16 @@ import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { Request } from 'express';
 
 import { GetHighlightsDto, CreateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { Roles } from '~libs/nest-core';
+import { AiService, Roles } from '~libs/nest-core';
 
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-	constructor(private readonly appService: AppService) {}
+	constructor(
+		private readonly appService: AppService,
+		private readonly aiService: AiService
+	) {}
 
 	@Post()
 	postHello(
@@ -23,5 +26,11 @@ export class AppController {
 	@Get()
 	getHello(): any {
 		return this.appService.getHello();
+	}
+
+	@Roles('guest', 'user')
+	@Get('/prompt')
+	prompt(@Query() query: { prompt: string }): any {
+		return this.aiService.prompt(query.prompt, { originality: 0.5 });
 	}
 }

@@ -9,6 +9,8 @@ export * from './errors/http-error/http-error-payload.type';
 export * from './errors/http-error/http-err-handler';
 
 // services
+export * from './services/ai-service/infrastracture/groq/groq.service';
+export * from './services/ai-service/port/ai.service';
 export * from './services/api-service/api.servise';
 export * from './services/api-service/chrome-ext-api.service';
 
