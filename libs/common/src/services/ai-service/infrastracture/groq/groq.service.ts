@@ -11,19 +11,28 @@ export class GroqService extends AiService {
 		this.groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 	}
 
-	async prompt(prompt: string, options?: Partial<IAiOptions>): Promise<string | null> {
-		const groqOptions = this.buildPromptOptions(options);
-		const groqResp = await this.groq.chat.completions.create({
-			messages: [
-				{
-					role: 'user',
-					content: prompt,
-				},
-			],
-			model: 'llama3-8b-8192',
-			...groqOptions,
-		});
-		return groqResp.choices[0].message.content;
+	async prompt<ReturnType = string>(
+		prompt: string,
+		options?: Partial<IAiOptions>
+	): Promise<ReturnType | null> {
+		try {
+			const groqOptions = this.buildPromptOptions(options);
+			const completions = await this.groq.chat.completions.create({
+				messages: [
+					{
+						role: 'user',
+						content: prompt,
+					},
+				],
+				model: 'llama-3.1-70b-versatile',
+				...groqOptions,
+			});
+			const response = completions.choices[0].message.content;
+			if (!response) return null;
+			return groqOptions.response_format?.type === 'json_object' ? JSON.parse(response) : response;
+		} catch {
+			return null;
+		}
 	}
 
 	private buildPromptOptions(

@@ -4,7 +4,7 @@ export interface IAiOptions {
 	maxTokens: number;
 }
 
-export abstract class AiService {
+export abstract class AiService<ReturnType = string> {
 	protected abstract options: IAiOptions;
-	abstract prompt(prompt: string, options?: Partial<IAiOptions>): Promise<string | null>;
+	abstract prompt(prompt: string, options?: Partial<IAiOptions>): Promise<ReturnType | null>;
 }

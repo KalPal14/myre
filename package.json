@@ -30,6 +30,7 @@
 		"libs/*"
 	],
 	"dependencies": {
+		"dedent-js": "^1.0.1",
 		"dotenv-cli": "^7.4.4",
 		"groq-sdk": "^0.8.0",
 		"lodash": "^4.17.21",

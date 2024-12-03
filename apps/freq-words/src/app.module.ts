@@ -8,6 +8,7 @@ import { NestCoreModule } from '~libs/nest-core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TranslationModule } from './translation/translation.module';
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { AppService } from './app.service';
 			synchronize: process.env.NODE_ENV !== 'prod',
 		}),
 		NestCoreModule,
+		TranslationModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
