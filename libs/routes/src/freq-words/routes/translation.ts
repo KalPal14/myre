@@ -9,5 +9,5 @@ export const TRANSLATION_URLS = {
 };
 
 export const TRANSLATION_FULL_URLS = {
-	translate: `${process.env.FREQ_WORDS_URL}${TRANSLATION_BASE_ROUTE}/translate`,
+	translate: `${process.env.FREQ_WORDS_URL}${TRANSLATION_URLS.translate}`,
 };
