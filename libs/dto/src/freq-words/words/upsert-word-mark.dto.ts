@@ -1,10 +1,9 @@
-import { DictionaryDto } from '../translation/common/dictionary.dto';
-
+import { DictionaryDto } from './common/dictionary.dto';
 import { WordDto } from './common/word.dto';
 
-export class MarkWordDto {
+export class UpsertWordMarkDto {
 	word: WordDto;
 	dictionaryFrom: DictionaryDto;
 	dictionaryTo: DictionaryDto;
-	wordSets: string[];
+	workspaceId: number;
 }

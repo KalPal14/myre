@@ -1,8 +1,8 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class DictionaryDto {
-	@IsString()
-	language: string;
+	@IsNumber()
+	languageId: number;
 
 	@IsString()
 	synonyms: string[];
