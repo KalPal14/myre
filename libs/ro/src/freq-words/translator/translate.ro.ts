@@ -1,9 +1,11 @@
-interface ITranslate {
+interface ITranslation {
 	type: 'translation';
 	translation: string[];
 }
+
 interface IDictionary {
 	type: 'dictionary';
+	lemma: string;
 	translation: string[];
 	synonyms: string[];
 	from_description: string;
@@ -11,4 +13,4 @@ interface IDictionary {
 	examples: { from: string; to: string }[];
 }
 
-export type TTranslateRo = ITranslate | IDictionary;
+export type TTranslateRo = ITranslation | IDictionary;
