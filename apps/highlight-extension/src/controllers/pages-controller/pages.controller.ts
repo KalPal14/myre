@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { RoleGuard, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
+import { ValidateMiddleware, TController, BaseController } from '~libs/express-core';
 import { GetPageDto, GetPagesDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { PAGES_ENDPOINTS } from '~libs/routes/highlight-extension';
 

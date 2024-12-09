@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { BaseController, RoleGuard, TController, ValidateMiddleware } from '~libs/express-core';
+import { BaseController, TController, ValidateMiddleware } from '~libs/express-core';
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_ENDPOINTS } from '~libs/routes/highlight-extension';
 

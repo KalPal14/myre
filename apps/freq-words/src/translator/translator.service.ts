@@ -7,7 +7,7 @@ import { TTranslateRo } from '~libs/ro/freq-words';
 import { translatePrompt } from './prompts/translate.prompt';
 
 @Injectable()
-export class TranslationService {
+export class TranslatorService {
 	constructor(private readonly aiService: AiService) {}
 
 	async translate({ from, to, translate }: TranslateDto): Promise<TTranslateRo | null> {
