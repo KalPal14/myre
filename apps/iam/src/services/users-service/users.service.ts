@@ -56,7 +56,6 @@ export class UsersService implements IUsersService {
 		return await this.prismaService.client.$transaction(async (tx) => {
 			const newUser = await this.userFactory.create(registerDto);
 			const newUserEntity = await tx.userModel.create({ data: newUser });
-			// TODO: я бы как-то без jwt это сделал бы
 			// TODO: NODE_TLS_REJECT_UNAUTHORIZED=0 убрать
 
 			const jwt = await this.jwtService.generate({

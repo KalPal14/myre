@@ -9,7 +9,7 @@ export class Language {
 	@PrimaryColumn()
 	id: number;
 
-	@Column()
+	@Column({ unique: true })
 	name: string;
 
 	@OneToMany(() => Example, (example) => example.language)
