@@ -4,7 +4,6 @@
     "outDir": "../../dist",
   },
   "include": [
-    "ormconfig.ts",
     "src/**/*",
     "../../global-types/*"
   ],
