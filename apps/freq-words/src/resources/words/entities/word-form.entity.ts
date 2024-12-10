@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Language } from '~/freq-words/languages/entities/language.entity';
-import { Dictionary } from '~/freq-words/translator/entities/dictionary.entity';
+import { Language } from '~/freq-words/resources/languages/entities/language.entity';
+import { Dictionary } from '~/freq-words/resources/translator/entities/dictionary.entity';
 
 import { Word } from './word.entity';
 import { WordFormMark } from './word-form-mark.entity';

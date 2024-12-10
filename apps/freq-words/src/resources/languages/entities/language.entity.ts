@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
-import { Dictionary } from '~/freq-words/translator/entities/dictionary.entity';
-import { Example } from '~/freq-words/translator/entities/example.entity';
-import { Workspace } from '~/freq-words/workspaces/entities/workspace.entity';
+import { Dictionary } from '~/freq-words/resources/translator/entities/dictionary.entity';
+import { Example } from '~/freq-words/resources/translator/entities/example.entity';
+import { Workspace } from '~/freq-words/resources/workspaces/entities/workspace.entity';
 
 @Entity()
 export class Language {

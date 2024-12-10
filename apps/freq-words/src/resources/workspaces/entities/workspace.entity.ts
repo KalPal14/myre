@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Language } from '~/freq-words/languages/entities/language.entity';
-import { WordMark } from '~/freq-words/words/entities/word-mark.entity';
+import { Language } from '~/freq-words/resources/languages/entities/language.entity';
+import { WordMark } from '~/freq-words/resources/words/entities/word-mark.entity';
 
 @Entity()
 export class Workspace {

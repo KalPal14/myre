@@ -8,8 +8,8 @@ import {
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Language } from '~/freq-words/languages/entities/language.entity';
-import { WordForm } from '~/freq-words/words/entities/word-form.entity';
+import { Language } from '~/freq-words/resources/languages/entities/language.entity';
+import { WordForm } from '~/freq-words/resources/words/entities/word-form.entity';
 
 import { Example } from './example.entity';
 

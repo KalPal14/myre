@@ -6,12 +6,10 @@ import { ConfigModule } from '@nestjs/config';
 
 import { NestCoreModule } from '~libs/nest-core';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TranslationModule } from './translator/translator.module';
-import { LanguagesModule } from './languages/languages.module';
-import { WordsModule } from './words/words.module';
-import { WorkspacesModule } from './workspaces/workspaces.module';
+import { TranslationModule } from './resources/translator/translator.module';
+import { LanguagesModule } from './resources/languages/languages.module';
+import { WordsModule } from './resources/words/words.module';
+import { WorkspacesModule } from './resources/workspaces/workspaces.module';
 
 @Module({
 	imports: [
@@ -38,7 +36,5 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
 		WordsModule,
 		WorkspacesModule,
 	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Workspace } from '~/freq-words/workspaces/entities/workspace.entity';
+import { Workspace } from '~/freq-words/resources/workspaces/entities/workspace.entity';
 
 import { WordFormMark } from './word-form-mark.entity';
 

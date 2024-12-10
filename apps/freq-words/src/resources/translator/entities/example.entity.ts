@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm/browser';
 
-import { Language } from '~/freq-words/languages/entities/language.entity';
+import { Language } from '~/freq-words/resources/languages/entities/language.entity';
 
 import { Dictionary } from './dictionary.entity';
 
