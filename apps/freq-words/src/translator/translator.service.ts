@@ -11,6 +11,7 @@ export class TranslatorService {
 	constructor(private readonly aiService: AiService) {}
 
 	async translate({ from, to, translate }: TranslateDto): Promise<TTranslateRo | null> {
-		return this.aiService.prompt<TTranslateRo>(translatePrompt(from, to, translate));
+		// TODO
+		return this.aiService.prompt<TTranslateRo>(translatePrompt('Russian', 'English', translate));
 	}
 }

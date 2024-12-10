@@ -14,7 +14,11 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:cov": "jest --coverage",
-		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+		"migration:generate": "npx typeorm migration:generate ./src/migrations/generated -d ../../dist/apps/freq-words/ormconfig.js",
+		"migration:create": "npx typeorm migration:create ./migrations/$npm_config_name",
+		"migration:run": "npm run build && npx typeorm migration:run -d ../../dist/apps/freq-words/ormconfig.js",
+		"migration:revert": "npx typeorm migration:revert -d ../../dist/apps/freq-words/ormconfig.js"
 	},
 	"dependencies": {
 		"@nestjs/common": "^10.0.0",

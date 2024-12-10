@@ -1,0 +1,14 @@
+{
+	"name": "freq-words",
+	"sourceRoot": "src",
+	"projectType": "application",
+	"targets": {
+		"migration:create": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/freq-words",
+				"command": "npm run migration:create --name=${name:-created}"
+			}
+		}
+	}
+}
