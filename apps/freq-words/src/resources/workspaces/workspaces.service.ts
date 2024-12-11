@@ -1,27 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsRelations, Repository } from 'typeorm';
 
-import { CreateWorkspaceDto } from './dto/create-workspace.dto';
-import { UpdateWorkspaceDto } from './dto/update-workspace.dto';
+import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/freq-words';
+import { IJwtPayload } from '~libs/common/index';
+
+import { LanguagesService } from '../languages/languages.service';
+
+import { Workspace } from './entities/workspace.entity';
 
 @Injectable()
 export class WorkspacesService {
-	create(createWorkspaceDto: CreateWorkspaceDto): string {
-		return 'This action adds a new workspace';
+	constructor(
+		@InjectRepository(Workspace) private workspaceRepository: Repository<Workspace>,
+		private languagesService: LanguagesService
+	) {}
+
+	async create(user: IJwtPayload, dto: CreateWorkspaceDto): Promise<Workspace> {
+		const knownLanguage = await this.languagesService.getOne(dto.knownLanguageId);
+		const targetLanguage = await this.languagesService.getOne(dto.targetLanguageId);
+		const workspaceName = dto.name ?? `${knownLanguage.name}-${targetLanguage.name}`;
+
+		const existingWorkspace = await this.workspaceRepository.findOne({
+			where: { ownerId: user.id, name: workspaceName },
+		});
+		if (existingWorkspace) {
+			throw new BadRequestException({
+				err: `User ${user.username} already has '${workspaceName}' workspace`,
+			});
+		}
+
+		const workspace = this.workspaceRepository.create({
+			ownerId: user.id,
+			name: workspaceName,
+			knownLanguage,
+			targetLanguage,
+		});
+		return this.workspaceRepository.save(workspace);
 	}
 
-	findAll(): string {
-		return `This action returns all workspaces`;
+	getMany(user: IJwtPayload): Promise<Workspace[]> {
+		return this.workspaceRepository.find({ where: { ownerId: user.id } });
 	}
 
-	findOne(id: number): string {
-		return `This action returns a #${id} workspace`;
+	async getOne(id: number, relations?: FindOptionsRelations<Workspace>): Promise<Workspace> {
+		const workspace = await this.workspaceRepository.findOne({
+			where: { id },
+			relations,
+		});
+		if (!workspace) {
+			throw new NotFoundException({ err: `Workspace #${id} not found` });
+		}
+		return workspace;
 	}
 
-	update(id: number, updateWorkspaceDto: UpdateWorkspaceDto): string {
-		return `This action updates a #${id} workspace`;
+	async update(id: number, dto: UpdateWorkspaceDto): Promise<Workspace> {
+		const workspace = await this.workspaceRepository.preload({ id, ...dto });
+		if (!workspace) {
+			throw new NotFoundException({ err: `Workspace #${id} not found` });
+		}
+		return this.workspaceRepository.save(workspace);
 	}
 
-	remove(id: number): string {
-		return `This action removes a #${id} workspace`;
+	async delete(id: number): Promise<Workspace> {
+		const workspace = await this.getOne(id);
+		await this.workspaceRepository.remove(workspace);
+		return { ...workspace, id };
 	}
 }

@@ -1,12 +1,13 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateWorkspaceDto {
+	@IsOptional()
 	@IsString()
-	readonly name: string;
+	readonly name?: string;
 
 	@IsNumber()
-	readonly knownLanguage: number;
+	readonly knownLanguageId: number;
 
 	@IsNumber()
-	readonly targetLanguage: number;
+	readonly targetLanguageId: number;
 }

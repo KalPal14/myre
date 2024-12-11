@@ -1,3 +1,3 @@
-import { IGetWorkspaceRo } from './get-workspace.ro';
+import { IBaseWorkspaceRo } from './common/base-workspace.ro';
 
-export type TGetOwnersWorkspacesRo = IGetWorkspaceRo[];
+export type TGetOwnersWorkspacesRo = IBaseWorkspaceRo[];
