@@ -24,6 +24,8 @@ export class RoleGuard implements CanActivate {
 	private isFitsRole(user: IJwtPayload | undefined, roles: TRole[]): boolean {
 		const isFits = roles.map((role) => {
 			switch (role) {
+				case '*':
+					return true;
 				case 'user':
 					return !!user;
 				case 'guest':

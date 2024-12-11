@@ -1,1 +1,1 @@
-export type TRole = 'user' | 'guest';
+export type TRole = '*' | 'user' | 'guest';

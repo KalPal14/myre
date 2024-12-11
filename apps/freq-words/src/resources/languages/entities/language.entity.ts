@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Dictionary } from '~/freq-words/resources/translator/entities/dictionary.entity';
 import { Example } from '~/freq-words/resources/translator/entities/example.entity';
@@ -6,7 +6,7 @@ import { Workspace } from '~/freq-words/resources/workspaces/entities/workspace.
 
 @Entity()
 export class Language {
-	@PrimaryColumn()
+	@PrimaryGeneratedColumn()
 	id: number;
 
 	@Column({ unique: true })

@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { join } from 'path';
 
 import { DataSource, DataSourceOptions } from 'typeorm';

@@ -1,27 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ILike, Repository } from 'typeorm';
 
-import { CreateLanguageDto } from './dto/create-language.dto';
-import { UpdateLanguageDto } from './dto/update-language.dto';
+import { GetLanguagesDto } from '~libs/dto/freq-words';
+
+import { Language } from './entities/language.entity';
 
 @Injectable()
 export class LanguagesService {
-	create(createLanguageDto: CreateLanguageDto): string {
-		return 'This action adds a new language';
+	constructor(@InjectRepository(Language) private languageRepository: Repository<Language>) {}
+
+	async getMany({ q }: GetLanguagesDto): Promise<Language[]> {
+		return this.languageRepository.find({ where: q ? { name: ILike(`%${q}%`) } : undefined });
 	}
 
-	findAll(): string {
-		return `This action returns all languages`;
-	}
-
-	findOne(id: number): string {
-		return `This action returns a #${id} language`;
-	}
-
-	update(id: number, updateLanguageDto: UpdateLanguageDto): string {
-		return `This action updates a #${id} language`;
-	}
-
-	remove(id: number): string {
-		return `This action removes a #${id} language`;
+	async getOne(id: number): Promise<Language> {
+		const language = await this.languageRepository.findOne({ where: { id } });
+		if (!language) {
+			throw new NotFoundException({ err: `Language #${id} not found` });
+		}
+		return language;
 	}
 }

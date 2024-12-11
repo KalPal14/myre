@@ -1,35 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+
+import { LANGUAGES_BASE_ROUTE, LANGUAGES_ENDPOINTS } from '~libs/routes/freq-words';
+import { GetLanguagesDto } from '~libs/dto/freq-words';
+import { IGetLanguageRo, TGetLanguagesRo } from '~libs/ro/freq-words';
+import { Roles } from '~libs/nest-core';
 
 import { LanguagesService } from './languages.service';
-import { CreateLanguageDto } from './dto/create-language.dto';
-import { UpdateLanguageDto } from './dto/update-language.dto';
 
-@Controller('languages')
+@Controller(LANGUAGES_BASE_ROUTE)
 export class LanguagesController {
 	constructor(private readonly languagesService: LanguagesService) {}
 
-	@Post()
-	create(@Body() createLanguageDto: CreateLanguageDto): string {
-		return this.languagesService.create(createLanguageDto);
+	@Roles('*')
+	@Get(LANGUAGES_ENDPOINTS.getMany)
+	getMany(@Query() query: GetLanguagesDto): Promise<TGetLanguagesRo> {
+		return this.languagesService.getMany(query);
 	}
 
-	@Get()
-	findAll(): string {
-		return this.languagesService.findAll();
-	}
-
-	@Get(':id')
-	findOne(@Param('id') id: string): string {
-		return this.languagesService.findOne(+id);
-	}
-
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateLanguageDto: UpdateLanguageDto): string {
-		return this.languagesService.update(+id, updateLanguageDto);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string): string {
-		return this.languagesService.remove(+id);
+	@Roles('*')
+	@Get(LANGUAGES_ENDPOINTS.get)
+	getOne(@Param('id') id: string): Promise<IGetLanguageRo> {
+		return this.languagesService.getOne(+id);
 	}
 }

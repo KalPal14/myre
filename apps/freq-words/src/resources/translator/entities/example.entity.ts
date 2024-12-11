@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ManyToOne } from 'typeorm/browser';
+import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
 
