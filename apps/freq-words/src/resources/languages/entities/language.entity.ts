@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Dictionary } from '~/freq-words/resources/translator/entities/dictionary.entity';
+import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
 import { Example } from '~/freq-words/resources/translator/entities/example.entity';
 import { Workspace } from '~/freq-words/resources/workspaces/entities/workspace.entity';
 
@@ -15,8 +15,8 @@ export class Language {
 	@OneToMany(() => Example, (example) => example.language)
 	examples: Example[];
 
-	@OneToMany(() => Dictionary, (dictionary) => dictionary.language)
-	dictionaries: Dictionary[];
+	@OneToMany(() => Definition, (definition) => definition.language)
+	dictionaries: Definition[];
 
 	@OneToMany(() => Workspace, (workspace) => workspace.knownLanguage)
 	knownLanguageWorkspaces: Workspace[];

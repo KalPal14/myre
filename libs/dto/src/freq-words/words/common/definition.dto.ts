@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class DictionaryDto {
+export class DefinitionDto {
 	@IsNumber()
 	languageId: number;
 

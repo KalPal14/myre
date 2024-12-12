@@ -3,8 +3,8 @@ interface ITranslation {
 	translation: string[];
 }
 
-interface IDictionary {
-	type: 'dictionary';
+interface IDefinition {
+	type: 'definition';
 	lemma: string;
 	translation: string[];
 	synonyms: string[];
@@ -13,4 +13,4 @@ interface IDictionary {
 	examples: { from: string; to: string }[];
 }
 
-export type TTranslateRo = ITranslation | IDictionary;
+export type TTranslateRo = ITranslation | IDefinition;

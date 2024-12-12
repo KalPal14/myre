@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
 
-import { Dictionary } from './dictionary.entity';
+import { Definition } from './definition.entity';
 
 @Entity()
 export class Example {
@@ -12,6 +12,6 @@ export class Example {
 	@ManyToOne(() => Language, (language) => language.id)
 	language: Language;
 
-	@ManyToOne(() => Dictionary, (dictionary) => dictionary.id)
-	dictionary: Dictionary;
+	@ManyToOne(() => Definition, (definition) => definition.id)
+	definition: Definition;
 }

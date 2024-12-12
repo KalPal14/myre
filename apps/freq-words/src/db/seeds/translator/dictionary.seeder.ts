@@ -1,17 +1,17 @@
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
-import { Dictionary } from '~/freq-words/resources/translator/entities/dictionary.entity';
+import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
 import {
-	DICTIONARY,
-	DICTIONARY_LEMMA,
-} from '~/freq-words/resources/translator/mocks/dictionary.entity';
+	DEFINITION,
+	DEFINITION_LEMMA,
+} from '~/freq-words/resources/translator/mocks/definition.entity';
 
-export default class DictionarySeeder implements Seeder {
+export default class DefinitionSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
-		await dataSource.query('TRUNCATE "dictionary" RESTART IDENTITY;');
+		await dataSource.query('TRUNCATE "definition" RESTART IDENTITY;');
 
-		const repository = dataSource.getRepository(Dictionary);
-		await repository.insert([DICTIONARY, DICTIONARY_LEMMA]);
+		const repository = dataSource.getRepository(Definition);
+		await repository.insert([DEFINITION, DEFINITION_LEMMA]);
 	}
 }
