@@ -6,7 +6,7 @@ export const WORD_FORM_LEMMA: WordForm = {
 	name: 'keep',
 	isLemma: true,
 	language: LANGUAGE_ENGLISH,
-	// dictionaries: [],
+	definitions: [],
 	wordFormsMarks: [],
 };
 
@@ -15,6 +15,6 @@ export const WORD_FORM: WordForm = {
 	name: 'kept',
 	isLemma: false,
 	language: LANGUAGE_ENGLISH,
-	// dictionaries: [],
+	definitions: [],
 	wordFormsMarks: [],
 };

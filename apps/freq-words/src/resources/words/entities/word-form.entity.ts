@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
-// import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
+import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
 
 import { WordFormMark } from './word-form-mark.entity';
 
@@ -22,6 +22,6 @@ export class WordForm {
 	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordForm)
 	wordFormsMarks: WordFormMark[];
 
-	// @OneToMany(() => Definition, (definition) => definition.wordForm)
-	// dictionaries: Definition[];
+	@OneToMany(() => Definition, (definition) => definition.wordForm)
+	definitions: Definition[];
 }

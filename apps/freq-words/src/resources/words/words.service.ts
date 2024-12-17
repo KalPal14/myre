@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { GetWordsMarksDto, UpsertWordMarkDto } from '~libs/dto/freq-words';
+import { DefinitionDto } from '~libs/dto/freq-words/words/common/definition.dto';
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { LanguagesService } from '../languages/languages.service';
