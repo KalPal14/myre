@@ -28,18 +28,18 @@ export class WordsService {
 	) {}
 
 	async upsertMark(dto: UpsertWordMarkDto): Promise<WordMark> {
-		const language = await this.languagesService.getOne(dto.word.languageId);
+		const language = await this.languagesService.getOne(dto.definitionFrom.languageId);
 		const workspace = await this.workspacesService.getOne(dto.workspaceId);
 
 		let lemmaMark: WordFormMark | null = null;
-		if (dto.word.lemma && dto.word.lemma !== dto.word.name) {
-			const lemma = await this.preloadWordForm({ isLemma: true, language, name: dto.word.lemma });
+		if (dto.lemma && dto.lemma !== dto.wordForm) {
+			const lemma = await this.preloadWordForm({ isLemma: true, language, name: dto.lemma });
 			lemmaMark = await this.preloadWordFormMark({ wordForm: lemma }, workspace);
 		}
 		const wordForm = await this.preloadWordForm({
-			isLemma: dto.word.lemma === dto.word.name,
+			isLemma: dto.lemma === dto.wordForm,
 			language,
-			name: dto.word.name,
+			name: dto.wordForm,
 		});
 		await this.preloadDefinition(dto.definitionFrom, wordForm);
 		await this.preloadDefinition(dto.definitionTo, wordForm);

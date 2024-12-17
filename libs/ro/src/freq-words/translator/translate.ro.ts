@@ -1,16 +1,15 @@
-interface ITranslation {
+import { IDefinitionRo } from './common/definition.ro';
+
+interface ITranslationType {
 	type: 'translation';
 	translation: string[];
 }
 
-interface IDefinition {
+interface IDefinitionType {
 	type: 'definition';
-	lemma: string;
-	translation: string[];
-	synonyms: string[];
-	from_description: string;
-	to_description: string;
-	examples: { from: string; to: string }[];
+	lemma: string | null;
+	definitionFrom: IDefinitionRo;
+	definitionTo: IDefinitionRo;
 }
 
-export type TTranslateRo = ITranslation | IDefinition;
+export type TTranslateRo = ITranslationType | IDefinitionType;

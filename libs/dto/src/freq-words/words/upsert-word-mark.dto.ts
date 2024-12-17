@@ -1,14 +1,18 @@
-import { IsDefined, IsNumber, ValidateNested } from 'class-validator';
+import { IsDefined, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { DefinitionDto } from './common/definition.dto';
-import { WordDto } from './common/word.dto';
 
 export class UpsertWordMarkDto {
-	@IsDefined()
-	@ValidateNested()
-	@Type(() => WordDto)
-	word: WordDto;
+	@IsNumber()
+	workspaceId: number;
+
+	@IsString()
+	wordForm: string;
+
+	@IsOptional()
+	@IsString()
+	lemma: string | null;
 
 	@IsDefined()
 	@ValidateNested()
@@ -19,7 +23,4 @@ export class UpsertWordMarkDto {
 	@ValidateNested()
 	@Type(() => DefinitionDto)
 	definitionTo: DefinitionDto;
-
-	@IsNumber()
-	workspaceId: number;
 }
