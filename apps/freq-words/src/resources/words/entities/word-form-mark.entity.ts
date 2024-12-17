@@ -8,12 +8,12 @@ export class WordFormMark {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column({ default: 0 })
 	count: number;
 
-	@ManyToOne(() => WordMark, (wordMark) => wordMark.id)
+	@ManyToOne(() => WordMark, (wordMark) => wordMark.wordFormsMarks)
 	wordMark: WordMark;
 
-	@ManyToOne(() => WordForm, (wordForm) => wordForm.id)
+	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormsMarks, { cascade: true })
 	wordForm: WordForm;
 }

@@ -7,11 +7,11 @@ import { LanguagesModule } from '../languages/languages.module';
 
 import { TranslatorService } from './translator.service';
 import { TranslatorController } from './translator.controller';
-import { Definition } from './entities/definition.entity';
-import { Example } from './entities/example.entity';
+// import { Definition } from './entities/definition.entity';
+// import { Example } from './entities/example.entity';
 
 @Module({
-	imports: [NestCoreModule, TypeOrmModule.forFeature([Definition, Example]), LanguagesModule],
+	imports: [NestCoreModule, LanguagesModule],
 	controllers: [TranslatorController],
 	providers: [TranslatorService],
 })

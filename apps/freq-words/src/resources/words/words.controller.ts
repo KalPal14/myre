@@ -1,35 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Query } from '@nestjs/common';
+
+import { WORDS_BASE_ROUTE, WORDS_ENDPOINTS } from '~libs/routes/freq-words';
+import { GetWordsMarksDto, UpsertWordMarkDto } from '~libs/dto/freq-words';
 
 import { WordsService } from './words.service';
-import { CreateWordDto } from './dto/create-word.dto';
-import { UpdateWordDto } from './dto/update-word.dto';
+import { WordMark } from './entities/word-mark.entity';
 
-@Controller('words')
+// TODO: Return ROs
+@Controller(WORDS_BASE_ROUTE)
 export class WordsController {
 	constructor(private readonly wordsService: WordsService) {}
 
-	@Post()
-	create(@Body() createWordDto: CreateWordDto): string {
-		return this.wordsService.create(createWordDto);
+	@Patch(WORDS_ENDPOINTS.upsertMark)
+	upsertMark(@Body() dto: UpsertWordMarkDto): Promise<WordMark> {
+		return this.wordsService.upsertMark(dto);
 	}
 
-	@Get()
-	findAll(): string {
-		return this.wordsService.findAll();
+	@Get(WORDS_ENDPOINTS.getManyMarks)
+	getManyMarks(@Query() dto: GetWordsMarksDto): Promise<WordMark[]> {
+		return this.wordsService.getManyMarks(dto);
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string): string {
-		return this.wordsService.findOne(+id);
-	}
-
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateWordDto: UpdateWordDto): string {
-		return this.wordsService.update(+id, updateWordDto);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string): string {
-		return this.wordsService.remove(+id);
+	@Get(WORDS_ENDPOINTS.getMark)
+	getMark(@Param('id') id: string): Promise<WordMark> {
+		return this.wordsService.getOneMark(+id);
 	}
 }

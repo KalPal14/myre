@@ -4,12 +4,12 @@ export class DefinitionDto {
 	@IsNumber()
 	languageId: number;
 
-	@IsString()
+	@IsString({ each: true })
 	synonyms: string[];
 
 	@IsString()
 	description: string;
 
-	@IsString()
+	@IsString({ each: true })
 	examples: string[];
 }

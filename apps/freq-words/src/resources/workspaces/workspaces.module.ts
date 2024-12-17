@@ -13,5 +13,6 @@ import { Workspace } from './entities/workspace.entity';
 	imports: [NestCoreModule, TypeOrmModule.forFeature([Workspace]), LanguagesModule],
 	controllers: [WorkspacesController],
 	providers: [WorkspacesService],
+	exports: [WorkspacesService],
 })
 export class WorkspacesModule {}

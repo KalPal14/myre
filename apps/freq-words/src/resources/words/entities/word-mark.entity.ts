@@ -9,12 +9,12 @@ export class WordMark {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column({ default: 0 })
 	count: number;
 
-	@ManyToOne(() => Workspace, (workspace) => workspace.id)
+	@ManyToOne(() => Workspace, (workspace) => workspace.wordsMarks)
 	workspace: Workspace;
 
-	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordMark)
-	wordFormMarks: WordFormMark[];
+	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordMark, { cascade: true })
+	wordFormsMarks: WordFormMark[];
 }

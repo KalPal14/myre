@@ -5,6 +5,7 @@ export * from './languages/get-languages.dto';
 export * from './translator/translate.dto';
 
 // words
+export * from './words/get-words-marks.dto';
 export * from './words/upsert-word-mark.dto';
 
 // workspaces

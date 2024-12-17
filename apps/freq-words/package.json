@@ -9,6 +9,7 @@
 		"build": "nest build",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
+		"start:repl": "nest start --entryFile=apps/freq-words/src/repl",
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node ../../dist/apps/freq-words/main",
 		"test": "jest",
