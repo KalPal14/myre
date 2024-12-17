@@ -1,6 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-
-import { Language } from '~/freq-words/resources/languages/entities/language.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
 
 import { Definition } from './definition.entity';
 
@@ -9,8 +7,8 @@ export class Example {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne(() => Language, (language) => language.id)
-	language: Language;
+	@Column()
+	phrase: string;
 
 	@ManyToOne(() => Definition, (definition) => definition.id)
 	definition: Definition;

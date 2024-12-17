@@ -8,6 +8,8 @@ import { DefinitionDto } from '~libs/dto/freq-words/words/common/definition.dto'
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { LanguagesService } from '../languages/languages.service';
 import { Workspace } from '../workspaces/entities/workspace.entity';
+import { Definition } from '../translator/entities/definition.entity';
+import { Example } from '../translator/entities/example.entity';
 
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
@@ -19,6 +21,8 @@ export class WordsService {
 		@InjectRepository(WordForm) private wordFormRepository: Repository<WordForm>,
 		@InjectRepository(WordMark) private wordMarkRepository: Repository<WordMark>,
 		@InjectRepository(WordFormMark) private wordFormMarkRepository: Repository<WordFormMark>,
+		@InjectRepository(Definition) private definitionRepository: Repository<Definition>,
+		@InjectRepository(Example) private exampleRepository: Repository<Example>,
 		private languagesService: LanguagesService,
 		private workspacesService: WorkspacesService
 	) {}
@@ -32,7 +36,13 @@ export class WordsService {
 			const lemma = await this.preloadWordForm({ isLemma: true, language, name: dto.word.lemma });
 			lemmaMark = await this.preloadWordFormMark({ wordForm: lemma }, workspace);
 		}
-		const wordForm = await this.preloadWordForm({ isLemma: false, language, name: dto.word.name });
+		const wordForm = await this.preloadWordForm({
+			isLemma: dto.word.lemma === dto.word.name,
+			language,
+			name: dto.word.name,
+		});
+		await this.preloadDefinition(dto.definitionFrom, wordForm);
+		await this.preloadDefinition(dto.definitionTo, wordForm);
 		const wordFormMark = await this.preloadWordFormMark({ wordForm }, workspace);
 		const wordMark = await this.preloadWordMark(workspace, wordFormMark, lemmaMark);
 
@@ -52,12 +62,42 @@ export class WordsService {
 	async getOneMark(id: number): Promise<WordMark> {
 		const mark = await this.wordMarkRepository.findOne({
 			where: { id },
-			relations: { wordFormsMarks: { wordForm: true } },
+			relations: { wordFormsMarks: { wordForm: { definitions: { examples: true } } } },
 		});
 		if (!mark) {
 			throw new NotFoundException({ err: `word mark #${id} not found` });
 		}
 		return mark;
+	}
+
+	async preloadDefinition(
+		{ languageId, examples, description, synonyms }: DefinitionDto,
+		wordForm: WordForm
+	): Promise<Definition> {
+		const language = await this.languagesService.getOne(languageId);
+		const existedDefinition = await this.definitionRepository.findOne({
+			where: { language, wordForm },
+			relations: { examples: true },
+		});
+		if (!existedDefinition) {
+			const examplesEntities = await this.exampleRepository.create(
+				examples.map((example) => ({ phrase: example }))
+			);
+			const synonymsEntities = await Promise.all(
+				synonyms.map((synonym) =>
+					this.preloadWordForm({ isLemma: wordForm.isLemma, language, name: synonym })
+				)
+			);
+			const definitionEntity = this.definitionRepository.create({
+				description,
+				language,
+				wordForm,
+				examples: examplesEntities,
+				synonyms: synonymsEntities,
+			});
+			return this.definitionRepository.save(definitionEntity);
+		}
+		return existedDefinition;
 	}
 
 	async preloadWordForm(data: Pick<WordForm, 'isLemma' | 'language' | 'name'>): Promise<WordForm> {

@@ -35,6 +35,6 @@ export class Definition {
 	})
 	synonyms: WordForm[];
 
-	@OneToMany(() => Example, (example) => example.definition)
+	@OneToMany(() => Example, (example) => example.definition, { cascade: true })
 	examples: Example[];
 }
