@@ -6,8 +6,5 @@ export interface IWordRo {
 	id: number;
 	name: string;
 	language: IGetLanguageRo;
-	definition: {
-		knownLanguage: IDefinitionRo;
-		tragetLanguage: IDefinitionRo;
-	};
+	definitions: IDefinitionRo[];
 }

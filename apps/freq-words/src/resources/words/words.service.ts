@@ -57,14 +57,18 @@ export class WordsService {
 		const workspace = await this.workspacesService.getOne(workspaceId);
 		return this.wordMarkRepository.find({
 			where: { workspace },
-			relations: { wordFormsMarks: { wordForm: true } },
+			relations: { wordFormsMarks: { wordForm: { language: true } } },
 		});
 	}
 
 	async getOneMark(id: number): Promise<WordMark> {
 		const mark = await this.wordMarkRepository.findOne({
 			where: { id },
-			relations: { wordFormsMarks: { wordForm: { definitions: { examples: true } } } },
+			relations: {
+				wordFormsMarks: {
+					wordForm: { definitions: { examples: true, language: true }, language: true },
+				},
+			},
 		});
 		if (!mark) {
 			throw new NotFoundException({ err: `word mark #${id} not found` });

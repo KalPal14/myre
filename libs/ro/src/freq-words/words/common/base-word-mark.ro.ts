@@ -1,9 +1,12 @@
 import { IWordRo } from './word.ro';
 
-export interface IBaseWordMarkRo {
+export interface IBaseWordMarkRo<Word extends IWordRo | Omit<IWordRo, 'definitions'>> {
 	id: number;
-	workspaceId: number;
 	count: number;
-	lemmaMark: IWordRo;
-	wordFormMarks: IWordRo[];
+	wordFormsMarks: {
+		id: number;
+		count: number;
+		isLemma: boolean;
+		wordForm: Word;
+	}[];
 }
