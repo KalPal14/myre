@@ -50,7 +50,7 @@ export class WordsService {
 
 		await this.wordFormMarkRepository.update(wordFormMark, { count: wordFormMark.count + 1 });
 		await this.wordMarkRepository.update(wordMark.id, { count: wordMark.count + 1 });
-		return wordMark;
+		return this.getOneMark(wordMark.id);
 	}
 
 	async getManyMarks({ workspaceId }: GetWordsMarksDto): Promise<WordMark[]> {
