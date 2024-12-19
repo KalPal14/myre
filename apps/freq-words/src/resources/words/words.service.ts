@@ -33,17 +33,19 @@ export class WordsService {
 
 		let lemmaMark: WordFormMark | null = null;
 		if (dto.lemma && dto.lemma !== dto.wordForm) {
-			const lemma = await this.preloadWordForm({ isLemma: true, language, name: dto.lemma });
-			lemmaMark = await this.preloadWordFormMark({ wordForm: lemma }, workspace);
+			const lemma = await this.preloadWordForm({ language, name: dto.lemma });
+			lemmaMark = await this.preloadWordFormMark({ wordForm: lemma, isLemma: true }, workspace);
 		}
 		const wordForm = await this.preloadWordForm({
-			isLemma: dto.lemma === dto.wordForm,
 			language,
 			name: dto.wordForm,
 		});
 		await this.preloadDefinition(dto.definitionFrom, wordForm);
 		await this.preloadDefinition(dto.definitionTo, wordForm);
-		const wordFormMark = await this.preloadWordFormMark({ wordForm }, workspace);
+		const wordFormMark = await this.preloadWordFormMark(
+			{ wordForm, isLemma: dto.lemma === dto.wordForm },
+			workspace
+		);
 		const wordMark = await this.preloadWordMark(workspace, wordFormMark, lemmaMark);
 
 		await this.wordFormMarkRepository.update(wordFormMark, { count: wordFormMark.count + 1 });
@@ -84,9 +86,7 @@ export class WordsService {
 				examples.map((example) => ({ phrase: example }))
 			);
 			const synonymsEntities = await Promise.all(
-				synonyms.map((synonym) =>
-					this.preloadWordForm({ isLemma: wordForm.isLemma, language, name: synonym })
-				)
+				synonyms.map((synonym) => this.preloadWordForm({ language, name: synonym }))
 			);
 			const definitionEntity = this.definitionRepository.create({
 				description,
@@ -100,7 +100,7 @@ export class WordsService {
 		return existedDefinition;
 	}
 
-	async preloadWordForm(data: Pick<WordForm, 'isLemma' | 'language' | 'name'>): Promise<WordForm> {
+	async preloadWordForm(data: Pick<WordForm, 'language' | 'name'>): Promise<WordForm> {
 		const existedWordForm = await this.wordFormRepository.findOneBy({
 			name: data.name,
 			language: data.language,
@@ -113,14 +113,14 @@ export class WordsService {
 	}
 
 	async preloadWordFormMark(
-		{ wordForm }: Pick<WordFormMark, 'wordForm'>,
+		{ wordForm, isLemma }: Pick<WordFormMark, 'wordForm' | 'isLemma'>,
 		workspace: Workspace
 	): Promise<WordFormMark> {
 		const existedWordFormMark = await this.wordFormMarkRepository.findOne({
 			where: { wordForm, wordMark: { workspace } },
 		});
 		if (!existedWordFormMark) {
-			const newWordFormMark = this.wordFormMarkRepository.create({ wordForm });
+			const newWordFormMark = this.wordFormMarkRepository.create({ wordForm, isLemma });
 			return this.wordFormMarkRepository.save(newWordFormMark);
 		}
 		return existedWordFormMark;

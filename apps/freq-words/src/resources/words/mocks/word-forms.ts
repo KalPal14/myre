@@ -4,7 +4,6 @@ import { WordForm } from '../entities/word-form.entity';
 export const WORD_FORM_LEMMA: WordForm = {
 	id: 1,
 	name: 'keep',
-	isLemma: true,
 	language: LANGUAGE_ENGLISH,
 	definitions: [],
 	wordFormsMarks: [],
@@ -13,7 +12,6 @@ export const WORD_FORM_LEMMA: WordForm = {
 export const WORD_FORM: WordForm = {
 	id: 1,
 	name: 'kept',
-	isLemma: false,
 	language: LANGUAGE_ENGLISH,
 	definitions: [],
 	wordFormsMarks: [],

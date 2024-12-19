@@ -11,6 +11,9 @@ export class WordFormMark {
 	@Column({ default: 0 })
 	count: number;
 
+	@Column({ default: false })
+	isLemma: boolean;
+
 	@ManyToOne(() => WordMark, (wordMark) => wordMark.wordFormsMarks)
 	wordMark: WordMark;
 

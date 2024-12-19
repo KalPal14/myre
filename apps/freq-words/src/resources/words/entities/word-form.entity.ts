@@ -13,9 +13,6 @@ export class WordForm {
 	@Column()
 	name: string;
 
-	@Column()
-	isLemma: boolean;
-
 	@ManyToOne(() => Language, (language) => language.wordForms)
 	language: Language;
 
