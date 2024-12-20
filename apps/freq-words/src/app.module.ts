@@ -10,6 +10,7 @@ import { TranslationModule } from './resources/translator/translator.module';
 import { LanguagesModule } from './resources/languages/languages.module';
 import { WordsModule } from './resources/words/words.module';
 import { WorkspacesModule } from './resources/workspaces/workspaces.module';
+import { SourceModule } from './resources/source/source.module';
 
 @Module({
 	imports: [
@@ -32,6 +33,7 @@ import { WorkspacesModule } from './resources/workspaces/workspaces.module';
 		}),
 		NestCoreModule,
 		LanguagesModule,
+		SourceModule,
 		TranslationModule,
 		WordsModule,
 		WorkspacesModule,

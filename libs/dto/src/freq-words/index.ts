@@ -1,6 +1,11 @@
 // languages
 export * from './languages/get-languages.dto';
 
+// source
+export * from './source/get-or-create-source.dto';
+export * from './source/get-sources.dto';
+export * from './source/update-source.dto';
+
 // translator
 export * from './translator/translate.dto';
 

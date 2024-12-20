@@ -1,12 +1,8 @@
-import { IWordRo } from './word.ro';
+import { IWordFormMarkRo } from './word-form-mark.ro';
+import { IWordFormRo } from './word-form.ro';
 
-export interface IBaseWordMarkRo<Word extends IWordRo | Omit<IWordRo, 'definitions'>> {
+export interface IBaseWordMarkRo<WordForm extends Partial<IWordFormRo>> {
 	id: number;
 	count: number;
-	wordFormsMarks: {
-		id: number;
-		count: number;
-		isLemma: boolean;
-		wordForm: Word;
-	}[];
+	wordFormsMarks: IWordFormMarkRo<WordForm>[];
 }

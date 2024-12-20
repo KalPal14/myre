@@ -1,4 +1,4 @@
 import { IBaseWordMarkRo } from './common/base-word-mark.ro';
-import { IWordRo } from './common/word.ro';
+import { IWordFormRo } from './common/word-form.ro';
 
-export interface IUpsertWordMarkRo extends IBaseWordMarkRo<IWordRo> {}
+export interface IUpsertWordMarkRo extends IBaseWordMarkRo<IWordFormRo> {}

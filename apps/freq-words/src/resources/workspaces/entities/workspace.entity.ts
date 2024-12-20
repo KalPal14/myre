@@ -3,6 +3,8 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
 import { WordMark } from '~/freq-words/resources/words/entities/word-mark.entity';
 
+import { Source } from '../../source/entities/source.entity';
+
 @Entity()
 export class Workspace {
 	@PrimaryGeneratedColumn()
@@ -22,4 +24,7 @@ export class Workspace {
 
 	@OneToMany(() => WordMark, (wordMark) => wordMark.workspace)
 	wordsMarks: WordMark[];
+
+	@OneToMany(() => Source, (source) => source.workspace)
+	sources: Source[];
 }
