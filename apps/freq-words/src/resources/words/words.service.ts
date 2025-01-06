@@ -10,6 +10,7 @@ import { LanguagesService } from '../languages/languages.service';
 import { Workspace } from '../workspaces/entities/workspace.entity';
 import { Definition } from '../translator/entities/definition.entity';
 import { Example } from '../translator/entities/example.entity';
+import { SourceService } from '../source/source.service';
 
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
@@ -24,6 +25,7 @@ export class WordsService {
 		@InjectRepository(Definition) private definitionRepository: Repository<Definition>,
 		@InjectRepository(Example) private exampleRepository: Repository<Example>,
 		private languagesService: LanguagesService,
+		private sourceService: SourceService,
 		private workspacesService: WorkspacesService
 	) {}
 
@@ -36,6 +38,7 @@ export class WordsService {
 			const lemma = await this.preloadWordForm({ language, name: dto.lemma });
 			lemmaMark = await this.preloadWordFormMark({ wordForm: lemma, isLemma: true }, workspace);
 		}
+
 		const wordForm = await this.preloadWordForm({
 			language,
 			name: dto.wordForm,
@@ -46,9 +49,16 @@ export class WordsService {
 			{ wordForm, isLemma: dto.lemma === dto.wordForm },
 			workspace
 		);
+		if (dto.sourceLink) {
+			await this.sourceService.getOrUpsert({
+				link: dto.sourceLink,
+				workspaceId: dto.workspaceId,
+				wordFormMark,
+			});
+		}
 		const wordMark = await this.preloadWordMark(workspace, wordFormMark, lemmaMark);
 
-		await this.wordFormMarkRepository.update(wordFormMark, { count: wordFormMark.count + 1 });
+		await this.wordFormMarkRepository.update(wordFormMark.id, { count: wordFormMark.count + 1 });
 		await this.wordMarkRepository.update(wordMark.id, { count: wordMark.count + 1 });
 		return this.getOneMark(wordMark.id);
 	}
@@ -119,7 +129,7 @@ export class WordsService {
 	async preloadWordFormMark(
 		{ wordForm, isLemma }: Pick<WordFormMark, 'wordForm' | 'isLemma'>,
 		workspace: Workspace
-	): Promise<WordFormMark> {
+	): Promise<any> {
 		const existedWordFormMark = await this.wordFormMarkRepository.findOne({
 			where: { wordForm, wordMark: { workspace } },
 		});
@@ -147,7 +157,7 @@ export class WordsService {
 			return this.wordMarkRepository.save(newWordMark);
 		}
 		if (!wordFormMark.wordMark) {
-			await this.wordFormMarkRepository.update(wordFormMark, { wordMark: existedWordMark });
+			await this.wordFormMarkRepository.update(wordFormMark.id, { wordMark: existedWordMark });
 		}
 		return existedWordMark;
 	}

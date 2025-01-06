@@ -9,6 +9,7 @@ export const WORD_FORM_MARK_LEMMA: WordFormMark = {
 	isLemma: true,
 	wordMark: WORD_MARK,
 	wordForm: WORD_FORM_LEMMA,
+	sources: [],
 };
 
 export const WORD_FORM_MARK: WordFormMark = {
@@ -17,4 +18,5 @@ export const WORD_FORM_MARK: WordFormMark = {
 	isLemma: false,
 	wordMark: WORD_MARK,
 	wordForm: WORD_FORM,
+	sources: [],
 };

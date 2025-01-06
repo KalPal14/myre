@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Source } from '../../source/entities/source.entity';
 
@@ -22,6 +22,7 @@ export class WordFormMark {
 	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormsMarks, { cascade: true })
 	wordForm: WordForm;
 
-	@ManyToOne(() => Source, (source) => source.wordFormsMarks, { nullable: true })
-	source?: Source;
+	@ManyToMany(() => Source, (source) => source.wordFormsMarks, { eager: true })
+	@JoinTable()
+	sources: Source[];
 }

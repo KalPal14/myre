@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { WordFormMark } from '../../words/entities/word-form-mark.entity';
 import { Workspace } from '../../workspaces/entities/workspace.entity';
@@ -14,6 +14,6 @@ export class Source {
 	@ManyToOne(() => Workspace, (workspace) => workspace.sources)
 	workspace: Workspace;
 
-	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.source)
+	@ManyToMany(() => WordFormMark, (wordFormMark) => wordFormMark.sources)
 	wordFormsMarks: WordFormMark[];
 }

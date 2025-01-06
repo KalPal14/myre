@@ -1,3 +1,5 @@
+import { TGetSourcesRo } from '../../source/get-sources.ro';
+
 import { IWordFormRo } from './word-form.ro';
 
 export interface IWordFormMarkRo<WordForm extends Partial<IWordFormRo>> {
@@ -5,4 +7,5 @@ export interface IWordFormMarkRo<WordForm extends Partial<IWordFormRo>> {
 	count: number;
 	isLemma: boolean;
 	wordForm: WordForm;
+	sources: TGetSourcesRo;
 }

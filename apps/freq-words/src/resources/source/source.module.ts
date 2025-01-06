@@ -11,5 +11,6 @@ import { Source } from './entities/source.entity';
 	imports: [TypeOrmModule.forFeature([Source]), WorkspacesModule],
 	controllers: [SourceController],
 	providers: [SourceService],
+	exports: [SourceService],
 })
 export class SourceModule {}
