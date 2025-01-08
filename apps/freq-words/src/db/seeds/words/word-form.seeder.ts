@@ -2,13 +2,23 @@ import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
 import { WordForm } from '~/freq-words/resources/words/entities/word-form.entity';
-import { WORD_FORM, WORD_FORM_LEMMA } from '~/freq-words/resources/words/mocks/word-forms';
+import {
+	LEMMA_ENTITY,
+	SYNONYMS_ENTITIES,
+	TRANSLATIONS_ENTITIES,
+	WORD_FORM_ENTITY,
+} from '~/freq-words/resources/words/mocks/word-forms';
 
 export default class WordFormSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
-		await dataSource.query('TRUNCATE "word_form" RESTART IDENTITY;');
+		await dataSource.query('TRUNCATE "word_form_mark" RESTART IDENTITY CASCADE;');
 
 		const repository = dataSource.getRepository(WordForm);
-		await repository.insert([WORD_FORM, WORD_FORM_LEMMA]);
+		await repository.insert([
+			LEMMA_ENTITY,
+			WORD_FORM_ENTITY,
+			...SYNONYMS_ENTITIES,
+			...TRANSLATIONS_ENTITIES,
+		]);
 	}
 }

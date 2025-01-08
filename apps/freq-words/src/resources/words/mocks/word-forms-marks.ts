@@ -1,22 +1,23 @@
+import { DeepPartial } from 'typeorm';
+
 import { WordFormMark } from '../entities/word-form-mark.entity';
+import { SOURCE_ENTITY } from '../../source/mocks/sources';
 
-import { WORD_MARK } from './words-marks';
-import { WORD_FORM_LEMMA, WORD_FORM } from './word-forms';
+import { WORD_MARK_ENTITY } from './word-marks';
+import { LEMMA_ENTITY, WORD_FORM_ENTITY } from './word-forms';
 
-export const WORD_FORM_MARK_LEMMA: WordFormMark = {
+export const LEMMA_MARK_ENTITY: DeepPartial<WordFormMark> = {
 	id: 1,
-	count: 1,
 	isLemma: true,
-	wordMark: WORD_MARK,
-	wordForm: WORD_FORM_LEMMA,
-	sources: [],
+	count: 1,
+	wordMark: WORD_MARK_ENTITY,
+	wordForm: LEMMA_ENTITY,
 };
 
-export const WORD_FORM_MARK: WordFormMark = {
+export const WORD_FORM_MARK_ENTITY: DeepPartial<WordFormMark> = {
 	id: 2,
 	count: 2,
-	isLemma: false,
-	wordMark: WORD_MARK,
-	wordForm: WORD_FORM,
-	sources: [],
+	wordMark: WORD_MARK_ENTITY,
+	wordForm: WORD_FORM_ENTITY,
+	sources: [SOURCE_ENTITY],
 };

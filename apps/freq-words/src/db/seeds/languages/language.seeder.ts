@@ -3,18 +3,20 @@ import { DataSource } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
 import {
-	LANGUAGE_ENGLISH,
-	LANGUAGE_RUSSIAN,
+	ENGLISH_LANGUAGE_ENTITY,
+	RUSSIAN_LANGUAGE_ENTITY,
+	URKAINIAN_LANGUAGE_ENTITY,
 } from '~/freq-words/resources/languages/mocks/languages';
 
 export default class LanguageSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
-		await dataSource.query('TRUNCATE "language" RESTART IDENTITY;');
+		await dataSource.query('TRUNCATE "language" RESTART IDENTITY CASCADE;');
 
 		const repository = dataSource.getRepository(Language);
 		await repository.insert([
-			LANGUAGE_ENGLISH,
-			LANGUAGE_RUSSIAN,
+			ENGLISH_LANGUAGE_ENTITY,
+			RUSSIAN_LANGUAGE_ENTITY,
+			URKAINIAN_LANGUAGE_ENTITY,
 			{ name: 'German' },
 			{ name: 'Portuguese' },
 			{ name: 'Arabic' },
@@ -22,7 +24,6 @@ export default class LanguageSeeder implements Seeder {
 			{ name: 'Romanian' },
 			{ name: 'Bulgarian' },
 			{ name: 'Hungarian' },
-			{ name: 'Russian' },
 			{ name: 'Chinese' },
 			{ name: 'Indonesian' },
 			{ name: 'Slovak' },
@@ -39,7 +40,6 @@ export default class LanguageSeeder implements Seeder {
 			{ name: 'Finnish' },
 			{ name: 'Swedish' },
 			{ name: 'Turkish' },
-			{ name: 'Ukrainian' },
 			{ name: 'Norwegian' },
 			{ name: 'French' },
 			{ name: 'Polish' },

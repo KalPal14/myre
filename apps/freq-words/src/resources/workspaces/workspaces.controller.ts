@@ -29,7 +29,11 @@ export class WorkspacesController {
 
 	@Get(WORKSPACES_ENDPOINTS.get)
 	getOne(@Param('id') id: string): Promise<IGetWorkspaceRo> {
-		return this.workspacesService.getOne(+id, { knownLanguage: true, targetLanguage: true });
+		return this.workspacesService.getOne(+id, {
+			knownLanguage: true,
+			targetLanguage: true,
+			sources: true,
+		});
 	}
 
 	@Patch(WORKSPACES_ENDPOINTS.update)

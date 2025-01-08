@@ -16,10 +16,10 @@ export class Workspace {
 	@Column()
 	name: string;
 
-	@ManyToOne(() => Language, (language) => language.id)
+	@ManyToOne(() => Language, (language) => language.knownLanguageWorkspaces)
 	knownLanguage: Language;
 
-	@ManyToOne(() => Language, (language) => language.id)
+	@ManyToOne(() => Language, (language) => language.targetLanguageWorkspaces)
 	targetLanguage: Language;
 
 	@OneToMany(() => WordMark, (wordMark) => wordMark.workspace)

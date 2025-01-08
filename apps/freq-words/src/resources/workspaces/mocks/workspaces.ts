@@ -1,13 +1,12 @@
-import { LANGUAGE_RUSSIAN } from '../../languages/mocks/languages';
-import { SOURCE } from '../../source/mocks/sources';
-import { Workspace } from '../entities/workspace.entity';
+import { DeepPartial } from 'typeorm';
 
-export const WORKSPACE: Workspace = {
+import { Workspace } from '../entities/workspace.entity';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+
+export const WORKSPACE_ENTITY: DeepPartial<Workspace> = {
 	id: 1,
 	ownerId: 1,
-	name: 'Russian-English',
-	knownLanguage: LANGUAGE_RUSSIAN,
-	targetLanguage: LANGUAGE_RUSSIAN,
-	wordsMarks: [],
-	sources: [SOURCE],
+	name: 'Russian - English',
+	knownLanguage: ENGLISH_LANGUAGE_ENTITY,
+	targetLanguage: RUSSIAN_LANGUAGE_ENTITY,
 };
