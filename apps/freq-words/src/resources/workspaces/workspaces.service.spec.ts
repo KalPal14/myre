@@ -54,9 +54,9 @@ describe('WorkspacesService', () => {
 			it('should create and save a new workspace', async () => {
 				languagesServiceMock.getOne.mockResolvedValueOnce(ENGLISH_LANGUAGE_ENTITY);
 				languagesServiceMock.getOne.mockResolvedValueOnce(RUSSIAN_LANGUAGE_ENTITY);
-				workspaceRepositoryMock.findOne.mockResolvedValueOnce(null);
+				workspaceRepositoryMock.findOne.mockResolvedValue(null);
 				workspaceRepositoryMock.create.mockReturnValue(WORKSPACE_ENTITY);
-				workspaceRepositoryMock.save.mockResolvedValueOnce(WORKSPACE_ENTITY);
+				workspaceRepositoryMock.save.mockResolvedValue(WORKSPACE_ENTITY);
 
 				const result = await service.create(JWT_PAYLOAD, dto);
 
@@ -68,7 +68,7 @@ describe('WorkspacesService', () => {
 			it('should throw a BadRequestException', async () => {
 				languagesServiceMock.getOne.mockResolvedValueOnce(ENGLISH_LANGUAGE_ENTITY);
 				languagesServiceMock.getOne.mockResolvedValueOnce(RUSSIAN_LANGUAGE_ENTITY);
-				workspaceRepositoryMock.findOne.mockResolvedValueOnce(WORKSPACE_ENTITY);
+				workspaceRepositoryMock.findOne.mockResolvedValue(WORKSPACE_ENTITY);
 
 				await expect(service.create(JWT_PAYLOAD, dto)).rejects.toThrow(BadRequestException);
 			});
@@ -98,7 +98,7 @@ describe('WorkspacesService', () => {
 
 		describe(`pass the id of a non-existing workspace`, () => {
 			it('should throw a NotFoundException', async () => {
-				workspaceRepositoryMock.findOne.mockResolvedValueOnce(null);
+				workspaceRepositoryMock.findOne.mockResolvedValue(null);
 
 				await expect(service.getOne(99)).rejects.toThrow(NotFoundException);
 			});
@@ -124,7 +124,7 @@ describe('WorkspacesService', () => {
 
 		describe(`pass the id of a non-existing workspace`, () => {
 			it('should throw a NotFoundException', async () => {
-				workspaceRepositoryMock.preload.mockResolvedValueOnce(null);
+				workspaceRepositoryMock.preload.mockResolvedValue(null);
 
 				await expect(service.update(99, dto)).rejects.toThrow(NotFoundException);
 			});
@@ -148,7 +148,7 @@ describe('WorkspacesService', () => {
 
 		describe(`pass the id of a non-existing workspace`, () => {
 			it('should throw a NotFoundException', async () => {
-				workspaceRepositoryMock.findOne.mockResolvedValueOnce(null);
+				workspaceRepositoryMock.findOne.mockResolvedValue(null);
 
 				await expect(service.delete(99)).rejects.toThrow(NotFoundException);
 			});

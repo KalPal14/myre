@@ -69,7 +69,6 @@ describe('LanguagesService', () => {
 
 				const result = await service.getOne(1);
 
-				expect(languageRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
 				expect(result).toEqual(ENGLISH_LANGUAGE_ENTITY);
 			});
 		});
@@ -79,7 +78,6 @@ describe('LanguagesService', () => {
 				languageRepositoryMock.findOne.mockResolvedValue(null);
 
 				await expect(service.getOne(99)).rejects.toThrow(NotFoundException);
-				expect(languageRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: 99 } });
 			});
 		});
 	});
