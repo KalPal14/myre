@@ -13,7 +13,7 @@ export class WordForm {
 	@Column()
 	name: string;
 
-	@ManyToOne(() => Language, (language) => language.wordForms)
+	@ManyToOne(() => Language, (language) => language.wordForms, { eager: true })
 	language: Language;
 
 	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordForm)

@@ -19,7 +19,7 @@ export class WordFormMark {
 	@ManyToOne(() => WordMark, (wordMark) => wordMark.wordFormsMarks)
 	wordMark: WordMark;
 
-	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormsMarks, { cascade: true })
+	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormsMarks, { eager: true })
 	wordForm: WordForm;
 
 	@ManyToMany(() => Source, (source) => source.wordFormsMarks, { eager: true })

@@ -11,8 +11,9 @@ export class WordsController {
 	constructor(private readonly wordsService: WordsService) {}
 
 	@Patch(WORDS_ENDPOINTS.upsertMark)
-	upsertMark(@Body() dto: UpsertWordMarkDto): Promise<IUpsertWordMarkRo> {
-		return this.wordsService.upsertMark(dto);
+	async upsertMark(@Body() dto: UpsertWordMarkDto): Promise<IUpsertWordMarkRo> {
+		const { wordMarkId } = await this.wordsService.upsertMark(dto);
+		return this.wordsService.getOneMark(wordMarkId);
 	}
 
 	@Get(WORDS_ENDPOINTS.getManyMarks)

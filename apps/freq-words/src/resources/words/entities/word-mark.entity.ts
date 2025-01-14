@@ -15,6 +15,8 @@ export class WordMark {
 	@ManyToOne(() => Workspace, (workspace) => workspace.wordsMarks)
 	workspace: Workspace;
 
-	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordMark, { cascade: true })
+	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordMark, {
+		eager: true,
+	})
 	wordFormsMarks: WordFormMark[];
 }

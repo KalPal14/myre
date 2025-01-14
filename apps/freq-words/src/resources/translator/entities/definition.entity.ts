@@ -21,7 +21,7 @@ export class Definition {
 	@Column()
 	description: string;
 
-	@ManyToOne(() => Language, (language) => language.id)
+	@ManyToOne(() => Language, (language) => language.id, { eager: true })
 	language: Language;
 
 	@ManyToOne(() => WordForm, (wordForm) => wordForm.id)
@@ -35,6 +35,6 @@ export class Definition {
 	})
 	synonyms: WordForm[];
 
-	@OneToMany(() => Example, (example) => example.definition, { cascade: true })
+	@OneToMany(() => Example, (example) => example.definition, { eager: true, cascade: true })
 	examples: Example[];
 }
