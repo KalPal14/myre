@@ -3,7 +3,6 @@ import { NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { GetOrCreateSourceDto, GetSourcesDto, UpdateSourceDto } from '~libs/dto/freq-words';
-import { typeormRepositoryMock } from '~libs/common/index';
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { WordFormMark } from '../words/entities/word-form-mark.entity';
@@ -17,7 +16,15 @@ import { SOURCE_ENTITY } from './mocks/sources';
 describe('SourceService', () => {
 	let service: SourceService;
 
-	const sourceRepositoryMock = typeormRepositoryMock;
+	const sourceRepositoryMock = {
+		find: jest.fn(),
+		findOne: jest.fn(),
+		save: jest.fn(),
+		create: jest.fn(),
+		update: jest.fn(),
+		preload: jest.fn(),
+		remove: jest.fn(),
+	};
 
 	const workspacesServiceMock = {
 		getOne: jest.fn(),
@@ -136,8 +143,8 @@ describe('SourceService', () => {
 	});
 
 	describe('get one', () => {
-		describe(`pass the ID of an existing source`, () => {
-			it('should return a source by ID', async () => {
+		describe(`pass the id of an existing source`, () => {
+			it('should return a source by id', async () => {
 				sourceRepositoryMock.findOne.mockResolvedValue(SOURCE_ENTITY);
 
 				const result = await service.getOne(1);
@@ -156,7 +163,7 @@ describe('SourceService', () => {
 	});
 
 	describe('update', () => {
-		describe(`pass the ID of an existing source`, () => {
+		describe(`pass the id of an existing source`, () => {
 			it('should update and return the source', async () => {
 				const dto: UpdateSourceDto = { link: 'https://updated.link' };
 
@@ -179,7 +186,7 @@ describe('SourceService', () => {
 	});
 
 	describe('delete', () => {
-		describe(`pass the ID of an existing source`, () => {
+		describe(`pass the id of an existing source`, () => {
 			it('should delete and return the source', async () => {
 				sourceRepositoryMock.findOne.mockResolvedValue(SOURCE_ENTITY);
 				sourceRepositoryMock.remove.mockImplementation((source) => source);

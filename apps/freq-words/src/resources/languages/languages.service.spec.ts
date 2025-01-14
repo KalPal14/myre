@@ -3,8 +3,6 @@ import { NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ILike } from 'typeorm';
 
-import { typeormRepositoryMock } from '~libs/common';
-
 import { LanguagesService } from './languages.service';
 import { Language } from './entities/language.entity';
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from './mocks/languages';
@@ -12,7 +10,10 @@ import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from './mocks/langua
 describe('LanguagesService', () => {
 	let service: LanguagesService;
 
-	const languageRepositoryMock = typeormRepositoryMock;
+	const languageRepositoryMock = {
+		find: jest.fn(),
+		findOne: jest.fn(),
+	};
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -63,8 +64,8 @@ describe('LanguagesService', () => {
 	});
 
 	describe('get one', () => {
-		describe(`pass the ID of an existing language`, () => {
-			it('should return a language by ID', async () => {
+		describe(`pass the id of an existing language`, () => {
+			it('should return a language by id', async () => {
 				languageRepositoryMock.findOne.mockResolvedValue(ENGLISH_LANGUAGE_ENTITY);
 
 				const result = await service.getOne(1);

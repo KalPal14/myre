@@ -2,7 +2,6 @@
 export * from './constants/regexp';
 export * from './constants/role-guard-msgs';
 export * from './constants/spec/jwt-payload';
-export * from './constants/spec/typeorm-repository';
 
 //errors
 export * from './errors/http-error/http-error';

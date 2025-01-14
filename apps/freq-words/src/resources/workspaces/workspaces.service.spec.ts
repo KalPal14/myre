@@ -3,7 +3,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/freq-words';
-import { JWT_PAYLOAD, typeormRepositoryMock } from '~libs/common';
+import { JWT_PAYLOAD } from '~libs/common';
 
 import { LanguagesService } from '../languages/languages.service';
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
@@ -15,7 +15,15 @@ import { WORKSPACE_ENTITY } from './mocks/workspaces';
 describe('WorkspacesService', () => {
 	let service: WorkspacesService;
 
-	const workspaceRepositoryMock = typeormRepositoryMock;
+	const workspaceRepositoryMock = {
+		find: jest.fn(),
+		findOne: jest.fn(),
+		save: jest.fn(),
+		create: jest.fn(),
+		update: jest.fn(),
+		preload: jest.fn(),
+		remove: jest.fn(),
+	};
 
 	const languagesServiceMock = {
 		getOne: jest.fn(),
@@ -86,8 +94,8 @@ describe('WorkspacesService', () => {
 	});
 
 	describe('get one', () => {
-		describe(`pass the ID of an existing workspace`, () => {
-			it('should return a workspace by ID', async () => {
+		describe(`pass the id of an existing workspace`, () => {
+			it('should return a workspace by id', async () => {
 				workspaceRepositoryMock.findOne.mockResolvedValue(WORKSPACE_ENTITY);
 
 				const result = await service.getOne(1);
@@ -108,7 +116,7 @@ describe('WorkspacesService', () => {
 	describe('update', () => {
 		const dto: UpdateWorkspaceDto = { name: 'Updated Workspace' };
 
-		describe(`pass the ID of an existing workspace`, () => {
+		describe(`pass the id of an existing workspace`, () => {
 			it('should update and return the workspace', async () => {
 				workspaceRepositoryMock.preload.mockImplementation((workspace) => ({
 					...WORKSPACE_ENTITY,
@@ -132,7 +140,7 @@ describe('WorkspacesService', () => {
 	});
 
 	describe('delete', () => {
-		describe(`pass the ID of an existing workspace`, () => {
+		describe(`pass the id of an existing workspace`, () => {
 			it('should delete and return the workspace', async () => {
 				workspaceRepositoryMock.findOne.mockResolvedValue(WORKSPACE_ENTITY);
 				workspaceRepositoryMock.remove.mockImplementation((workspace) => {
