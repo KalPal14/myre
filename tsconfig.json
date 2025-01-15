@@ -20,6 +20,9 @@
          "~/freq-words/*": [
             "apps/freq-words/src/*",
          ],
+         "~/freq-words-e2e/*": [
+            "apps/freq-words-e2e/src/*",
+         ],
          "~/highlight-extension/*": [
             "apps/highlight-extension/src/*",
             "apps/highlight-extension/*"
