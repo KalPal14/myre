@@ -10,10 +10,10 @@ import {
 	URKAINIAN_LANGUAGE_ENTITY,
 } from '~/freq-words/resources/languages/mocks/languages';
 
-describe('AppController (e2e)', () => {
+describe('Languages (e2e)', () => {
 	let app: INestApplication;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
 		}).compile();

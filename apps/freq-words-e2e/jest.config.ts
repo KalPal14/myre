@@ -9,6 +9,8 @@ const config: Config.InitialOptions = {
 	moduleNameMapper: {
 		// apps,
 		'^~/freq-words/(.*)$': '<rootDir>/../freq-words/src/$1',
+		'^~/iam/prisma/(.*)$': '<rootDir>/../iam/prisma/$1',
+		'^~/iam/(.*)$': '<rootDir>/../iam/src/$1',
 		// libs
 		'^~libs/common': '<rootDir>/../../libs/common/src',
 		'^~libs/dto/(.*)$': '<rootDir>/../../libs/dto/src/$1',
