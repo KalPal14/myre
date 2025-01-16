@@ -24,10 +24,10 @@ let app: Express;
 let jwt: string;
 
 beforeAll(async () => {
-	const application = await bootstrap('test');
+	const application = await bootstrap();
 	app = application.app;
 
-	const { app: iamApp } = await iamBootstrap('test');
+	const { app: iamApp } = await iamBootstrap();
 
 	const loginRes = await request(iamApp).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 	jwt = loginRes.body.jwt;

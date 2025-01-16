@@ -42,8 +42,8 @@ jest.mock('~libs/common', () => ({
 }));
 
 beforeAll(async () => {
-	const application = await bootstrap('test');
-	const hExtApplication = await hExtBootstrap('test');
+	const application = await bootstrap();
+	const hExtApplication = await hExtBootstrap();
 	app = application.app;
 
 	hExtApp = hExtApplication.app;

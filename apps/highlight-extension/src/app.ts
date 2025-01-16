@@ -67,14 +67,15 @@ export default class App {
 		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
 	}
 
-	async init(mode: 'test' | 'dev' | 'prod', port?: number): Promise<void> {
+	async init(): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptions();
 		await this.prismaService.connect();
 
-		if (mode == 'test') return;
+		if (this.configService.get('NODE_ENV') === 'test') return;
 
+		const port = this.configService.get('IAM_PORT');
 		this.server = createServer(
 			{
 				key: readFileSync('host-key.pem'),

@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test:e2e": "NODE_ENV=test IS_RUN_E2E=true jest"
+		"test:e2e": "NODE_ENV=test jest"
 	},
 	"author": "",
 	"license": "ISC",
