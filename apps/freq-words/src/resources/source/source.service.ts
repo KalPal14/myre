@@ -74,6 +74,7 @@ export class SourceService {
 
 	async delete(id: number): Promise<Source> {
 		const source = await this.getOne(id);
-		return this.sourceRepository.remove(source);
+		await this.sourceRepository.remove(source);
+		return { ...source, id };
 	}
 }

@@ -17,6 +17,7 @@ export const LEMMA_MARK_ENTITY: DeepPartial<WordFormMark> = {
 export const WORD_FORM_MARK_ENTITY: DeepPartial<WordFormMark> = {
 	id: 2,
 	count: 2,
+	isLemma: false,
 	wordMark: WORD_MARK_ENTITY,
 	wordForm: WORD_FORM_ENTITY,
 	sources: [SOURCE_ENTITY],

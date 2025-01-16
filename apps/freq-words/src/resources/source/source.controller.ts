@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	Query,
+	HttpCode,
+	HttpStatus,
+} from '@nestjs/common';
 
 import { GetOrCreateSourceDto, GetSourcesDto, UpdateSourceDto } from '~libs/dto/freq-words';
 import { SOURCES_BASE_ROUTE, SOURCES_ENDPOINTS } from '~libs/routes/freq-words';
@@ -16,6 +27,7 @@ import { SourceService } from './source.service';
 export class SourceController {
 	constructor(private readonly sourceService: SourceService) {}
 
+	@HttpCode(HttpStatus.OK)
 	@Post(SOURCES_ENDPOINTS.getOrCreate)
 	getOrCreate(@Body() dto: GetOrCreateSourceDto): Promise<IGetOrCreateSourceRo> {
 		return this.sourceService.getOrCreate(dto);
