@@ -76,10 +76,12 @@ export default class App {
 		if (this.configService.get('NODE_ENV') === 'test') return;
 
 		const port = this.configService.get('H_EXT_PORT');
+		const certKey = this.configService.get('CERT_KEY');
+		const cert = this.configService.get('CERT');
 		this.server = createServer(
 			{
-				key: readFileSync('host-key.pem'),
-				cert: readFileSync('host.pem'),
+				key: readFileSync(certKey),
+				cert: readFileSync(cert),
 			},
 			this.app
 		);
