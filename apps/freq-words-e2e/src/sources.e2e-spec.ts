@@ -79,11 +79,7 @@ describe('Languages (e2e)', () => {
 				expect(resp.body).toEqual(
 					expect.objectContaining({
 						link: dto.link,
-						workspace: {
-							id: WORKSPACE_ENTITY.id,
-							name: WORKSPACE_ENTITY.name,
-							ownerId: WORKSPACE_ENTITY.ownerId,
-						},
+						workspace: WORKSPACE_ENTITY,
 						wordFormsMarks: [],
 					})
 				);
@@ -126,11 +122,7 @@ describe('Languages (e2e)', () => {
 							wordMark: undefined,
 						},
 					],
-					workspace: {
-						id: WORKSPACE_ENTITY.id,
-						name: WORKSPACE_ENTITY.name,
-						ownerId: WORKSPACE_ENTITY.ownerId,
-					},
+					workspace: WORKSPACE_ENTITY,
 				});
 			});
 		});
@@ -167,11 +159,7 @@ describe('Languages (e2e)', () => {
 					...createdSource,
 					link: dto.link,
 					wordFormsMarks: [],
-					workspace: {
-						id: WORKSPACE_ENTITY.id,
-						name: WORKSPACE_ENTITY.name,
-						ownerId: WORKSPACE_ENTITY.ownerId,
-					},
+					workspace: WORKSPACE_ENTITY,
 				});
 			});
 		});
@@ -205,11 +193,7 @@ describe('Languages (e2e)', () => {
 				expect(resp.body).toEqual({
 					...createdSource,
 					wordFormsMarks: [],
-					workspace: {
-						id: WORKSPACE_ENTITY.id,
-						name: WORKSPACE_ENTITY.name,
-						ownerId: WORKSPACE_ENTITY.ownerId,
-					},
+					workspace: WORKSPACE_ENTITY,
 				});
 			});
 		});

@@ -84,7 +84,7 @@ describe('WorkspacesService', () => {
 	});
 
 	describe('get many', () => {
-		it('should return all workspaces for the user', async () => {
+		it(`should return all user's workspaces`, async () => {
 			workspaceRepositoryMock.find.mockResolvedValue([WORKSPACE_ENTITY]);
 
 			const result = await service.getMany(JWT_PAYLOAD);
