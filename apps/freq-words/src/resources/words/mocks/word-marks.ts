@@ -32,15 +32,15 @@ export const WORD_MARK_ENTITY: DeepPartial<WordMark> = {
 
 export const UPSERT_WORD_MARK_DTO = (
 	lemmaAndWordForm: 'equal' | 'differ' | 'lemma-free',
-	uniqe?: boolean,
+	existed?: boolean,
 	withSource?: boolean
 ): UpsertWordMarkDto => {
 	let lemma: string | null = null;
 	if (lemmaAndWordForm !== 'lemma-free') {
-		lemma = uniqe ? `word_${randomUUID()}` : LEMMA_ENTITY.name!;
+		lemma = existed ? LEMMA_ENTITY.name! : `word_${randomUUID()}`;
 	}
 
-	let wordForm: string = uniqe ? `word_${randomUUID()}` : WORD_FORM_ENTITY.name!;
+	let wordForm: string = existed ? WORD_FORM_ENTITY.name! : `word_${randomUUID()}`!;
 	if (lemmaAndWordForm === 'equal') {
 		wordForm = lemma!;
 	}

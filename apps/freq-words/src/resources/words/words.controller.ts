@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Query } from '@nestjs/common';
+import { Controller, Get, Body, Param, Query, Post, HttpCode, HttpStatus } from '@nestjs/common';
 
 import { WORDS_BASE_ROUTE, WORDS_ENDPOINTS } from '~libs/routes/freq-words';
 import { GetWordsMarksDto, UpsertWordMarkDto } from '~libs/dto/freq-words';
@@ -10,7 +10,8 @@ import { WordsService } from './words.service';
 export class WordsController {
 	constructor(private readonly wordsService: WordsService) {}
 
-	@Patch(WORDS_ENDPOINTS.upsertMark)
+	@HttpCode(HttpStatus.OK)
+	@Post(WORDS_ENDPOINTS.upsertMark)
 	async upsertMark(@Body() dto: UpsertWordMarkDto): Promise<IUpsertWordMarkRo> {
 		const { wordMarkId } = await this.wordsService.upsertMark(dto);
 		return this.wordsService.getOneMark(wordMarkId);

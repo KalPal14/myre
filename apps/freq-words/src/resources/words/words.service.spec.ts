@@ -152,7 +152,7 @@ describe('WordsService', () => {
 
 		describe(`pass new lemma and new word form`, () => {
 			beforeEach(() => {
-				dto = UPSERT_WORD_MARK_DTO('differ');
+				dto = UPSERT_WORD_MARK_DTO('differ', true);
 				wordFormRepositoryMock.findOneBy.mockResolvedValue(null);
 				wordFormMarkRepositoryMock.findOne.mockResolvedValue(null);
 			});
@@ -209,7 +209,7 @@ describe('WordsService', () => {
 
 		describe(`pass existing lemma and new word form`, () => {
 			beforeEach(() => {
-				dto = UPSERT_WORD_MARK_DTO('differ');
+				dto = UPSERT_WORD_MARK_DTO('differ', true);
 				wordFormRepositoryMock.findOneBy.mockImplementation(
 					({ name }: FindOptionsWhere<WordForm>) => {
 						switch (name) {
@@ -287,7 +287,7 @@ describe('WordsService', () => {
 
 		describe(`pass existing lemma and new word form mark of existing word form`, () => {
 			beforeEach(() => {
-				dto = UPSERT_WORD_MARK_DTO('differ');
+				dto = UPSERT_WORD_MARK_DTO('differ', true);
 				wordFormRepositoryMock.findOneBy.mockImplementation(
 					({ name }: FindOptionsWhere<WordForm>) => {
 						switch (name) {
@@ -355,7 +355,7 @@ describe('WordsService', () => {
 
 		describe(`pass new lemma with source`, () => {
 			beforeEach(() => {
-				dto = UPSERT_WORD_MARK_DTO('equal', false, true);
+				dto = UPSERT_WORD_MARK_DTO('equal', true, true);
 				wordFormRepositoryMock.findOneBy.mockResolvedValue(null);
 				wordFormMarkRepositoryMock.findOne.mockResolvedValue(null);
 			});
