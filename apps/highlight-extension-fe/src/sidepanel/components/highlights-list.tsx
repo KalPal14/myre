@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Heading } from '@chakra-ui/react';
 
-import { HIGHLIGHTS_FULL_URLS, PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { HIGHLIGHTS_URLS, PAGES_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto, IndividualUpdateHighlightsDto } from '~libs/dto/highlight-extension';
 import { IDeleteHighlightRo, IUpdateHighlightRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { chromeExtApi, HTTPError } from '~libs/common';
@@ -77,7 +77,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 			return;
 		}
 
-		const resp = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const resp = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: pageUrl,
 		});
@@ -93,7 +93,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 		const { highlight } = fields[index];
 
 		const resp = await chromeExtApi.delete<null, IDeleteHighlightRo>(
-			HIGHLIGHTS_FULL_URLS.delete(highlight.id)
+			HIGHLIGHTS_URLS.delete(highlight.id)
 		);
 		if (resp instanceof HTTPError) return;
 		setDeletedHighlight({ highlight: resp, pageUrl: pageUrl ?? '' });
@@ -113,7 +113,7 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 		if (!dataToUpdate.length) return;
 
 		await chromeExtApi.patch<IndividualUpdateHighlightsDto, IUpdateHighlightRo[]>(
-			HIGHLIGHTS_FULL_URLS.individualUpdateMany,
+			HIGHLIGHTS_URLS.individualUpdateMany,
 			{
 				highlights: dataToUpdate,
 			}

@@ -2,7 +2,7 @@ import React from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 import { ChangeEmailDto } from '~libs/dto/iam';
 import { IChangeEmailRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
@@ -36,7 +36,7 @@ export default function ChangeEmailForm({
 
 	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
 		const resp = await chromeExtApi.patch<ChangeEmailDto, IChangeEmailRo>(
-			USERS_FULL_URLS.changeEmail,
+			USERS_URLS.changeEmail,
 			formValues
 		);
 

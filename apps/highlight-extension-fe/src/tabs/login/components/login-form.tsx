@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
-import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 import { LoginDto } from '~libs/dto/iam';
 import { ILoginRo } from '~libs/ro/iam';
 import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
-import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { chromeExtApi, httpErrHandler, HTTPError } from '~libs/common';
 import { TextField, OutsideClickAlert } from '~libs/react-core';
 
@@ -27,10 +27,7 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
-		const loginResp = await chromeExtApi.post<LoginDto, ILoginRo>(
-			USERS_FULL_URLS.login,
-			formValues
-		);
+		const loginResp = await chromeExtApi.post<LoginDto, ILoginRo>(USERS_URLS.login, formValues);
 		if (loginResp instanceof HTTPError) {
 			handleErr(loginResp);
 			return;
@@ -39,7 +36,7 @@ export default function LoginForm(): JSX.Element {
 		const { jwt, ...userData } = loginResp;
 
 		const workspacesResp = await chromeExtApi.get<null, TGetOwnersWorkspacesRo>(
-			WORKSPACES_FULL_URLS.getAllOwners,
+			WORKSPACES_URLS.getAllOwners,
 			null,
 			{ headers: { Authorization: `Bearer ${jwt}` } }
 		);

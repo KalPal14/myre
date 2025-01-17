@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Collapse } from '@chakra-ui/react';
 
-import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 import { RegistrationDto } from '~libs/dto/iam';
 import { IRegistrationRo } from '~libs/ro/iam';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
@@ -26,7 +26,7 @@ export default function LoginForm(): JSX.Element {
 
 	async function onSubmit(formValues: RegistrationDto): Promise<void> {
 		const resp = await chromeExtApi.post<RegistrationDto, IRegistrationRo>(
-			USERS_FULL_URLS.register,
+			USERS_URLS.register,
 			formValues
 		);
 		if (resp instanceof HTTPError) {

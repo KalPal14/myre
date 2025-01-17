@@ -6,7 +6,7 @@ import { api } from '~libs/common';
 import { HTTPError, IConfigService, IJwtService } from '~libs/express-core';
 import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, LoginDto } from '~libs/dto/iam';
 import { JWT_PAYLOAD } from '~libs/common/index';
-import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -108,8 +108,9 @@ describe('UsersService', () => {
 					},
 					workspace: mockWorkspaceResponse,
 				});
+				// TODO
 				expect(api.post).toHaveBeenCalledWith(
-					WORKSPACES_FULL_URLS.create,
+					WORKSPACES_URLS.create,
 					{
 						name: `${CREATE_DTO.username}'s workspace`,
 						colors: [],

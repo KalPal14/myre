@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { union } from 'lodash';
 
-import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import { HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 import {
 	IDeleteHighlightRo,
 	IUpdateHighlightRo,
@@ -122,7 +122,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 
 		apiHandler<UpdateHighlightDto, IUpdateHighlightRo>({
 			msg: {
-				url: HIGHLIGHTS_FULL_URLS.update(currentHighlightElement.highlightId),
+				url: HIGHLIGHTS_URLS.update(currentHighlightElement.highlightId),
 				method: 'patch',
 				data: { color },
 			},
@@ -137,7 +137,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 
 		apiHandler<UpdateHighlightDto, IUpdateHighlightRo>({
 			msg: {
-				url: HIGHLIGHTS_FULL_URLS.update(highlightElementRef.current.highlightId),
+				url: HIGHLIGHTS_URLS.update(highlightElementRef.current.highlightId),
 				method: 'patch',
 				data: { note },
 			},
@@ -167,7 +167,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 
 		apiHandler<null, IDeleteHighlightRo>({
 			msg: {
-				url: HIGHLIGHTS_FULL_URLS.delete(currentHighlightElement.highlightId),
+				url: HIGHLIGHTS_URLS.delete(currentHighlightElement.highlightId),
 				method: 'delete',
 			},
 			onSuccess: deleteHighlightRespHandler,
@@ -193,7 +193,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 
 		apiHandler<GetHighlightsDto, TGetHighlightsRo>({
 			msg: {
-				url: HIGHLIGHTS_FULL_URLS.getMany,
+				url: HIGHLIGHTS_URLS.getMany,
 				method: 'get',
 				data: {
 					ids: JSON.stringify(union(...nestedHighlightsIds)),

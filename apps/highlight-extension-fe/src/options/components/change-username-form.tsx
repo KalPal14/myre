@@ -2,7 +2,7 @@ import React from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 import { ChangeUsernameDto } from '~libs/dto/iam';
 import { IChangeUsernameRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
@@ -36,7 +36,7 @@ export default function ChangeUsernameForm({
 
 	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
 		const resp = await chromeExtApi.patch<ChangeUsernameDto, IChangeUsernameRo>(
-			USERS_FULL_URLS.changeUsername,
+			USERS_URLS.changeUsername,
 			formValues
 		);
 

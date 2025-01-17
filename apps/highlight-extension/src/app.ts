@@ -75,7 +75,7 @@ export default class App {
 
 		if (this.configService.get('NODE_ENV') === 'test') return;
 
-		const port = this.configService.get('IAM_PORT');
+		const port = this.configService.get('H_EXT_PORT');
 		this.server = createServer(
 			{
 				key: readFileSync('host-key.pem'),

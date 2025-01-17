@@ -3,7 +3,7 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import date from 'date-and-time';
 
-import { USERS_FULL_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 import { ChangePasswordDto } from '~libs/dto/iam';
 import { IChangePasswordRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
@@ -33,7 +33,7 @@ export default function ChangePasswordForm({
 
 	async function onSubmit(formValues: ChangePasswordDto): Promise<boolean> {
 		const resp = await chromeExtApi.patch<ChangePasswordDto, IChangePasswordRo>(
-			USERS_FULL_URLS.changePassword,
+			USERS_URLS.changePassword,
 			formValues
 		);
 		if (resp instanceof HTTPError) {

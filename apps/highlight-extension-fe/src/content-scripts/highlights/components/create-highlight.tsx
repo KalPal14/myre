@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { HIGHLIGHTS_FULL_URLS } from '~libs/routes/highlight-extension';
+import { HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 import { ICreateHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
 import { apiHandler, getPageUrl } from '~libs/client-core';
@@ -74,7 +74,7 @@ export default function CreateHighlight(): JSX.Element {
 
 		apiHandler({
 			msg: {
-				url: HIGHLIGHTS_FULL_URLS.create,
+				url: HIGHLIGHTS_URLS.create,
 				method: 'post',
 				data: newHighlightData,
 			},

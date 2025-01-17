@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { isEqual } from 'lodash';
 
-import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { PAGES_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
 import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
@@ -72,7 +72,7 @@ export default function Highlights(): JSX.Element {
 		apiHandler<GetPageDto, TGetPageRo>({
 			msg: {
 				method: 'get',
-				url: PAGES_FULL_URLS.get,
+				url: PAGES_URLS.get,
 				data: {
 					workspaceId: workspaceId.toString(),
 					url: getPageUrl(),

@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { PAGES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { PAGES_URLS } from '~libs/routes/highlight-extension';
 import { IGetPagesRoItem, IUpdatePageRo, TGetPageRo } from '~libs/ro/highlight-extension';
 import { GetPageDto, UpdatePageDto } from '~libs/dto/highlight-extension';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
@@ -61,7 +61,7 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	async function checkExistingPagesWithNewURL(url: string): Promise<boolean> {
 		if (!currentWorkspace) return false;
 
-		const pageWithNewUrl = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_FULL_URLS.get, {
+		const pageWithNewUrl = await chromeExtApi.get<GetPageDto, TGetPageRo>(PAGES_URLS.get, {
 			workspaceId: currentWorkspace.id.toString(),
 			url: getPageUrl(url),
 		});
@@ -75,12 +75,9 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 	}
 
 	async function updatePage(pageId: number, url: string): Promise<boolean | void> {
-		const resp = await chromeExtApi.patch<UpdatePageDto, IUpdatePageRo>(
-			PAGES_FULL_URLS.update(pageId),
-			{
-				url: getPageUrl(url),
-			}
-		);
+		const resp = await chromeExtApi.patch<UpdatePageDto, IUpdatePageRo>(PAGES_URLS.update(pageId), {
+			url: getPageUrl(url),
+		});
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return;

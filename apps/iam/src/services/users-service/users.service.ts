@@ -10,7 +10,7 @@ import {
 	RegistrationDto,
 } from '~libs/dto/iam';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { WORKSPACES_FULL_URLS } from '~libs/routes/highlight-extension';
+import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 // TODO HTTPError as RespHttpError
 import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common';
@@ -64,7 +64,7 @@ export class UsersService implements IUsersService {
 				username: newUser.username,
 			});
 			const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
-				WORKSPACES_FULL_URLS.create,
+				WORKSPACES_URLS.create,
 				{
 					name: `${newUser.username}'s workspace`,
 					colors: [],
