@@ -17,7 +17,7 @@ import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/mocks/worksp
 import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-form-marks';
 import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-forms';
 
-describe('Languages (e2e)', () => {
+describe('Sources (e2e)', () => {
 	let app: INestApplication;
 	let jwt: string;
 

@@ -19,7 +19,7 @@ import {
 	RUSSIAN_LANGUAGE_ENTITY,
 } from '~/freq-words/resources/languages/mocks/languages';
 
-describe('Languages (e2e)', () => {
+describe('Workspaces (e2e)', () => {
 	let app: INestApplication;
 	let jwt: string;
 
