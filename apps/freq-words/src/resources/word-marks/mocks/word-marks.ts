@@ -10,19 +10,18 @@ import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../language
 import {
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from '../../translator/mocks/definitions';
-import {
-	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
-	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
-} from '../../translator/mocks/examples';
+} from '../../word-forms/mocks/definitions';
 import { SOURCE_ENTITY } from '../../source/mocks/sources';
-
+import {
+	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
+	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
+} from '../../word-forms/mocks/examples';
 import {
 	LEMMA_ENTITY,
+	WORD_FORM_ENTITY,
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
-	WORD_FORM_ENTITY,
-} from './word-forms';
+} from '../../word-forms/mocks/word-forms';
 
 export const WORD_MARK_ENTITY: DeepPartial<WordMark> = {
 	id: 1,

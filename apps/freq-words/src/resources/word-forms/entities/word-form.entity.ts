@@ -1,9 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
-import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
 
-import { WordFormMark } from './word-form-mark.entity';
+import { WordFormMark } from '../../word-marks/entities/word-form-mark.entity';
+
+import { Definition } from './definition.entity';
 
 @Entity()
 export class WordForm {

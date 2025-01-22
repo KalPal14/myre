@@ -2,9 +2,9 @@ import { DeepPartial } from 'typeorm';
 
 import { WordFormMark } from '../entities/word-form-mark.entity';
 import { SOURCE_ENTITY } from '../../source/mocks/sources';
+import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../../word-forms/mocks/word-forms';
 
 import { WORD_MARK_ENTITY } from './word-marks';
-import { LEMMA_ENTITY, WORD_FORM_ENTITY } from './word-forms';
 
 export const LEMMA_MARK_ENTITY: DeepPartial<WordFormMark> = {
 	id: 1,

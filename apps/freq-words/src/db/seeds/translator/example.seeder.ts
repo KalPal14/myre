@@ -1,13 +1,13 @@
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
-import { Example } from '~/freq-words/resources/translator/entities/example.entity';
+import { Example } from '~/freq-words/resources/word-forms/entities/example.entity';
 import {
 	EXAMPLES_ENGLISH_LEMMA_ENTITIES,
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
 	EXAMPLES_RUSSIAN_LEMMA_ENTITIES,
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
-} from '~/freq-words/resources/translator/mocks/examples';
+} from '~/freq-words/resources/word-forms/mocks/examples';
 
 export default class ExampleSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

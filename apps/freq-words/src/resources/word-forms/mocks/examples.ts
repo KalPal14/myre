@@ -1,13 +1,12 @@
 import { DeepPartial } from 'typeorm';
 
-import { Example } from '../entities/example.entity';
-
 import {
 	DEFINITION_LEMMA_ENGLISH_ENTITY,
 	DEFINITION_LEMMA_RUSSIAN_ENTITY,
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from './definitions';
+} from '../../word-forms/mocks/definitions';
+import { Example } from '../entities/example.entity';
 
 export const EXAMPLES_RUSSIAN_LEMMA_ENTITIES: DeepPartial<Example>[] = [
 	{

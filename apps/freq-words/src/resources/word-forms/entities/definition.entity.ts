@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
-import { WordForm } from '~/freq-words/resources/word-marks/entities/word-form.entity';
 
 import { Example } from './example.entity';
+import { WordForm } from './word-form.entity';
 
 @Entity()
 export class Definition {

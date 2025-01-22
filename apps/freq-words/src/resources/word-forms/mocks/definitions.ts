@@ -1,13 +1,14 @@
 import { DeepPartial } from 'typeorm';
 
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+import { Definition } from '../entities/definition.entity';
+
 import {
 	LEMMA_ENTITY,
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
 	WORD_FORM_ENTITY,
-} from '../../word-marks/mocks/word-forms';
-import { Definition } from '../entities/definition.entity';
+} from './word-forms';
 
 export const DEFINITION_LEMMA_RUSSIAN_ENTITY: DeepPartial<Definition> = {
 	id: 1,

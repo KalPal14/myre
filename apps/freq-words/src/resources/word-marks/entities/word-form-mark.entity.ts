@@ -1,9 +1,9 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Source } from '../../source/entities/source.entity';
+import { WordForm } from '../../word-forms/entities/word-form.entity';
 
 import { WordMark } from './word-mark.entity';
-import { WordForm } from './word-form.entity';
 
 @Entity()
 export class WordFormMark {

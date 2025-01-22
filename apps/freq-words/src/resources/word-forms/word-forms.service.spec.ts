@@ -9,19 +9,19 @@ import { LanguagesService } from '../languages/languages.service';
 import { SourceService } from '../source/source.service';
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { Definition } from '../translator/entities/definition.entity';
-import { Example } from '../word-forms/entities/example.entity';
 import { WORKSPACE_ENTITY } from '../workspaces/mocks/workspaces';
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
-import {
-	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
-	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from '../word-forms/mocks/definitions';
 import {
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
 } from '../translator/mocks/examples';
 
-import { WordMarksService } from './word-marks.service';
+import {
+	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
+	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
+} from './mocks/definitions';
+import { Example } from './entities/example.entity';
+import { WordFormsService } from './word-forms.service';
 import { WordForm } from './entities/word-form.entity';
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
@@ -29,8 +29,8 @@ import { UPSERT_WORD_MARK_DTO, WORD_MARK_ENTITY } from './mocks/word-marks';
 import { LEMMA_ENTITY, WORD_FORM_ENTITY } from './mocks/word-forms';
 import { LEMMA_MARK_ENTITY } from './mocks/word-form-marks';
 
-describe('WordMarksService', () => {
-	let service: WordMarksService;
+describe('WordFormsService', () => {
+	let service: WordFormsService;
 
 	const createTypeOrmRepositoryMock = (): Record<
 		keyof Pick<
@@ -69,7 +69,7 @@ describe('WordMarksService', () => {
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
-				WordMarksService,
+				WordFormsService,
 				{ provide: getRepositoryToken(WordForm), useValue: wordFormRepositoryMock },
 				{ provide: getRepositoryToken(WordMark), useValue: wordMarkRepositoryMock },
 				{ provide: getRepositoryToken(WordFormMark), useValue: wordFormMarkRepositoryMock },
@@ -81,7 +81,7 @@ describe('WordMarksService', () => {
 			],
 		}).compile();
 
-		service = module.get<WordMarksService>(WordMarksService);
+		service = module.get<WordFormsService>(WordFormsService);
 	});
 
 	afterEach(() => {

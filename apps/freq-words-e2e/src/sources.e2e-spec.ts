@@ -15,7 +15,7 @@ import {
 } from '~/freq-words/resources/source/mocks/sources';
 import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/mocks/workspaces';
 import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-form-marks';
-import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-forms';
+import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-forms/mocks/word-forms';
 
 describe('Sources (e2e)', () => {
 	let app: INestApplication;

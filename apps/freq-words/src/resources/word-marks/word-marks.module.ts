@@ -5,23 +5,22 @@ import { NestCoreModule } from '~libs/nest-core';
 
 import { LanguagesModule } from '../languages/languages.module';
 import { WorkspacesModule } from '../workspaces/workspaces.module';
-import { Definition } from '../translator/entities/definition.entity';
-import { Example } from '../translator/entities/example.entity';
 import { SourceModule } from '../source/source.module';
+import { WordFormsModule } from '../word-forms/word-forms.module';
 
 import { WordMarksService } from './word-marks.service';
 import { WordMarksController } from './word-marks.controller';
-import { WordForm } from './entities/word-form.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
 import { WordMark } from './entities/word-mark.entity';
 
 @Module({
 	imports: [
 		NestCoreModule,
-		TypeOrmModule.forFeature([WordForm, WordFormMark, WordMark, Definition, Example]),
+		TypeOrmModule.forFeature([WordMark, WordFormMark]),
 		LanguagesModule,
 		SourceModule,
 		WorkspacesModule,
+		WordFormsModule,
 	],
 	controllers: [WordMarksController],
 	providers: [WordMarksService],

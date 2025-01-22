@@ -10,6 +10,7 @@ export class Example {
 	@Column()
 	phrase: string;
 
+	// TODO попробовать заменить definition.id
 	@ManyToOne(() => Definition, (definition) => definition.id)
 	definition: Definition;
 }
