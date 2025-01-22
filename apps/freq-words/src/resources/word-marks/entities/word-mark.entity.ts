@@ -18,5 +18,5 @@ export class WordMark {
 	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordMark, {
 		eager: true,
 	})
-	wordFormsMarks: WordFormMark[];
+	wordFormMarks: WordFormMark[];
 }

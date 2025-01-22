@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 
-import { UpsertWordMarkDto, GetWordsMarksDto } from '~libs/dto/freq-words';
+import { UpsertWordMarkDto, GetWordMarksDto } from '~libs/dto/freq-words';
 
 import { LanguagesService } from '../languages/languages.service';
 import { SourceService } from '../source/source.service';
@@ -21,16 +21,16 @@ import {
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
 } from '../translator/mocks/examples';
 
-import { WordsService } from './words.service';
+import { WordMarksService } from './word-marks.service';
 import { WordForm } from './entities/word-form.entity';
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
 import { UPSERT_WORD_MARK_DTO, WORD_MARK_ENTITY } from './mocks/word-marks';
 import { LEMMA_ENTITY, WORD_FORM_ENTITY } from './mocks/word-forms';
-import { LEMMA_MARK_ENTITY } from './mocks/word-forms-marks';
+import { LEMMA_MARK_ENTITY } from './mocks/word-form-marks';
 
-describe('WordsService', () => {
-	let service: WordsService;
+describe('WordMarksService', () => {
+	let service: WordMarksService;
 
 	const createTypeOrmRepositoryMock = (): Record<
 		keyof Pick<
@@ -69,7 +69,7 @@ describe('WordsService', () => {
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
-				WordsService,
+				WordMarksService,
 				{ provide: getRepositoryToken(WordForm), useValue: wordFormRepositoryMock },
 				{ provide: getRepositoryToken(WordMark), useValue: wordMarkRepositoryMock },
 				{ provide: getRepositoryToken(WordFormMark), useValue: wordFormMarkRepositoryMock },
@@ -81,7 +81,7 @@ describe('WordsService', () => {
 			],
 		}).compile();
 
-		service = module.get<WordsService>(WordsService);
+		service = module.get<WordMarksService>(WordMarksService);
 	});
 
 	afterEach(() => {
@@ -158,27 +158,27 @@ describe('WordsService', () => {
 			});
 
 			it(`should create two word-forms`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(LEMMA_ENTITY);
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(WORD_FORM_ENTITY);
 			});
 
 			it(`should create two word form marks`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newLemmaMark);
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newWordFormMark);
 			});
 
 			it(`should create word mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordMarkRepositoryMock.save).toHaveBeenCalledWith(WORD_MARK_ENTITY);
 			});
 
 			it(`should NOT increase count of lemma mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledTimes(1);
 				expect(wordFormMarkRepositoryMock.update).not.toHaveBeenCalledWith(newLemmaMark.id, {
@@ -187,7 +187,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should increase count of word mark and word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newWordFormMark.id, {
 					count: newWordFormMark.count! + 1,
@@ -198,7 +198,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should return IDs of word form mark whose counter has increased and its word mark`, async () => {
-				const result = await service.upsertMark(dto);
+				const result = await service.upsert(dto);
 
 				expect(result).toEqual({
 					wordMarkId: WORD_MARK_ENTITY.id,
@@ -233,21 +233,21 @@ describe('WordsService', () => {
 			});
 
 			it(`should create one word form`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledTimes(1);
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(WORD_FORM_ENTITY);
 			});
 
 			it(`should create one word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledTimes(1);
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newWordFormMark);
 			});
 
 			it(`should add created wordFormMark to existed word mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newWordFormMark.id!, {
 					wordMark: WORD_MARK_ENTITY,
@@ -256,7 +256,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should NOT increase count of lemma mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledTimes(2);
 				expect(wordFormMarkRepositoryMock.update).not.toHaveBeenCalledWith(LEMMA_MARK_ENTITY.id, {
@@ -265,7 +265,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should increase count of word mark and word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newWordFormMark.id, {
 					count: newWordFormMark.count! + 1,
@@ -276,7 +276,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should return IDs of word form mark whose counter has increased and its word mark`, async () => {
-				const result = await service.upsertMark(dto);
+				const result = await service.upsert(dto);
 
 				expect(result).toEqual({
 					wordMarkId: WORD_MARK_ENTITY.id,
@@ -311,20 +311,20 @@ describe('WordsService', () => {
 			});
 
 			it(`should NOT create word form`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormRepositoryMock.save).not.toHaveBeenCalled();
 			});
 
 			it(`should create one word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledTimes(1);
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newWordFormMark);
 			});
 
 			it(`should NOT increase count of lemma mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledTimes(2);
 				expect(wordFormMarkRepositoryMock.update).not.toHaveBeenCalledWith(LEMMA_MARK_ENTITY.id, {
@@ -333,7 +333,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should increase count of word mark and word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newWordFormMark.id, {
 					count: newWordFormMark.count! + 1,
@@ -344,7 +344,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should return IDs of word form mark whose counter has increased and its word mark`, async () => {
-				const result = await service.upsertMark(dto);
+				const result = await service.upsert(dto);
 
 				expect(result).toEqual({
 					wordMarkId: WORD_MARK_ENTITY.id,
@@ -361,33 +361,33 @@ describe('WordsService', () => {
 			});
 
 			it(`should create lemma`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledTimes(1);
 				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(LEMMA_ENTITY);
 			});
 
 			it(`should create lemma mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledTimes(1);
 				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newLemmaMark);
 			});
 
 			it(`should create word mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordMarkRepositoryMock.save).toHaveBeenCalledWith(WORD_MARK_ENTITY);
 			});
 
 			it(`should call sourceService to check source and upsert with lemma mark if it needs`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(sourceServiceMock.getOrUpsert).toHaveBeenCalled();
 			});
 
 			it(`should increase count of lemma and word form mark`, async () => {
-				await service.upsertMark(dto);
+				await service.upsert(dto);
 
 				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newLemmaMark.id, {
 					count: newLemmaMark.count! + 1,
@@ -398,7 +398,7 @@ describe('WordsService', () => {
 			});
 
 			it(`should return IDs of word form mark whose counter has increased and its word mark`, async () => {
-				const result = await service.upsertMark(dto);
+				const result = await service.upsert(dto);
 
 				expect(result).toEqual({
 					wordMarkId: WORD_MARK_ENTITY.id,
@@ -410,11 +410,11 @@ describe('WordsService', () => {
 
 	describe('get many marks', () => {
 		it('should return all marks for a workspace', async () => {
-			const dto: GetWordsMarksDto = { workspaceId: WORKSPACE_ENTITY.id! };
+			const dto: GetWordMarksDto = { workspaceId: WORKSPACE_ENTITY.id! };
 			workspacesServiceMock.getOne.mockResolvedValue(WORKSPACE_ENTITY);
 			wordMarkRepositoryMock.find.mockResolvedValue([WORD_MARK_ENTITY]);
 
-			const result = await service.getManyMarks(dto);
+			const result = await service.getMany(dto);
 
 			expect(wordMarkRepositoryMock.find).toHaveBeenCalledWith({
 				where: { workspace: WORKSPACE_ENTITY },
@@ -428,7 +428,7 @@ describe('WordsService', () => {
 			it('should return a mark by id', async () => {
 				wordMarkRepositoryMock.findOne.mockResolvedValue(WORD_MARK_ENTITY);
 
-				const result = await service.getOneMark(WORD_MARK_ENTITY.id!);
+				const result = await service.getOne(WORD_MARK_ENTITY.id!);
 
 				expect(result).toEqual(WORD_MARK_ENTITY);
 			});
@@ -438,7 +438,7 @@ describe('WordsService', () => {
 			it('should throw NotFoundException', async () => {
 				wordMarkRepositoryMock.findOne.mockResolvedValue(null);
 
-				await expect(service.getOneMark(99)).rejects.toThrow(NotFoundException);
+				await expect(service.getOne(99)).rejects.toThrow(NotFoundException);
 			});
 		});
 	});

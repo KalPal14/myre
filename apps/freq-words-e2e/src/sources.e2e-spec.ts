@@ -14,8 +14,8 @@ import {
 	SOURCE_ENTITY,
 } from '~/freq-words/resources/source/mocks/sources';
 import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/mocks/workspaces';
-import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/words/mocks/word-forms-marks';
-import { WORD_FORM_ENTITY } from '~/freq-words/resources/words/mocks/word-forms';
+import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-form-marks';
+import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-forms';
 
 describe('Languages (e2e)', () => {
 	let app: INestApplication;
@@ -80,7 +80,7 @@ describe('Languages (e2e)', () => {
 					expect.objectContaining({
 						link: dto.link,
 						workspace: WORKSPACE_ENTITY,
-						wordFormsMarks: [],
+						wordFormMarks: [],
 					})
 				);
 			});
@@ -114,7 +114,7 @@ describe('Languages (e2e)', () => {
 				expect(resp.status).toBe(HttpStatus.OK);
 				expect(resp.body).toEqual({
 					...SOURCE_ENTITY,
-					wordFormsMarks: [
+					wordFormMarks: [
 						{
 							...WORD_FORM_MARK_ENTITY,
 							sources: [{ id: SOURCE_ENTITY.id, link: SOURCE_ENTITY.link }],
@@ -158,7 +158,7 @@ describe('Languages (e2e)', () => {
 				expect(resp.body).toEqual({
 					...createdSource,
 					link: dto.link,
-					wordFormsMarks: [],
+					wordFormMarks: [],
 					workspace: WORKSPACE_ENTITY,
 				});
 			});
@@ -192,7 +192,7 @@ describe('Languages (e2e)', () => {
 				expect(resp.status).toBe(HttpStatus.OK);
 				expect(resp.body).toEqual({
 					...createdSource,
-					wordFormsMarks: [],
+					wordFormMarks: [],
 					workspace: WORKSPACE_ENTITY,
 				});
 			});

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { GetOrCreateSourceDto, GetSourcesDto, UpdateSourceDto } from '~libs/dto/freq-words';
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
-import { WordFormMark } from '../words/entities/word-form-mark.entity';
+import { WordFormMark } from '../word-marks/entities/word-form-mark.entity';
 
 import { Source } from './entities/source.entity';
 
@@ -20,10 +20,10 @@ export class SourceService {
 		const workspace = await this.workspacesService.getOne(workspaceId);
 		const existedSource = await this.sourceRepository.findOne({
 			where: { link, workspace },
-			relations: { wordFormsMarks: true },
+			relations: { wordFormMarks: true },
 		});
 		if (!existedSource) {
-			const newSource = this.sourceRepository.create({ link, workspace, wordFormsMarks: [] });
+			const newSource = this.sourceRepository.create({ link, workspace, wordFormMarks: [] });
 			return this.sourceRepository.save(newSource);
 		}
 		return existedSource;
@@ -40,12 +40,12 @@ export class SourceService {
 	}): Promise<Source> {
 		const source = await this.getOrCreate({ link, workspaceId });
 		const sourceWithWordFormMark = await this.sourceRepository.findOne({
-			where: { id: source.id, wordFormsMarks: wordFormMark },
+			where: { id: source.id, wordFormMarks: wordFormMark },
 		});
 		if (!sourceWithWordFormMark) {
 			return this.sourceRepository.save({
 				...source,
-				wordFormsMarks: [...source.wordFormsMarks, wordFormMark],
+				wordFormMarks: [...source.wordFormMarks, wordFormMark],
 			});
 		}
 		return source;
@@ -59,7 +59,7 @@ export class SourceService {
 	async getOne(id: number): Promise<Source> {
 		const existedSource = await this.sourceRepository.findOne({
 			where: { id },
-			relations: { workspace: true, wordFormsMarks: true },
+			relations: { workspace: true, wordFormMarks: true },
 		});
 		if (!existedSource) {
 			throw new NotFoundException({ err: `Source #${id} not found` });

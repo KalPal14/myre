@@ -16,13 +16,13 @@ export class WordFormMark {
 	@Column({ default: false })
 	isLemma: boolean;
 
-	@ManyToOne(() => WordMark, (wordMark) => wordMark.wordFormsMarks)
+	@ManyToOne(() => WordMark, (wordMark) => wordMark.wordFormMarks)
 	wordMark: WordMark;
 
-	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormsMarks, { eager: true })
+	@ManyToOne(() => WordForm, (wordForm) => wordForm.wordFormMarks, { eager: true })
 	wordForm: WordForm;
 
-	@ManyToMany(() => Source, (source) => source.wordFormsMarks, { eager: true })
+	@ManyToMany(() => Source, (source) => source.wordFormMarks, { eager: true })
 	@JoinTable()
 	sources: Source[];
 }

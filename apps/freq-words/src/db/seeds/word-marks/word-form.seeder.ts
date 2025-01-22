@@ -1,13 +1,13 @@
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
-import { WordForm } from '~/freq-words/resources/words/entities/word-form.entity';
+import { WordForm } from '~/freq-words/resources/word-marks/entities/word-form.entity';
 import {
 	LEMMA_ENTITY,
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
 	WORD_FORM_ENTITY,
-} from '~/freq-words/resources/words/mocks/word-forms';
+} from '~/freq-words/resources/word-marks/mocks/word-forms';
 
 export default class WordFormSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

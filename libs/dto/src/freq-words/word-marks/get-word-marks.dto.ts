@@ -1,6 +1,6 @@
 import { IsNumber } from 'class-validator';
 
-export class GetWordsMarksDto {
+export class GetWordMarksDto {
 	@IsNumber()
 	workspaceId: number;
 }

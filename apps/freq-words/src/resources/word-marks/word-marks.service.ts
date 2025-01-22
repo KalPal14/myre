@@ -1,10 +1,9 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { GetWordsMarksDto, UpsertWordMarkDto } from '~libs/dto/freq-words';
-import { DefinitionDto } from '~libs/dto/freq-words/words/common/definition.dto';
+import { GetWordMarksDto, UpsertWordMarkDto } from '~libs/dto/freq-words';
+import { DefinitionDto } from '~libs/dto/freq-words/word-marks/common/definition.dto';
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { LanguagesService } from '../languages/languages.service';
@@ -18,7 +17,7 @@ import { WordFormMark } from './entities/word-form-mark.entity';
 import { WordForm } from './entities/word-form.entity';
 
 @Injectable()
-export class WordsService {
+export class WordMarksService {
 	constructor(
 		@InjectRepository(WordForm) private wordFormRepository: Repository<WordForm>,
 		@InjectRepository(WordMark) private wordMarkRepository: Repository<WordMark>,
@@ -30,9 +29,7 @@ export class WordsService {
 		private workspacesService: WorkspacesService
 	) {}
 
-	async upsertMark(
-		dto: UpsertWordMarkDto
-	): Promise<{ wordMarkId: number; wordFormMarkId: number }> {
+	async upsert(dto: UpsertWordMarkDto): Promise<{ wordMarkId: number; wordFormMarkId: number }> {
 		const language = await this.languagesService.getOne(dto.definitionFrom.languageId);
 		const workspace = await this.workspacesService.getOne(dto.workspaceId);
 
@@ -71,17 +68,17 @@ export class WordsService {
 		return { wordMarkId: wordMark.id, wordFormMarkId: wordFormMark.id };
 	}
 
-	async getManyMarks({ workspaceId }: GetWordsMarksDto): Promise<WordMark[]> {
+	async getMany({ workspaceId }: GetWordMarksDto): Promise<WordMark[]> {
 		const workspace = await this.workspacesService.getOne(workspaceId);
 		return this.wordMarkRepository.find({
 			where: { workspace },
 		});
 	}
 
-	async getOneMark(id: number): Promise<WordMark> {
+	async getOne(id: number): Promise<WordMark> {
 		const mark = await this.wordMarkRepository.findOne({
 			where: { id },
-			relations: { wordFormsMarks: { wordForm: { definitions: true } } },
+			relations: { wordFormMarks: { wordForm: { definitions: true } } },
 		});
 		if (!mark) {
 			throw new NotFoundException({ err: `word mark #${id} not found` });
@@ -157,7 +154,7 @@ export class WordsService {
 		}
 		const wordMark = this.wordMarkRepository.create({
 			workspace,
-			wordFormsMarks: lemmaMark ? [lemmaMark, wordFormMark] : [wordFormMark],
+			wordFormMarks: lemmaMark ? [lemmaMark, wordFormMark] : [wordFormMark],
 		});
 		return this.wordMarkRepository.save(wordMark);
 	}

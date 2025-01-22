@@ -9,8 +9,8 @@ import { Definition } from '../translator/entities/definition.entity';
 import { Example } from '../translator/entities/example.entity';
 import { SourceModule } from '../source/source.module';
 
-import { WordsService } from './words.service';
-import { WordsController } from './words.controller';
+import { WordMarksService } from './word-marks.service';
+import { WordMarksController } from './word-marks.controller';
 import { WordForm } from './entities/word-form.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
 import { WordMark } from './entities/word-mark.entity';
@@ -23,7 +23,7 @@ import { WordMark } from './entities/word-mark.entity';
 		SourceModule,
 		WorkspacesModule,
 	],
-	controllers: [WordsController],
-	providers: [WordsService],
+	controllers: [WordMarksController],
+	providers: [WordMarksService],
 })
-export class WordsModule {}
+export class WordMarksModule {}

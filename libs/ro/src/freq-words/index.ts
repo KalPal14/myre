@@ -14,9 +14,9 @@ export * from './source/update-source.ro';
 export * from './translator/translate.ro';
 
 // words
-export * from './words/get-word-mark.ro';
-export * from './words/get-words-marks.ro';
-export * from './words/upsert-word-mark.ro';
+export * from './word-marks/get-word-mark.ro';
+export * from './word-marks/get-word-marks.ro';
+export * from './word-marks/upsert-word-mark.ro';
 
 // workspaces
 export * from './workspaces/create-workspace.ro';

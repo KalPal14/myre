@@ -1,8 +1,8 @@
-import { IWordFormMarkRo } from '../words/common/word-form-mark.ro';
-import { IWordFormRo } from '../words/common/word-form.ro';
+import { IWordFormMarkRo } from '../word-marks/common/word-form-mark.ro';
+import { IWordFormRo } from '../word-marks/common/word-form.ro';
 
 import { IBaseSourceRo } from './common/base-source.ro';
 
 export interface IGetSourceRo extends IBaseSourceRo {
-	wordFormsMarks: IWordFormMarkRo<Omit<IWordFormRo, 'definitions'>>[];
+	wordFormMarks: IWordFormMarkRo<Omit<IWordFormRo, 'definitions'>>[];
 }

@@ -6,7 +6,7 @@ import {
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
 	WORD_FORM_ENTITY,
-} from '../../words/mocks/word-forms';
+} from '../../word-marks/mocks/word-forms';
 import { Definition } from '../entities/definition.entity';
 
 export const DEFINITION_LEMMA_RUSSIAN_ENTITY: DeepPartial<Definition> = {

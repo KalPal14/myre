@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Definition } from '~/freq-words/resources/translator/entities/definition.entity';
 import { Workspace } from '~/freq-words/resources/workspaces/entities/workspace.entity';
 
-import { WordForm } from '../../words/entities/word-form.entity';
+import { WordForm } from '../../word-marks/entities/word-form.entity';
 
 @Entity()
 export class Language {

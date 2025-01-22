@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { Language } from '~/freq-words/resources/languages/entities/language.entity';
-import { WordForm } from '~/freq-words/resources/words/entities/word-form.entity';
+import { WordForm } from '~/freq-words/resources/word-marks/entities/word-form.entity';
 
 import { Example } from './example.entity';
 

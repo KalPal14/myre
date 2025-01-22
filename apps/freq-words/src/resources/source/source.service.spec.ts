@@ -5,9 +5,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { GetOrCreateSourceDto, GetSourcesDto, UpdateSourceDto } from '~libs/dto/freq-words';
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
-import { WordFormMark } from '../words/entities/word-form-mark.entity';
+import { WordFormMark } from '../word-marks/entities/word-form-mark.entity';
 import { WORKSPACE_ENTITY } from '../workspaces/mocks/workspaces';
-import { WORD_FORM_MARK_ENTITY } from '../words/mocks/word-forms-marks';
+import { WORD_FORM_MARK_ENTITY } from '../word-marks/mocks/word-form-marks';
 
 import { SourceService } from './source.service';
 import { Source } from './entities/source.entity';
@@ -81,7 +81,7 @@ describe('SourceService', () => {
 				expect(sourceRepositoryMock.create).toHaveBeenCalledWith({
 					link: dto.link,
 					workspace: WORKSPACE_ENTITY,
-					wordFormsMarks: [],
+					wordFormMarks: [],
 				});
 				expect(result).toEqual(SOURCE_ENTITY);
 			});
@@ -112,7 +112,7 @@ describe('SourceService', () => {
 			it('should add a new wordFormMark to the source', async () => {
 				const wordFormMark: WordFormMark = WORD_FORM_MARK_ENTITY as WordFormMark;
 				sourceRepositoryMock.findOne
-					.mockResolvedValueOnce({ ...SOURCE_ENTITY, wordFormsMarks: [] })
+					.mockResolvedValueOnce({ ...SOURCE_ENTITY, wordFormMarks: [] })
 					.mockResolvedValue(null);
 				sourceRepositoryMock.save.mockImplementation((source) => source);
 
@@ -122,7 +122,7 @@ describe('SourceService', () => {
 					wordFormMark,
 				});
 
-				expect(result).toEqual({ ...SOURCE_ENTITY, wordFormsMarks: [wordFormMark] });
+				expect(result).toEqual({ ...SOURCE_ENTITY, wordFormMarks: [wordFormMark] });
 			});
 		});
 	});

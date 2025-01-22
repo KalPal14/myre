@@ -4,5 +4,5 @@ import { IWordFormRo } from './word-form.ro';
 export interface IBaseWordMarkRo<WordForm extends Partial<IWordFormRo>> {
 	id: number;
 	count: number;
-	wordFormsMarks: IWordFormMarkRo<WordForm>[];
+	wordFormMarks: IWordFormMarkRo<WordForm>[];
 }

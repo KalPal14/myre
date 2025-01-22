@@ -17,7 +17,7 @@ export class WordForm {
 	language: Language;
 
 	@OneToMany(() => WordFormMark, (wordFormMark) => wordFormMark.wordForm)
-	wordFormsMarks: WordFormMark[];
+	wordFormMarks: WordFormMark[];
 
 	@OneToMany(() => Definition, (definition) => definition.wordForm)
 	definitions: Definition[];

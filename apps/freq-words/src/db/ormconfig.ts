@@ -6,12 +6,12 @@ import { SeederOptions } from 'typeorm-extension';
 
 import LanguageSeeder from './seeds/languages/language.seeder';
 import WorkspaceSeeder from './seeds/workspaces/workspace.seeder';
-import SourceSeeder from './seeds/source/source.seeder';
-import WordMarkSeeder from './seeds/words/word-mark.seeder';
-import WordFormMarkSeeder from './seeds/words/word-form-mark.seeder';
+import SourceSeeder from './seeds/sources/source.seeder';
+import WordMarkSeeder from './seeds/word-marks/word-mark.seeder';
+import WordFormMarkSeeder from './seeds/word-marks/word-form-mark.seeder';
 import DefinitionSeeder from './seeds/translator/definition.seeder';
 import ExampleSeeder from './seeds/translator/example.seeder';
-import WordFormSeeder from './seeds/words/word-form.seeder';
+import WordFormSeeder from './seeds/word-marks/word-form.seeder';
 
 config({
 	path: join(__dirname, `../../../../../.env.${process.env.NODE_ENV || 'dev'}`),
