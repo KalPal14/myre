@@ -4,29 +4,29 @@ import { NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 
 import { UpsertWordMarkDto, GetWordMarksDto } from '~libs/dto/freq-words';
+import { DefinitionDto } from '~libs/dto/freq-words/word-marks/common/definition.dto';
 
 import { LanguagesService } from '../languages/languages.service';
 import { SourceService } from '../source/source.service';
 import { WorkspacesService } from '../workspaces/workspaces.service';
-import { Definition } from '../translator/entities/definition.entity';
-import { Example } from '../word-forms/entities/example.entity';
 import { WORKSPACE_ENTITY } from '../workspaces/mocks/workspaces';
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
 import {
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
 } from '../word-forms/mocks/definitions';
+import { WordFormsService } from '../word-forms/word-forms.service';
+import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../word-forms/mocks/word-forms';
+import { WordForm } from '../word-forms/entities/word-form.entity';
 import {
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
-} from '../translator/mocks/examples';
+} from '../word-forms/mocks/examples';
 
 import { WordMarksService } from './word-marks.service';
-import { WordForm } from './entities/word-form.entity';
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
 import { UPSERT_WORD_MARK_DTO, WORD_MARK_ENTITY } from './mocks/word-marks';
-import { LEMMA_ENTITY, WORD_FORM_ENTITY } from './mocks/word-forms';
 import { LEMMA_MARK_ENTITY } from './mocks/word-form-marks';
 
 describe('WordMarksService', () => {
@@ -48,11 +48,8 @@ describe('WordMarksService', () => {
 		preload: jest.fn(),
 		remove: jest.fn(),
 	});
-	const wordFormRepositoryMock = createTypeOrmRepositoryMock();
 	const wordMarkRepositoryMock = createTypeOrmRepositoryMock();
 	const wordFormMarkRepositoryMock = createTypeOrmRepositoryMock();
-	const definitionRepositoryMock = createTypeOrmRepositoryMock();
-	const exampleRepositoryMock = createTypeOrmRepositoryMock();
 
 	const languagesServiceMock = {
 		getOne: jest.fn(),
@@ -66,18 +63,21 @@ describe('WordMarksService', () => {
 		getOne: jest.fn(),
 	};
 
+	const wordFormsServiceMock = {
+		getOrCreate: jest.fn(),
+		getOrCreateDefinition: jest.fn(),
+	};
+
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				WordMarksService,
-				{ provide: getRepositoryToken(WordForm), useValue: wordFormRepositoryMock },
 				{ provide: getRepositoryToken(WordMark), useValue: wordMarkRepositoryMock },
 				{ provide: getRepositoryToken(WordFormMark), useValue: wordFormMarkRepositoryMock },
-				{ provide: getRepositoryToken(Definition), useValue: definitionRepositoryMock },
-				{ provide: getRepositoryToken(Example), useValue: exampleRepositoryMock },
 				{ provide: LanguagesService, useValue: languagesServiceMock },
 				{ provide: SourceService, useValue: sourceServiceMock },
 				{ provide: WorkspacesService, useValue: workspacesServiceMock },
+				{ provide: WordFormsService, useValue: wordFormsServiceMock },
 			],
 		}).compile();
 
@@ -114,28 +114,25 @@ describe('WordMarksService', () => {
 				}
 			});
 			workspacesServiceMock.getOne.mockResolvedValue(WORKSPACE_ENTITY);
-			wordFormRepositoryMock.create.mockImplementation(
+			wordFormsServiceMock.getOrCreate.mockImplementation(
 				({ name }: Pick<WordForm, 'name' | 'language'>) => {
 					switch (name) {
 						case LEMMA_ENTITY.name:
 							return LEMMA_ENTITY;
 						case WORD_FORM_ENTITY.name:
 							return WORD_FORM_ENTITY;
-						default:
-							return WORD_FORM_ENTITY;
 					}
 				}
 			);
-			wordFormRepositoryMock.save.mockImplementation((wordForm) => wordForm);
 			wordFormMarkRepositoryMock.create.mockImplementation(
 				({ isLemma }: Pick<WordFormMark, 'isLemma' | 'wordForm'>) => {
 					return isLemma ? newLemmaMark : newWordFormMark;
 				}
 			);
 			wordFormMarkRepositoryMock.save.mockImplementation((wordFormMark) => wordFormMark);
-			definitionRepositoryMock.findOne.mockImplementation(
-				({ where: { language } }: { where: DeepPartial<Definition> }) => {
-					return language === ENGLISH_LANGUAGE_ENTITY
+			wordFormsServiceMock.getOrCreateDefinition.mockImplementation(
+				({ languageId }: DefinitionDto) => {
+					return languageId === ENGLISH_LANGUAGE_ENTITY.id
 						? {
 								...DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 								examples: EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
@@ -150,18 +147,10 @@ describe('WordMarksService', () => {
 			wordMarkRepositoryMock.save.mockImplementation((wordMark) => wordMark);
 		});
 
-		describe(`pass new lemma and new word form`, () => {
+		describe(`pass unmarked lemma and word form`, () => {
 			beforeEach(() => {
 				dto = UPSERT_WORD_MARK_DTO('differ', true);
-				wordFormRepositoryMock.findOneBy.mockResolvedValue(null);
 				wordFormMarkRepositoryMock.findOne.mockResolvedValue(null);
-			});
-
-			it(`should create two word-forms`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(LEMMA_ENTITY);
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(WORD_FORM_ENTITY);
 			});
 
 			it(`should create two word form marks`, async () => {
@@ -207,19 +196,9 @@ describe('WordMarksService', () => {
 			});
 		});
 
-		describe(`pass existing lemma and new word form`, () => {
+		describe(`pass marked lemma and unmarked word form`, () => {
 			beforeEach(() => {
 				dto = UPSERT_WORD_MARK_DTO('differ', true);
-				wordFormRepositoryMock.findOneBy.mockImplementation(
-					({ name }: FindOptionsWhere<WordForm>) => {
-						switch (name) {
-							case LEMMA_ENTITY.name:
-								return LEMMA_ENTITY;
-							default:
-								return null;
-						}
-					}
-				);
 				wordFormMarkRepositoryMock.findOne.mockImplementation(
 					({ where: { wordForm } }: { where: FindOptionsWhere<WordFormMark> }) => {
 						switch (wordForm) {
@@ -230,13 +209,6 @@ describe('WordMarksService', () => {
 						}
 					}
 				);
-			});
-
-			it(`should create one word form`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledTimes(1);
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(WORD_FORM_ENTITY);
 			});
 
 			it(`should create one word form mark`, async () => {
@@ -285,86 +257,10 @@ describe('WordMarksService', () => {
 			});
 		});
 
-		describe(`pass existing lemma and new word form mark of existing word form`, () => {
-			beforeEach(() => {
-				dto = UPSERT_WORD_MARK_DTO('differ', true);
-				wordFormRepositoryMock.findOneBy.mockImplementation(
-					({ name }: FindOptionsWhere<WordForm>) => {
-						switch (name) {
-							case LEMMA_ENTITY.name:
-								return LEMMA_ENTITY;
-							case WORD_FORM_ENTITY.name:
-								return WORD_FORM_ENTITY;
-						}
-					}
-				);
-				wordFormMarkRepositoryMock.findOne.mockImplementation(
-					({ where: { wordForm } }: { where: FindOptionsWhere<WordFormMark> }) => {
-						switch (wordForm) {
-							case LEMMA_ENTITY:
-								return LEMMA_MARK_ENTITY;
-							default:
-								return null;
-						}
-					}
-				);
-			});
-
-			it(`should NOT create word form`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormRepositoryMock.save).not.toHaveBeenCalled();
-			});
-
-			it(`should create one word form mark`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledTimes(1);
-				expect(wordFormMarkRepositoryMock.save).toHaveBeenCalledWith(newWordFormMark);
-			});
-
-			it(`should NOT increase count of lemma mark`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledTimes(2);
-				expect(wordFormMarkRepositoryMock.update).not.toHaveBeenCalledWith(LEMMA_MARK_ENTITY.id, {
-					count: LEMMA_MARK_ENTITY.count! + 1,
-				});
-			});
-
-			it(`should increase count of word mark and word form mark`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormMarkRepositoryMock.update).toHaveBeenCalledWith(newWordFormMark.id, {
-					count: newWordFormMark.count! + 1,
-				});
-				expect(wordMarkRepositoryMock.update).toHaveBeenCalledWith(WORD_MARK_ENTITY.id, {
-					count: WORD_MARK_ENTITY.count! + 1,
-				});
-			});
-
-			it(`should return IDs of word form mark whose counter has increased and its word mark`, async () => {
-				const result = await service.upsert(dto);
-
-				expect(result).toEqual({
-					wordMarkId: WORD_MARK_ENTITY.id,
-					wordFormMarkId: newWordFormMark.id,
-				});
-			});
-		});
-
-		describe(`pass new lemma with source`, () => {
+		describe(`pass unmarked lemma with source`, () => {
 			beforeEach(() => {
 				dto = UPSERT_WORD_MARK_DTO('equal', true, true);
-				wordFormRepositoryMock.findOneBy.mockResolvedValue(null);
 				wordFormMarkRepositoryMock.findOne.mockResolvedValue(null);
-			});
-
-			it(`should create lemma`, async () => {
-				await service.upsert(dto);
-
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledTimes(1);
-				expect(wordFormRepositoryMock.save).toHaveBeenCalledWith(LEMMA_ENTITY);
 			});
 
 			it(`should create lemma mark`, async () => {
