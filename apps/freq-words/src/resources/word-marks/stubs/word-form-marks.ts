@@ -1,8 +1,8 @@
 import { DeepPartial } from 'typeorm';
 
 import { WordFormMark } from '../entities/word-form-mark.entity';
-import { SOURCE_ENTITY } from '../../source/mocks/sources';
-import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../../word-forms/mocks/word-forms';
+import { SOURCE_ENTITY } from '../../source/stubs/sources';
+import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../../word-forms/stubs/word-forms';
 
 import { WORD_MARK_ENTITY } from './word-marks';
 

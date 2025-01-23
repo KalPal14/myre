@@ -2,7 +2,7 @@ import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
 import { WordMark } from '~/freq-words/resources/word-marks/entities/word-mark.entity';
-import { WORD_MARK_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-marks';
+import { WORD_MARK_ENTITY } from '~/freq-words/resources/word-marks/stubs/word-marks';
 
 export default class WordMarkSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

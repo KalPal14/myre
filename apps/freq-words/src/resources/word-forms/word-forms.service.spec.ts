@@ -5,16 +5,16 @@ import { Repository } from 'typeorm';
 import { DefinitionDto } from '~libs/dto/freq-words/word-marks/common/definition.dto';
 
 import { LanguagesService } from '../languages/languages.service';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/stubs/languages';
 import { Language } from '../languages/entities/language.entity';
 
 import { Example } from './entities/example.entity';
 import { WordFormsService } from './word-forms.service';
 import { WordForm } from './entities/word-form.entity';
 import { Definition } from './entities/definition.entity';
-import { TRANSLATIONS_ENTITIES, WORD_FORM_ENTITY } from './mocks/word-forms';
-import { DEFINITION_WORD_FORM_ENGLISH_ENTITY } from './mocks/definitions';
-import { EXAMPLES_ENGLISH_WORD_FORM_ENTITIES } from './mocks/examples';
+import { TRANSLATIONS_ENTITIES, WORD_FORM_ENTITY } from './stubs/word-forms';
+import { DEFINITION_WORD_FORM_ENGLISH_ENTITY } from './stubs/definitions';
+import { EXAMPLES_ENGLISH_WORD_FORM_ENTITIES } from './stubs/examples';
 
 describe('WordFormsService', () => {
 	let service: WordFormsService;

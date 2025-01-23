@@ -6,11 +6,11 @@ import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/freq-words';
 import { JWT_PAYLOAD } from '~libs/common';
 
 import { LanguagesService } from '../languages/languages.service';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/stubs/languages';
 
 import { WorkspacesService } from './workspaces.service';
 import { Workspace } from './entities/workspace.entity';
-import { WORKSPACE_ENTITY } from './mocks/workspaces';
+import { WORKSPACE_ENTITY } from './stubs/workspaces';
 
 describe('WorkspacesService', () => {
 	let service: WorkspacesService;

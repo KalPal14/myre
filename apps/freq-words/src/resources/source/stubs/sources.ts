@@ -4,7 +4,7 @@ import { DeepPartial } from 'typeorm';
 
 import { GetOrCreateSourceDto } from '~libs/dto/freq-words';
 
-import { WORKSPACE_ENTITY } from '../../workspaces/mocks/workspaces';
+import { WORKSPACE_ENTITY } from '../../workspaces/stubs/workspaces';
 import { Source } from '../entities/source.entity';
 
 export const SOURCE_ENTITY: DeepPartial<Source> = {

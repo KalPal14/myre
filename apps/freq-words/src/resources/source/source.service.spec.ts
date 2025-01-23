@@ -6,12 +6,12 @@ import { GetOrCreateSourceDto, GetSourcesDto, UpdateSourceDto } from '~libs/dto/
 
 import { WorkspacesService } from '../workspaces/workspaces.service';
 import { WordFormMark } from '../word-marks/entities/word-form-mark.entity';
-import { WORKSPACE_ENTITY } from '../workspaces/mocks/workspaces';
-import { WORD_FORM_MARK_ENTITY } from '../word-marks/mocks/word-form-marks';
+import { WORKSPACE_ENTITY } from '../workspaces/stubs/workspaces';
+import { WORD_FORM_MARK_ENTITY } from '../word-marks/stubs/word-form-marks';
 
 import { SourceService } from './source.service';
 import { Source } from './entities/source.entity';
-import { SOURCE_ENTITY } from './mocks/sources';
+import { SOURCE_ENTITY } from './stubs/sources';
 
 describe('SourceService', () => {
 	let service: SourceService;

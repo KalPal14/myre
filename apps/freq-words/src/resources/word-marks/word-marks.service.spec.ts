@@ -9,25 +9,25 @@ import { DefinitionDto } from '~libs/dto/freq-words/word-marks/common/definition
 import { LanguagesService } from '../languages/languages.service';
 import { SourceService } from '../source/source.service';
 import { WorkspacesService } from '../workspaces/workspaces.service';
-import { WORKSPACE_ENTITY } from '../workspaces/mocks/workspaces';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
+import { WORKSPACE_ENTITY } from '../workspaces/stubs/workspaces';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/stubs/languages';
 import {
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from '../word-forms/mocks/definitions';
+} from '../word-forms/stubs/definitions';
 import { WordFormsService } from '../word-forms/word-forms.service';
-import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../word-forms/mocks/word-forms';
+import { LEMMA_ENTITY, WORD_FORM_ENTITY } from '../word-forms/stubs/word-forms';
 import { WordForm } from '../word-forms/entities/word-form.entity';
 import {
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
-} from '../word-forms/mocks/examples';
+} from '../word-forms/stubs/examples';
 
 import { WordMarksService } from './word-marks.service';
 import { WordMark } from './entities/word-mark.entity';
 import { WordFormMark } from './entities/word-form-mark.entity';
-import { UPSERT_WORD_MARK_DTO, WORD_MARK_ENTITY } from './mocks/word-marks';
-import { LEMMA_MARK_ENTITY } from './mocks/word-form-marks';
+import { UPSERT_WORD_MARK_DTO, WORD_MARK_ENTITY } from './stubs/word-marks';
+import { LEMMA_MARK_ENTITY } from './stubs/word-form-marks';
 
 describe('WordMarksService', () => {
 	let service: WordMarksService;

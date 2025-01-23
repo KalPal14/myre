@@ -5,23 +5,23 @@ import { DeepPartial } from 'typeorm';
 import { UpsertWordMarkDto } from '~libs/dto/freq-words';
 
 import { WordMark } from '../entities/word-mark.entity';
-import { WORKSPACE_ENTITY } from '../../workspaces/mocks/workspaces';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+import { WORKSPACE_ENTITY } from '../../workspaces/stubs/workspaces';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/stubs/languages';
 import {
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from '../../word-forms/mocks/definitions';
-import { SOURCE_ENTITY } from '../../source/mocks/sources';
+} from '../../word-forms/stubs/definitions';
+import { SOURCE_ENTITY } from '../../source/stubs/sources';
 import {
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
-} from '../../word-forms/mocks/examples';
+} from '../../word-forms/stubs/examples';
 import {
 	LEMMA_ENTITY,
 	WORD_FORM_ENTITY,
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
-} from '../../word-forms/mocks/word-forms';
+} from '../../word-forms/stubs/word-forms';
 
 export const WORD_MARK_ENTITY: DeepPartial<WordMark> = {
 	id: 1,

@@ -8,7 +8,7 @@ import { AppModule } from '~/freq-words/app.module';
 import {
 	ENGLISH_LANGUAGE_ENTITY,
 	URKAINIAN_LANGUAGE_ENTITY,
-} from '~/freq-words/resources/languages/mocks/languages';
+} from '~/freq-words/resources/languages/stubs/languages';
 
 describe('Languages (e2e)', () => {
 	let app: INestApplication;

@@ -5,7 +5,7 @@ import { DeepPartial } from 'typeorm';
 import { CreateWorkspaceDto } from '~libs/dto/freq-words';
 
 import { Workspace } from '../entities/workspace.entity';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/stubs/languages';
 
 export const WORKSPACE_ENTITY: DeepPartial<Workspace> = {
 	id: 1,

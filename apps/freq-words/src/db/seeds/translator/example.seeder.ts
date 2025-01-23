@@ -7,7 +7,7 @@ import {
 	EXAMPLES_ENGLISH_WORD_FORM_ENTITIES,
 	EXAMPLES_RUSSIAN_LEMMA_ENTITIES,
 	EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES,
-} from '~/freq-words/resources/word-forms/mocks/examples';
+} from '~/freq-words/resources/word-forms/stubs/examples';
 
 export default class ExampleSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

@@ -12,10 +12,10 @@ import { AppModule } from '~/freq-words/app.module';
 import {
 	GET_OR_CREATE_SOURCE_DTO,
 	SOURCE_ENTITY,
-} from '~/freq-words/resources/source/mocks/sources';
-import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/mocks/workspaces';
-import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/word-marks/mocks/word-form-marks';
-import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-forms/mocks/word-forms';
+} from '~/freq-words/resources/source/stubs/sources';
+import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/stubs/workspaces';
+import { WORD_FORM_MARK_ENTITY } from '~/freq-words/resources/word-marks/stubs/word-form-marks';
+import { WORD_FORM_ENTITY } from '~/freq-words/resources/word-forms/stubs/word-forms';
 
 describe('Sources (e2e)', () => {
 	let app: INestApplication;

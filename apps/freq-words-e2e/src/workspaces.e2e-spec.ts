@@ -13,11 +13,11 @@ import { AppModule } from '~/freq-words/app.module';
 import {
 	CREATE_WORKSPACE_DTO,
 	WORKSPACE_ENTITY,
-} from '~/freq-words/resources/workspaces/mocks/workspaces';
+} from '~/freq-words/resources/workspaces/stubs/workspaces';
 import {
 	ENGLISH_LANGUAGE_ENTITY,
 	RUSSIAN_LANGUAGE_ENTITY,
-} from '~/freq-words/resources/languages/mocks/languages';
+} from '~/freq-words/resources/languages/stubs/languages';
 
 describe('Workspaces (e2e)', () => {
 	let app: INestApplication;

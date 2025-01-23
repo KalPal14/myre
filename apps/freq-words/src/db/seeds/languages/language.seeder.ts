@@ -6,7 +6,7 @@ import {
 	ENGLISH_LANGUAGE_ENTITY,
 	RUSSIAN_LANGUAGE_ENTITY,
 	URKAINIAN_LANGUAGE_ENTITY,
-} from '~/freq-words/resources/languages/mocks/languages';
+} from '~/freq-words/resources/languages/stubs/languages';
 
 export default class LanguageSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

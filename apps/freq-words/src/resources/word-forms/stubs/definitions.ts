@@ -1,6 +1,6 @@
 import { DeepPartial } from 'typeorm';
 
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/stubs/languages';
 import { Definition } from '../entities/definition.entity';
 
 import {

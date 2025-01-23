@@ -7,7 +7,7 @@ import {
 	DEFINITION_LEMMA_RUSSIAN_ENTITY,
 	DEFINITION_WORD_FORM_ENGLISH_ENTITY,
 	DEFINITION_WORD_FORM_RUSSIAN_ENTITY,
-} from '~/freq-words/resources/word-forms/mocks/definitions';
+} from '~/freq-words/resources/word-forms/stubs/definitions';
 
 export default class DefinitionSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

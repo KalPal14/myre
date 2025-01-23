@@ -5,7 +5,7 @@ import { WordFormMark } from '~/freq-words/resources/word-marks/entities/word-fo
 import {
 	LEMMA_MARK_ENTITY,
 	WORD_FORM_MARK_ENTITY,
-} from '~/freq-words/resources/word-marks/mocks/word-form-marks';
+} from '~/freq-words/resources/word-marks/stubs/word-form-marks';
 
 export default class WordFormMarkSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

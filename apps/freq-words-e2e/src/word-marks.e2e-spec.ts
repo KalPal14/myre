@@ -12,9 +12,9 @@ import { AppModule } from '~/freq-words/app.module';
 import {
 	UPSERT_WORD_MARK_DTO,
 	WORD_MARK_ENTITY,
-} from '~/freq-words/resources/word-marks/mocks/word-marks';
+} from '~/freq-words/resources/word-marks/stubs/word-marks';
 import { WordFormMark } from '~/freq-words/resources/word-marks/entities/word-form-mark.entity';
-import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/mocks/workspaces';
+import { WORKSPACE_ENTITY } from '~/freq-words/resources/workspaces/stubs/workspaces';
 
 describe('Word Marks (e2e)', () => {
 	let app: INestApplication;

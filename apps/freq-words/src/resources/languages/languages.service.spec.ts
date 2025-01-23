@@ -5,7 +5,7 @@ import { ILike } from 'typeorm';
 
 import { LanguagesService } from './languages.service';
 import { Language } from './entities/language.entity';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from './mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from './stubs/languages';
 
 describe('LanguagesService', () => {
 	let service: LanguagesService;

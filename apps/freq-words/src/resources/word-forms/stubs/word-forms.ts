@@ -1,7 +1,7 @@
 import { DeepPartial } from 'typeorm';
 
 import { WordForm } from '../entities/word-form.entity';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../../languages/stubs/languages';
 
 export const LEMMA_ENTITY: DeepPartial<WordForm> = {
 	id: 1,

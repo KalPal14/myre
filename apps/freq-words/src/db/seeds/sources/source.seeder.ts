@@ -2,7 +2,7 @@ import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
 
 import { Source } from '~/freq-words/resources/source/entities/source.entity';
-import { SOURCE_ENTITY } from '~/freq-words/resources/source/mocks/sources';
+import { SOURCE_ENTITY } from '~/freq-words/resources/source/stubs/sources';
 
 export default class SourceSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

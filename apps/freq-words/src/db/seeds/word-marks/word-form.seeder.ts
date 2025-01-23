@@ -7,7 +7,7 @@ import {
 	SYNONYMS_ENTITIES,
 	TRANSLATIONS_ENTITIES,
 	WORD_FORM_ENTITY,
-} from '~/freq-words/resources/word-forms/mocks/word-forms';
+} from '~/freq-words/resources/word-forms/stubs/word-forms';
 
 export default class WordFormSeeder implements Seeder {
 	public async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {

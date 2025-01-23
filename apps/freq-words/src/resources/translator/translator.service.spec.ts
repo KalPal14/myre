@@ -4,7 +4,7 @@ import { AiService } from '~libs/nest-core';
 import { TranslateDto } from '~libs/dto/freq-words';
 
 import { LanguagesService } from '../languages/languages.service';
-import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/mocks/languages';
+import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from '../languages/stubs/languages';
 
 import { translatePrompt } from './prompts/translate.prompt';
 import { TranslatorService } from './translator.service';
