@@ -1,5 +1,5 @@
 // constants
-export * from './constants/types';
+export * from './common/constants/types';
 
 // exeptions
 export * from './exceptions/http-error.class';
@@ -25,9 +25,9 @@ export * from './services/prisma-service/prisma.service';
 export * from './services/prisma-service/base-prisma.service.interface';
 
 // types
-export * from './types/controller.type';
+export * from './common/types/controller.type';
 
 // utils
-export * from './utils/base-controller/base.controller';
-export * from './utils/base-controller/types/route.interface';
-export * from './utils/bindings/express-core.bindings';
+export * from './common/base-controller/base.controller';
+export * from './common/base-controller/types/route.interface';
+export * from './common/bindings/express-core.bindings';

@@ -9,7 +9,7 @@ import { Node } from '~/highlight-extension/domain/node/node';
 import { INodesRepository } from '~/highlight-extension/repositories/nodes-repository/nodes.repository.interface';
 import { INodeFactory } from '~/highlight-extension/domain/node/factory/node-factory.interface';
 import { NodeFactory } from '~/highlight-extension/domain/node/factory/node.factory';
-import { END_NODE_MODEL } from '~/highlight-extension/common/constants/spec/nodes';
+import { END_NODE_MODEL } from '~/highlight-extension/common/stubs/nodes';
 
 import { INodesService } from './nodes.service.interface';
 import { NodesService } from './nodes.service';

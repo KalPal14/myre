@@ -15,14 +15,14 @@ import {
 	HIGHLIGHT_MODEL,
 	CREATE_HIGHLIGHT_DTO,
 	HIGHLIGHT_DEEP_MODEL,
-} from '~/highlight-extension/common/constants/spec/highlights';
+} from '~/highlight-extension/common/stubs/highlights';
 import {
 	START_NODE_MODEL,
 	END_NODE_MODEL,
 	START_NODE,
 	END_NODE,
-} from '~/highlight-extension/common/constants/spec/nodes';
-import { CREATE_PAGE_DTO, PAGE_MODEL } from '~/highlight-extension/common/constants/spec/pages';
+} from '~/highlight-extension/common/stubs/nodes';
+import { CREATE_PAGE_DTO, PAGE_MODEL } from '~/highlight-extension/common/stubs/pages';
 import { IHighlightDeepModel } from '~/highlight-extension/repositories/highlights-repository/types/highlight-deep-model.interface';
 
 import { IPagesServise } from '../pages-service/pages.service.interface';

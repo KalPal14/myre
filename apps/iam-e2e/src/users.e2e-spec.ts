@@ -9,17 +9,12 @@ import {
 	LoginDto,
 	RegistrationDto,
 } from '~libs/dto/iam';
-import { hideEmail, TEmail } from '~libs/common';
+import { hideEmailUsername } from '~libs/common';
 import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
 import { bootstrap as hExtBootstrap } from '~/highlight-extension/main';
-import {
-	CREATE_USER_DTO,
-	LOGIN_USER_DTO,
-	USER,
-	USER_MODEL,
-} from '~/iam/common/constants/spec/users';
+import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
 
 import type { Express } from 'express';
 
@@ -62,7 +57,7 @@ describe('Users', () => {
 				expect(res.body).toMatchObject({
 					user: {
 						username: DTO.username,
-						email: hideEmail(DTO.email as TEmail),
+						email: hideEmailUsername(DTO.email),
 					},
 					workspace: {
 						name: `${DTO.username}'s workspace`,
@@ -125,7 +120,7 @@ describe('Users', () => {
 				expect(jwt).toBeDefined();
 				expect(userInfo).toEqual({
 					id: USER_MODEL.id,
-					email: hideEmail(USER_MODEL.email as TEmail),
+					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
 				});
@@ -141,7 +136,7 @@ describe('Users', () => {
 				expect(jwt).toBeDefined();
 				expect(userInfo).toEqual({
 					id: USER_MODEL.id,
-					email: hideEmail(USER_MODEL.email as TEmail),
+					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
 				});

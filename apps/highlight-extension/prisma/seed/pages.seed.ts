@@ -1,6 +1,6 @@
 import { PrismaClient } from '~/highlight-extension/prisma/client';
 
-import { PAGE, PAGE_MODEL } from '../../src/common/constants/spec/pages';
+import { PAGE, PAGE_MODEL } from '../../src/common/stubs/pages';
 
 export async function pagesSeed(prisma: PrismaClient): Promise<void> {
 	await prisma.pageModel.upsert({

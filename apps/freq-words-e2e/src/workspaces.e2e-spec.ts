@@ -8,7 +8,7 @@ import { JWT_PAYLOAD } from '~libs/common/index';
 import { UpdateWorkspaceDto } from '~libs/dto/freq-words';
 
 import { bootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 import { AppModule } from '~/freq-words/app.module';
 import {
 	CREATE_WORKSPACE_DTO,

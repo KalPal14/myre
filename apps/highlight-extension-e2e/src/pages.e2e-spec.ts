@@ -9,12 +9,12 @@ import { PAGES_URLS, HIGHLIGHTS_URLS } from '~libs/routes/highlight-extension';
 
 import { bootstrap } from '~/highlight-extension/main';
 import { bootstrap as iamBootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 import {
 	CREATE_HIGHLIGHT_DTO,
 	HIGHLIGHT_DEEP_MODEL,
-} from '~/highlight-extension/common/constants/spec/highlights';
-import { PAGE, PAGE_MODEL } from '~/highlight-extension/common/constants/spec/pages';
+} from '~/highlight-extension/common/stubs/highlights';
+import { PAGE, PAGE_MODEL } from '~/highlight-extension/common/stubs/pages';
 
 import type { Express } from 'express';
 

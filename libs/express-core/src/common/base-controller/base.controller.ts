@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Response, Router } from 'express';
 import { injectable } from 'inversify';
 
-import { TController } from '~libs/express-core/types/controller.type';
+import { TController } from '~libs/express-core/common/types/controller.type';
 import { RoleGuard } from '~libs/express-core/middlewares/role-guard/role.guard';
 import { IMiddleware } from '~libs/express-core/middlewares/common/types/middleware.interface';
 

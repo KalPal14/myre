@@ -10,9 +10,9 @@ import { bootstrap } from '~/highlight-extension/main';
 import {
 	CREATE_WORKSPACE_DTO,
 	WORKSPACE_MODEL,
-} from '~/highlight-extension/common/constants/spec/workspaces';
+} from '~/highlight-extension/common/stubs/workspaces';
 import { bootstrap as iamBootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 
 import type { Express } from 'express';
 
@@ -38,11 +38,12 @@ describe('Workspaces', () => {
 				const res = await request(app)
 					.get(WORKSPACES_URLS.get(WORKSPACE_MODEL.id))
 					.set('Authorization', `Bearer ${jwt}`);
+				console.log(res.body);
 
 				const { pages, ...restWorkspace } = res.body;
 				expect(res.statusCode).toBe(200);
+				expect(Array.isArray(pages)).toBeTruthy();
 				expect(restWorkspace).toEqual(WORKSPACE_MODEL);
-				expect(pages).toHaveProperty('length');
 			});
 		});
 

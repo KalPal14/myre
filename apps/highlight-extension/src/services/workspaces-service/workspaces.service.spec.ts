@@ -13,7 +13,7 @@ import {
 	CREATE_WORKSPACE_DTO,
 	WORKSPACE,
 	WORKSPACE_MODEL,
-} from '~/highlight-extension/common/constants/spec/workspaces';
+} from '~/highlight-extension/common/stubs/workspaces';
 
 import { IWorkspacesService } from './workspaces.service.interface';
 import { WorkspacesService } from './workspaces.service';

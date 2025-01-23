@@ -7,7 +7,7 @@ import { USERS_URLS } from '~libs/routes/iam';
 import { GetSourcesDto, UpdateSourceDto } from '~libs/dto/freq-words';
 
 import { bootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 import { AppModule } from '~/freq-words/app.module';
 import {
 	GET_OR_CREATE_SOURCE_DTO,

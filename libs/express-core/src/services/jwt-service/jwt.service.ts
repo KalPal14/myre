@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { EXPRESS_CORE_TYPES } from '~libs/express-core/constants/types';
+import { EXPRESS_CORE_TYPES } from '~libs/express-core/common/constants/types';
 
 import { IConfigService } from '../config-service/config.service.interface';
 

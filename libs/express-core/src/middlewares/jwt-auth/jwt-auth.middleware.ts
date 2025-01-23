@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { EXPRESS_CORE_TYPES } from '~libs/express-core/constants/types';
+import { EXPRESS_CORE_TYPES } from '~libs/express-core/common/constants/types';
 import { IJwtService } from '~libs/express-core/services/jwt-service/jwt.service.interface';
 
 import { BaseJwtAuthMiddleware } from './base-jwt-auth.middleware';

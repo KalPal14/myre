@@ -8,14 +8,14 @@ import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/highlight-extension/main';
 import { bootstrap as iamBootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 import {
 	CREATE_HIGHLIGHT_DTO,
 	HIGHLIGHT,
 	HIGHLIGHT_MODEL,
-} from '~/highlight-extension/common/constants/spec/highlights';
-import { PAGE } from '~/highlight-extension/common/constants/spec/pages';
-import { END_NODE, START_NODE } from '~/highlight-extension/common/constants/spec/nodes';
+} from '~/highlight-extension/common/stubs/highlights';
+import { PAGE } from '~/highlight-extension/common/stubs/pages';
+import { END_NODE, START_NODE } from '~/highlight-extension/common/stubs/nodes';
 
 import type { Express } from 'express';
 

@@ -5,7 +5,7 @@ import {
 	END_NODE_MODEL,
 	START_NODE,
 	END_NODE,
-} from '../../src/common/constants/spec/nodes';
+} from '../../src/common/stubs/nodes';
 
 export async function nodesSeed(prisma: PrismaClient): Promise<void> {
 	await prisma.nodeModel.upsert({

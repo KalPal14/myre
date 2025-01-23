@@ -9,7 +9,7 @@ import {
 	TController,
 	BaseController,
 } from '~libs/express-core';
-import { hideEmail, TEmail } from '~libs/common';
+import { hideEmailUsername } from '~libs/common';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -156,7 +156,7 @@ export class UsersController extends BaseController implements IUsersController 
 	private layoutUserInfoRes(user: UserModel): IUserInfo {
 		return {
 			id: user.id,
-			email: hideEmail(user.email as TEmail),
+			email: hideEmailUsername(user.email),
 			username: user.username,
 			passwordUpdatedAt: user.passwordUpdatedAt,
 		};

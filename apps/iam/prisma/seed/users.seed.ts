@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 
-import { USER, USER_MODEL } from '../../src/common/constants/spec/users';
+import { USER, USER_MODEL } from '../../src/common/stubs/users';
 import { PrismaClient } from '../client';
 
 const salt = Number(process.env.SALT);

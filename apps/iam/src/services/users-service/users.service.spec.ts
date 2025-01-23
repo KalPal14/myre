@@ -14,12 +14,7 @@ import { IUsersRepository } from '~/iam/repositories/users-repository/users.repo
 import { User } from '~/iam/domain/user/user';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
 import { UserFactory } from '~/iam/domain/user/factory/user.factory';
-import {
-	CREATE_USER_DTO,
-	LOGIN_USER_DTO,
-	USER,
-	USER_MODEL,
-} from '~/iam/common/constants/spec/users';
+import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
 
 import { IUsersService } from './users.service.interface';
 import { UsersService } from './users.service';

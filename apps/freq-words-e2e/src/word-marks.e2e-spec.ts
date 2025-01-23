@@ -7,7 +7,7 @@ import { WORD_MARKS_URLS } from '~libs/routes/freq-words';
 import { GetWordMarksDto } from '~libs/dto/freq-words';
 
 import { bootstrap } from '~/iam/main';
-import { LOGIN_USER_DTO } from '~/iam/common/constants/spec/users';
+import { LOGIN_USER_DTO } from '~/iam/common/stubs/users';
 import { AppModule } from '~/freq-words/app.module';
 import {
 	UPSERT_WORD_MARK_DTO,
