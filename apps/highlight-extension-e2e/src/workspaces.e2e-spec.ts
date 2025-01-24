@@ -38,7 +38,6 @@ describe('Workspaces', () => {
 				const res = await request(app)
 					.get(WORKSPACES_URLS.get(WORKSPACE_MODEL.id))
 					.set('Authorization', `Bearer ${jwt}`);
-				console.log(res.body);
 
 				const { pages, ...restWorkspace } = res.body;
 				expect(res.statusCode).toBe(200);
