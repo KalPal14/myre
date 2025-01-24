@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { HTTPError, IJwtService } from '~libs/express-core';
+import { IJwtService } from '~libs/express-core';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
@@ -12,8 +12,7 @@ import {
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
-// TODO HTTPError as RespHttpError
-import { api, IJwtPayload, HTTPError as RespHttpError } from '~libs/common';
+import { api, HTTPError, IJwtPayload } from '~libs/common';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -56,7 +55,6 @@ export class UsersService implements IUsersService {
 		return await this.prismaService.client.$transaction(async (tx) => {
 			const newUser = await this.userFactory.create(registerDto);
 			const newUserEntity = await tx.userModel.create({ data: newUser });
-			// TODO: NODE_TLS_REJECT_UNAUTHORIZED=0 убрать
 
 			const jwt = await this.jwtService.generate({
 				id: newUserEntity.id,
@@ -72,7 +70,7 @@ export class UsersService implements IUsersService {
 				{ headers: { Authorization: `Bearer ${jwt}` } }
 			);
 
-			if (workspace instanceof RespHttpError) throw new Error();
+			if (workspace instanceof HTTPError) throw new Error();
 
 			return { user: newUserEntity, workspace };
 		});

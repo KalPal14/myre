@@ -6,7 +6,7 @@ import {
 	UpdateHighlightDto,
 	IndividualUpdateHighlightsDto,
 } from '~libs/dto/highlight-extension';
-import { HTTPError } from '~libs/express-core';
+import { HTTPError } from '~libs/common/index';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';

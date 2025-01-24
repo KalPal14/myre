@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 
 import { IndividualUpdateHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extension';
-import { HTTPError } from '~libs/express-core';
 import { ContainerDto } from '~libs/dto/highlight-extension/highlights/common/container.dto';
+import { HTTPError } from '~libs/common/index';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsRepository } from '~/highlight-extension/repositories/highlights-repository/highlights.repository.interface';

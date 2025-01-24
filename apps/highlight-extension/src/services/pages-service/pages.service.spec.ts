@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import { PageModel } from 'apps/highlight-extension/prisma/client';
 
-import { HTTPError } from '~libs/express-core';
+import { HTTPError } from '~libs/common';
 import { UpdatePageDto } from '~libs/dto/highlight-extension';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';

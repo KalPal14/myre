@@ -2,7 +2,6 @@
 export * from './common/constants/types';
 
 // exeptions
-export * from './exceptions/http-error.class';
 export * from './exceptions/exception-filter/exception.filter.interface';
 export * from './exceptions/exception-filter/exception.filter';
 

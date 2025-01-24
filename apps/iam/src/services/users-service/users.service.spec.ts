@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import bcryptjs from 'bcryptjs';
 
-import { api } from '~libs/common';
-import { HTTPError, IConfigService, IJwtService } from '~libs/express-core';
+import { api, HTTPError } from '~libs/common';
+import { IConfigService, IJwtService } from '~libs/express-core';
 import { ChangeEmailDto, ChangePasswordDto, ChangeUsernameDto, LoginDto } from '~libs/dto/iam';
 import { JWT_PAYLOAD } from '~libs/common/index';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
@@ -103,7 +103,6 @@ describe('UsersService', () => {
 					},
 					workspace: mockWorkspaceResponse,
 				});
-				// TODO
 				expect(api.post).toHaveBeenCalledWith(
 					WORKSPACES_URLS.create,
 					{

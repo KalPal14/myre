@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { HTTPError, ValidateMiddleware, TController, BaseController } from '~libs/express-core';
+import { ValidateMiddleware, TController, BaseController } from '~libs/express-core';
 import {
 	GetHighlightsDto,
 	CreateHighlightDto,
@@ -8,6 +8,7 @@ import {
 	IndividualUpdateHighlightsDto,
 } from '~libs/dto/highlight-extension';
 import { HIGHLIGHTS_ENDPOINTS } from '~libs/routes/highlight-extension';
+import { HTTPError } from '~libs/common';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IHighlightsService } from '~/highlight-extension/services/highlights-service/highlights.service.interface';

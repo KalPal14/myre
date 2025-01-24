@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { HTTPError } from '~libs/express-core';
+import { HTTPError } from '~libs/common';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';
 import { IWorkspacesRepository } from '~/highlight-extension/repositories/workspaces-repository/workspaces.repository.interface';

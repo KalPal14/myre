@@ -8,4 +8,4 @@ interface IErrorValidation {
 	value: string;
 }
 
-export type THttpErrorPayload = IErrorMsg | IErrorValidation[] | string;
+export type THttpErrorPayload = IErrorMsg | IErrorValidation[];

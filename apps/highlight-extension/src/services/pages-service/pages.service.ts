@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { HTTPError } from '~libs/express-core';
+import { HTTPError } from '~libs/common';
 import { UpdatePageDto } from '~libs/dto/highlight-extension';
 import { CreatePageDto } from '~libs/dto/highlight-extension/pages/create-page.dto';
 

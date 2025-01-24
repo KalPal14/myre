@@ -4,8 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { ILogger } from '~libs/express-core/services/logger-service/logger.service.interface';
 import { EXPRESS_CORE_TYPES } from '~libs/express-core';
-
-import { HTTPError } from '../http-error.class';
+import { HTTPError } from '~libs/common/index';
 
 import { IExceptionFilter } from './exception.filter.interface';
 
@@ -16,7 +15,7 @@ export class ExceptionFilter implements IExceptionFilter {
 	catch(err: Error | HTTPError, req: Request, res: Response, next: NextFunction): void {
 		if (err instanceof HTTPError) {
 			this.loggerService.err(`[${err.context}] Err ${err.statusCode}: ${err.message}`);
-			res.status(err.statusCode).send({ err: err.message });
+			res.status(err.statusCode).send(err.payload);
 			return;
 		}
 		this.loggerService.err(err.message);

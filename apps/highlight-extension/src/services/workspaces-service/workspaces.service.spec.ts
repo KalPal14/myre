@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { HTTPError } from '~libs/express-core';
+import { HTTPError } from '~libs/common';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 
 import { TYPES } from '~/highlight-extension/common/constants/types';

@@ -2,14 +2,13 @@ import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
 import {
-	HTTPError,
 	RoleGuard,
 	ValidateMiddleware,
 	IJwtService,
 	TController,
 	BaseController,
 } from '~libs/express-core';
-import { hideEmailUsername } from '~libs/common';
+import { hideEmailUsername, HTTPError } from '~libs/common';
 import {
 	ChangeEmailDto,
 	ChangePasswordDto,
