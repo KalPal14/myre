@@ -1,4 +1,4 @@
-import { IGetLanguageRo } from '../../languages/get-language.ro';
+import { IGetLanguageRo } from '../languages/get-language.ro';
 
 import { IDefinitionRo } from './definition.ro';
 

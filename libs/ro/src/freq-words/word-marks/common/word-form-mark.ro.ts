@@ -1,6 +1,5 @@
 import { TGetSourcesRo } from '../../source/get-sources.ro';
-
-import { IWordFormRo } from './word-form.ro';
+import { IWordFormRo } from '../../word-forms/word-form.ro';
 
 export interface IWordFormMarkRo<WordForm extends Partial<IWordFormRo>> {
 	id: number;

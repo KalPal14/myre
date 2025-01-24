@@ -1,5 +1,5 @@
+import { IWordFormRo } from '../word-forms/word-form.ro';
 import { IWordFormMarkRo } from '../word-marks/common/word-form-mark.ro';
-import { IWordFormRo } from '../word-marks/common/word-form.ro';
 
 import { IBaseSourceRo } from './common/base-source.ro';
 
