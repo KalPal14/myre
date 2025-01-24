@@ -89,7 +89,7 @@ describe('Sources (e2e)', () => {
 
 	describe('get many', () => {
 		it('should return all sources for a workspace', async () => {
-			const dto: GetSourcesDto = { workspaceId: WORKSPACE_ENTITY.id! };
+			const dto: GetSourcesDto = { workspaceId: WORKSPACE_ENTITY.id };
 
 			const resp = await request(app.getHttpServer())
 				.get(SOURCES_URLS.getMany)
@@ -108,7 +108,7 @@ describe('Sources (e2e)', () => {
 		describe(`pass the id of an existing source`, () => {
 			it('should return a source by id', async () => {
 				const resp = await request(app.getHttpServer())
-					.get(SOURCES_URLS.get(SOURCE_ENTITY.id!))
+					.get(SOURCES_URLS.get(SOURCE_ENTITY.id))
 					.set('Authorization', `Bearer ${jwt}`);
 
 				expect(resp.status).toBe(HttpStatus.OK);

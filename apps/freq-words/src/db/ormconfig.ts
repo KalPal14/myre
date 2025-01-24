@@ -20,7 +20,7 @@ config({
 const options: DataSourceOptions & SeederOptions = {
 	type: 'postgres',
 	host: process.env.FREQ_WORDS_HOST,
-	port: +process.env.FREQ_WORDS_DB_PORT!,
+	port: +process.env.FREQ_WORDS_DB_PORT,
 	username: process.env.FREQ_WORDS_DB_USERNAME,
 	password: process.env.FREQ_WORDS_DB_PASSWORD,
 	database: process.env.FREQ_WORDS_DB_NAME,

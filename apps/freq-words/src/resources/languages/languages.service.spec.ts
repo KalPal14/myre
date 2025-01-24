@@ -1,19 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { LanguagesService } from './languages.service';
 import { Language } from './entities/language.entity';
 import { ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY } from './stubs/languages';
 
+type TRepositoryMock<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+const createRepositoryMock: <T = any>() => TRepositoryMock<T> = () => ({
+	find: jest.fn(),
+	findOne: jest.fn(),
+});
+
 describe('LanguagesService', () => {
 	let service: LanguagesService;
 
-	const languageRepositoryMock = {
-		find: jest.fn(),
-		findOne: jest.fn(),
-	};
+	let languageRepository: TRepositoryMock;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -21,12 +24,14 @@ describe('LanguagesService', () => {
 				LanguagesService,
 				{
 					provide: getRepositoryToken(Language),
-					useValue: languageRepositoryMock,
+					useValue: createRepositoryMock(),
 				},
 			],
 		}).compile();
 
 		service = module.get<LanguagesService>(LanguagesService);
+
+		languageRepository = module.get<TRepositoryMock>(getRepositoryToken(Language));
 	});
 
 	afterEach(() => {
@@ -36,14 +41,14 @@ describe('LanguagesService', () => {
 	describe('get many', () => {
 		describe(`do not pass parameter q`, () => {
 			it('should return all languages', async () => {
-				languageRepositoryMock.find.mockResolvedValue([
+				languageRepository.find.mockResolvedValue([
 					ENGLISH_LANGUAGE_ENTITY,
 					RUSSIAN_LANGUAGE_ENTITY,
 				]);
 
 				const result = await service.getMany({});
 
-				expect(languageRepositoryMock.find).toHaveBeenCalledWith({ where: undefined });
+				expect(languageRepository.find).toHaveBeenCalledWith({ where: undefined });
 				expect(result).toEqual([ENGLISH_LANGUAGE_ENTITY, RUSSIAN_LANGUAGE_ENTITY]);
 			});
 		});
@@ -51,11 +56,11 @@ describe('LanguagesService', () => {
 		describe(`pass parameter q`, () => {
 			it('should return filtered languages based on query', async () => {
 				const q = 'Eng';
-				languageRepositoryMock.find.mockResolvedValue([ENGLISH_LANGUAGE_ENTITY]);
+				languageRepository.find.mockResolvedValue([ENGLISH_LANGUAGE_ENTITY]);
 
 				const result = await service.getMany({ q });
 
-				expect(languageRepositoryMock.find).toHaveBeenCalledWith({
+				expect(languageRepository.find).toHaveBeenCalledWith({
 					where: { name: ILike(`%${q}%`) },
 				});
 				expect(result).toEqual([ENGLISH_LANGUAGE_ENTITY]);
@@ -66,7 +71,7 @@ describe('LanguagesService', () => {
 	describe('get one', () => {
 		describe(`pass the id of an existing language`, () => {
 			it('should return a language by id', async () => {
-				languageRepositoryMock.findOne.mockResolvedValue(ENGLISH_LANGUAGE_ENTITY);
+				languageRepository.findOne.mockResolvedValue(ENGLISH_LANGUAGE_ENTITY);
 
 				const result = await service.getOne(1);
 
@@ -76,7 +81,7 @@ describe('LanguagesService', () => {
 
 		describe(`pass the id of a non-existing language`, () => {
 			it('should throw a NotFoundException if no language is found', async () => {
-				languageRepositoryMock.findOne.mockResolvedValue(null);
+				languageRepository.findOne.mockResolvedValue(null);
 
 				await expect(service.getOne(99)).rejects.toThrow(NotFoundException);
 			});

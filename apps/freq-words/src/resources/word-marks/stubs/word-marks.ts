@@ -36,30 +36,30 @@ export const UPSERT_WORD_MARK_DTO = (
 ): UpsertWordMarkDto => {
 	let lemma: string | null = null;
 	if (lemmaAndWordForm !== 'lemma-free') {
-		lemma = existed ? LEMMA_ENTITY.name! : `word_${randomUUID()}`;
+		lemma = existed ? LEMMA_ENTITY.name : `word_${randomUUID()}`;
 	}
 
-	let wordForm: string = existed ? WORD_FORM_ENTITY.name! : `word_${randomUUID()}`!;
+	let wordForm: string = existed ? WORD_FORM_ENTITY.name : `word_${randomUUID()}`;
 	if (lemmaAndWordForm === 'equal') {
-		wordForm = lemma!;
+		wordForm = lemma;
 	}
 
 	return {
-		workspaceId: WORKSPACE_ENTITY.id!,
+		workspaceId: WORKSPACE_ENTITY.id,
 		wordForm,
 		lemma,
 		sourceLink: withSource ? SOURCE_ENTITY.link : undefined,
 		definitionFrom: {
-			languageId: RUSSIAN_LANGUAGE_ENTITY.id!,
-			synonyms: SYNONYMS_ENTITIES.map(({ name }) => name!),
+			languageId: RUSSIAN_LANGUAGE_ENTITY.id,
+			synonyms: SYNONYMS_ENTITIES.map(({ name }) => name),
 			description: DEFINITION_WORD_FORM_RUSSIAN_ENTITY.description!,
-			examples: EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES.map(({ phrase }) => phrase!),
+			examples: EXAMPLES_RUSSIAN_WORD_FORM_ENTITIES.map(({ phrase }) => phrase),
 		},
 		definitionTo: {
-			languageId: ENGLISH_LANGUAGE_ENTITY.id!,
-			synonyms: TRANSLATIONS_ENTITIES.map(({ name }) => name!),
+			languageId: ENGLISH_LANGUAGE_ENTITY.id,
+			synonyms: TRANSLATIONS_ENTITIES.map(({ name }) => name),
 			description: DEFINITION_WORD_FORM_ENGLISH_ENTITY.description!,
-			examples: EXAMPLES_ENGLISH_WORD_FORM_ENTITIES.map(({ phrase }) => phrase!),
+			examples: EXAMPLES_ENGLISH_WORD_FORM_ENTITIES.map(({ phrase }) => phrase),
 		},
 	};
 };

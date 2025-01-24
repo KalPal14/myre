@@ -16,7 +16,7 @@ export const WORKSPACE_ENTITY: DeepPartial<Workspace> = {
 };
 
 export const CREATE_WORKSPACE_DTO = (existing?: boolean): CreateWorkspaceDto => ({
-	knownLanguageId: ENGLISH_LANGUAGE_ENTITY.id!,
-	targetLanguageId: RUSSIAN_LANGUAGE_ENTITY.id!,
-	name: existing ? WORKSPACE_ENTITY.name! : `${WORKSPACE_ENTITY.name} ${randomUUID()}`,
+	knownLanguageId: ENGLISH_LANGUAGE_ENTITY.id,
+	targetLanguageId: RUSSIAN_LANGUAGE_ENTITY.id,
+	name: existing ? WORKSPACE_ENTITY.name : `${WORKSPACE_ENTITY.name} ${randomUUID()}`,
 });

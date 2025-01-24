@@ -15,7 +15,7 @@ export const SOURCE_ENTITY: DeepPartial<Source> = {
 
 export const GET_OR_CREATE_SOURCE_DTO = (existed?: boolean): GetOrCreateSourceDto => {
 	return {
-		link: existed ? SOURCE_ENTITY.link! : `${SOURCE_ENTITY.link}/${randomUUID()}`,
-		workspaceId: WORKSPACE_ENTITY.id!,
+		link: existed ? SOURCE_ENTITY.link : `${SOURCE_ENTITY.link}/${randomUUID()}`,
+		workspaceId: WORKSPACE_ENTITY.id,
 	};
 };

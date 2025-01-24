@@ -31,8 +31,8 @@ describe('Translator (e2e)', () => {
 		describe('pass the word or phraseology', () => {
 			it('should return definition', async () => {
 				const dto: TranslateDto = {
-					from: ENGLISH_LANGUAGE_ENTITY.id!,
-					to: RUSSIAN_LANGUAGE_ENTITY.id!,
+					from: ENGLISH_LANGUAGE_ENTITY.id,
+					to: RUSSIAN_LANGUAGE_ENTITY.id,
 					translate: 'was',
 				};
 
@@ -58,8 +58,8 @@ describe('Translator (e2e)', () => {
 		describe('pass the sentence', () => {
 			it('should return translation', async () => {
 				const dto: TranslateDto = {
-					from: ENGLISH_LANGUAGE_ENTITY.id!,
-					to: RUSSIAN_LANGUAGE_ENTITY.id!,
+					from: ENGLISH_LANGUAGE_ENTITY.id,
+					to: RUSSIAN_LANGUAGE_ENTITY.id,
 					translate: 'I want to say hi to everyone',
 				};
 

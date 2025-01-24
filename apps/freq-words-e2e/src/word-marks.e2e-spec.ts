@@ -95,7 +95,7 @@ describe('Word Marks (e2e)', () => {
 
 	describe('get many marks', () => {
 		it('should return all marks for a workspace', async () => {
-			const dto: GetWordMarksDto = { workspaceId: WORKSPACE_ENTITY.id! };
+			const dto: GetWordMarksDto = { workspaceId: WORKSPACE_ENTITY.id };
 			const resp = await request(app.getHttpServer())
 				.get(WORD_MARKS_URLS.getMany)
 				.set('Authorization', `Bearer ${jwt}`)
@@ -113,7 +113,7 @@ describe('Word Marks (e2e)', () => {
 		describe(`pass id of an existing mark`, () => {
 			it('should return a mark by id', async () => {
 				const resp = await request(app.getHttpServer())
-					.get(WORD_MARKS_URLS.get(WORD_MARK_ENTITY.id!))
+					.get(WORD_MARKS_URLS.get(WORD_MARK_ENTITY.id))
 					.set('Authorization', `Bearer ${jwt}`);
 
 				expect(resp.status).toBe(HttpStatus.OK);

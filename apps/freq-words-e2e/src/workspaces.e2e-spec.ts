@@ -95,7 +95,7 @@ describe('Workspaces (e2e)', () => {
 		describe(`pass the id of an existing workspace`, () => {
 			it('should return a workspace by id', async () => {
 				const resp = await request(app.getHttpServer())
-					.get(WORKSPACES_URLS.get(WORKSPACE_ENTITY.id!))
+					.get(WORKSPACES_URLS.get(WORKSPACE_ENTITY.id))
 					.set('Authorization', `Bearer ${jwt}`);
 
 				expect(resp.status).toBe(HttpStatus.OK);

@@ -14,6 +14,9 @@ jest.mock('./prompts/translate.prompt');
 describe('TranslatorService', () => {
 	let service: TranslatorService;
 
+	let aiService: AiService;
+	let languagesService: LanguagesService;
+
 	const aiServiceMock = {
 		prompt: jest.fn(),
 	};
@@ -38,6 +41,9 @@ describe('TranslatorService', () => {
 		}).compile();
 
 		service = module.get<TranslatorService>(TranslatorService);
+
+		aiService = module.get<AiService>(AiService);
+		languagesService = module.get<LanguagesService>(LanguagesService);
 	});
 
 	afterEach(() => {
@@ -48,11 +54,12 @@ describe('TranslatorService', () => {
 		it('should send correct prompt', async () => {
 			const prompt = 'mocked-prompt';
 			const dto: TranslateDto = {
-				from: ENGLISH_LANGUAGE_ENTITY.id!,
-				to: RUSSIAN_LANGUAGE_ENTITY.id!,
+				from: ENGLISH_LANGUAGE_ENTITY.id,
+				to: RUSSIAN_LANGUAGE_ENTITY.id,
 				translate: 'Hello',
 			};
-			languagesServiceMock.getOne
+			languagesService.getOne = jest
+				.fn()
 				.mockResolvedValueOnce(ENGLISH_LANGUAGE_ENTITY)
 				.mockResolvedValueOnce(RUSSIAN_LANGUAGE_ENTITY);
 			(translatePrompt as jest.Mock).mockReturnValue(prompt);
@@ -64,7 +71,7 @@ describe('TranslatorService', () => {
 				RUSSIAN_LANGUAGE_ENTITY.name,
 				dto.translate
 			);
-			expect(aiServiceMock.prompt).toHaveBeenCalledWith(prompt);
+			expect(aiService.prompt).toHaveBeenCalledWith(prompt);
 		});
 	});
 });

@@ -5,6 +5,6 @@ import { AppModule } from './app.module';
 async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create(AppModule);
 
-	await app.listen(process.env.FREQ_WORDS_PORT!);
+	await app.listen(process.env.FREQ_WORDS_PORT);
 }
 bootstrap();
