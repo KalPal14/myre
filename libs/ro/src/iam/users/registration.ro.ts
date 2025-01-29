@@ -6,4 +6,5 @@ export interface IRegistrationRo {
 	jwt: string;
 	user: IBaseUserRo;
 	workspace: ICreateWorkspaceRo;
+	testMailUrl: string | null;
 }

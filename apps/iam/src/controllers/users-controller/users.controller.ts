@@ -100,9 +100,9 @@ export class UsersController extends BaseController implements IUsersController 
 			.generate(result.user)
 			.then((jwt) => {
 				this.created(res, {
+					...result,
 					jwt,
 					user: this.layoutUserInfoRes(result.user),
-					workspace: result.workspace,
 				});
 			})
 			.catch((err) => this.send(res, 500, { err }));

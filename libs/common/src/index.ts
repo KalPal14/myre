@@ -13,6 +13,8 @@ export * from './services/ai-service/infrastracture/groq/groq.service';
 export * from './services/ai-service/port/ai.service';
 export * from './services/api-service/api.servise';
 export * from './services/api-service/chrome-ext-api.service';
+export * from './services/mailer-service/port/mailer.service';
+export * from './services/mailer-service/infrastracture/nodemailer/ethereal-nodemailer.service';
 
 // types
 export * from './types/batch-payload.interface';

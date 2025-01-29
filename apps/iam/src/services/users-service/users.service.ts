@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
+import randomstring from 'randomstring';
 
 import { IJwtService } from '~libs/express-core';
 import {
@@ -12,7 +13,7 @@ import {
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
-import { api, HTTPError, IJwtPayload } from '~libs/common';
+import { api, HTTPError, IJwtPayload, MailerService } from '~libs/common';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -28,7 +29,8 @@ export class UsersService implements IUsersService {
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
-		@inject(TYPES.JwtService) private jwtService: IJwtService
+		@inject(TYPES.JwtService) private jwtService: IJwtService,
+		@inject(TYPES.MailerService) private mailerService: MailerService
 	) {}
 
 	async get(id: number): Promise<UserModel> {
@@ -42,7 +44,7 @@ export class UsersService implements IUsersService {
 
 	async create(
 		registerDto: RegistrationDto
-	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo }> {
+	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo; testMailUrl: string | null }> {
 		let existingUser = await this.usersRepository.findBy({ email: registerDto.email });
 		if (existingUser) {
 			throw new HTTPError(400, 'user with this email already exists');
@@ -72,7 +74,15 @@ export class UsersService implements IUsersService {
 
 			if (workspace instanceof HTTPError) throw new Error();
 
-			return { user: newUserEntity, workspace };
+			const otp = randomstring.generate({ charset: 'numeric', length: 6 });
+			const testMailUrl = await this.mailerService.sendMail({
+				to: registerDto.email,
+				subject: 'Email Verification Code',
+				text: `Your Email Verification Code is: ${otp}`,
+				html: `<p>Your Email Verification Code is: <h1>${otp}</h1></p>`,
+			});
+
+			return { user: newUserEntity, workspace, testMailUrl };
 		});
 	}
 
