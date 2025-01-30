@@ -13,5 +13,13 @@ model UserModel {
   username          String    @unique
   email             String    @unique
   password          String
+  verified          Boolean   @default(false)
   passwordUpdatedAt DateTime?
+}
+
+model OtpModel {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  code      Int
+  updatedAt DateTime @updatedAt
 }

@@ -9,11 +9,13 @@ import { appBindings } from './common/bindings/app.bindings';
 import { userBindings } from './common/bindings/user.bindings';
 import { TYPES } from './common/constants/types';
 import App from './app';
+import { otpBindings } from './common/bindings/otp.bindings';
 
 export async function bootstrap(): Promise<App> {
 	const container = new Container();
 	container.load(appBindings);
 	container.load(expressCoreBindings);
+	container.load(otpBindings);
 	container.load(userBindings);
 
 	const app = container.get<App>(TYPES.App);

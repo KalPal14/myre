@@ -5,6 +5,11 @@ export const TYPES = {
 
 	App: Symbol('App'),
 
+	OtpController: Symbol('OtpController'),
+	OtpFactory: Symbol('OtpFactory'),
+	OtpService: Symbol('OtpService'),
+	OtpRepository: Symbol('OtpRepository'),
+
 	UsersController: Symbol('UsersController'),
 	UsersService: Symbol('UsersService'),
 	UsersRepository: Symbol('UsersRepository'),

@@ -9,12 +9,13 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import { ILogger, IExceptionFilter, IMiddleware, IConfigService } from '~libs/express-core';
-import { USERS_BASE_ROUTE } from '~libs/routes/iam';
+import { OTP_BASE_ROUTE, USERS_BASE_ROUTE } from '~libs/routes/iam';
 
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersController } from '~/iam/controllers/users-controller/users.controller.interface';
 
 import { TPrismaService } from './common/types/prisma-service.interface';
+import { IOtpController } from './controllers/otp-controller/otp.controller.interface';
 
 @injectable()
 export default class App {
@@ -24,6 +25,7 @@ export default class App {
 	constructor(
 		@inject(TYPES.LoggerService) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: IUsersController,
+		@inject(TYPES.OtpController) private otpController: IOtpController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.JwtAuthMiddleware) private jwtAuthMiddleware: IMiddleware,
@@ -50,6 +52,7 @@ export default class App {
 	}
 
 	useRoutes(): void {
+		this.app.use(OTP_BASE_ROUTE, this.otpController.router);
 		this.app.use(USERS_BASE_ROUTE, this.usersController.router);
 	}
 

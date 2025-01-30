@@ -24,6 +24,8 @@ export class RoleGuard implements IMiddleware {
 	private isFitsRole(user: IJwtPayload | undefined): boolean {
 		const isFits = this.roles.map((role) => {
 			switch (role) {
+				case '*':
+					return true;
 				case 'user':
 					return !!user;
 				case 'guest':
