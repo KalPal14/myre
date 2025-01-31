@@ -1,12 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { IJwtService } from '~libs/express-core';
 import { LoginDto, RegistrationDto, UpdateUserDto } from '~libs/dto/iam';
-import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
-import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
-import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
-import { api, HTTPError, IJwtPayload } from '~libs/common';
+import { HTTPError, IJwtPayload } from '~libs/common';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
@@ -24,7 +20,6 @@ export class UsersService implements IUsersService {
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
-		@inject(TYPES.JwtService) private jwtService: IJwtService,
 		@inject(TYPES.OtpService) private otpService: IOtpService
 	) {}
 
@@ -39,40 +34,22 @@ export class UsersService implements IUsersService {
 
 	async create(
 		registerDto: RegistrationDto
-	): Promise<{ user: UserModel; workspace: ICreateWorkspaceRo; testMailUrl: string | null }> {
-		let existingUser = await this.usersRepository.findBy({ email: registerDto.email });
-		if (existingUser) {
-			throw new HTTPError(400, 'user with this email already exists');
-		}
-		existingUser = await this.usersRepository.findBy({ username: registerDto.username });
-		if (existingUser) {
-			throw new HTTPError(400, 'user with this username already exists');
-		}
+	): Promise<{ user: UserModel; testMailUrl: string | null }> {
+		try {
+			return await this.prismaService.client.$transaction(async (tx) => {
+				const newUser = await this.userFactory.create(registerDto);
+				const newUserEntity = await tx.userModel.create({ data: newUser });
 
-		return await this.prismaService.client.$transaction(async (tx) => {
-			const newUser = await this.userFactory.create(registerDto);
-			const newUserEntity = await tx.userModel.create({ data: newUser });
+				const { testMailUrl } = await this.otpService.upsert(newUser);
 
-			const jwt = await this.jwtService.generate({
-				id: newUserEntity.id,
-				email: newUser.email,
-				username: newUser.username,
+				return { user: newUserEntity, testMailUrl };
 			});
-			const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
-				WORKSPACES_URLS.create,
-				{
-					name: `${newUser.username}'s workspace`,
-					colors: [],
-				},
-				{ headers: { Authorization: `Bearer ${jwt}` } }
-			);
-
-			if (workspace instanceof HTTPError) throw new Error();
-
-			const { testMailUrl } = await this.otpService.upsert(newUser);
-
-			return { user: newUserEntity, workspace, testMailUrl };
-		});
+		} catch (err: any) {
+			if (err.code === 'P2002') {
+				throw new HTTPError(400, `User with this ${err.meta.target} already exists`);
+			}
+			throw new Error();
+		}
 	}
 
 	async validate({ userIdentifier, password }: LoginDto): Promise<UserModel> {

@@ -8,7 +8,6 @@ import { IUpsertOtpRo, IValidateOtpRo } from '~libs/ro/iam';
 import { TYPES } from '~/iam/common/constants/types';
 import { IOtpRepository } from '~/iam/repositories/otp-repository/otp.repository.interface';
 import { IOtpFactory } from '~/iam/domain/otp/factory/otp.factory.interface';
-import { OtpModel } from '~/iam/prisma/client';
 
 import { IOtpService } from './otp.service.interface';
 
