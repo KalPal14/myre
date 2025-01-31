@@ -7,10 +7,9 @@ export class Otp {
 	compereOtp(code: number, updatedAt: Date): boolean {
 		const now = new Date();
 		const diffInMs = now.getTime() - updatedAt.getTime();
-		// const threeMinutesInMs = 3 * 60 * 1000;
-		const threeMinutesInMs = 30 * 1000;
+		const fiveMinutesInMs = 5 * 60 * 1000;
 
-		if (diffInMs > threeMinutesInMs) {
+		if (diffInMs > fiveMinutesInMs) {
 			return false;
 		}
 		return this.code === code;

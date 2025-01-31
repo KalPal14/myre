@@ -1,25 +1,20 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
-import randomstring from 'randomstring';
 
 import { IJwtService } from '~libs/express-core';
-import {
-	ChangeEmailDto,
-	ChangePasswordDto,
-	ChangeUsernameDto,
-	LoginDto,
-	RegistrationDto,
-} from '~libs/dto/iam';
+import { LoginDto, RegistrationDto, UpdateUserDto } from '~libs/dto/iam';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
-import { api, HTTPError, IJwtPayload, MailerService } from '~libs/common';
+import { api, HTTPError, IJwtPayload } from '~libs/common';
 
 import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
 import { TPrismaService } from '~/iam/common/types/prisma-service.interface';
+
+import { IOtpService } from '../otp-service/otp.service.interface';
 
 import { IUsersService } from './users.service.interface';
 
@@ -30,7 +25,7 @@ export class UsersService implements IUsersService {
 		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
 		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.JwtService) private jwtService: IJwtService,
-		@inject(TYPES.MailerService) private mailerService: MailerService
+		@inject(TYPES.OtpService) private otpService: IOtpService
 	) {}
 
 	async get(id: number): Promise<UserModel> {
@@ -74,13 +69,7 @@ export class UsersService implements IUsersService {
 
 			if (workspace instanceof HTTPError) throw new Error();
 
-			const otp = randomstring.generate({ charset: 'numeric', length: 6 });
-			const testMailUrl = await this.mailerService.sendMail({
-				to: registerDto.email,
-				subject: 'Email Verification Code',
-				text: `Your Email Verification Code is: ${otp}`,
-				html: `<p>Your Email Verification Code is: <h1>${otp}</h1></p>`,
-			});
+			const { testMailUrl } = await this.otpService.upsert(newUser);
 
 			return { user: newUserEntity, workspace, testMailUrl };
 		});
@@ -108,53 +97,34 @@ export class UsersService implements IUsersService {
 		return existingUser;
 	}
 
-	async changePassword(
-		{ id, email, username }: IJwtPayload,
-		{ password, newPassword }: ChangePasswordDto
-	): Promise<UserModel> {
-		const validatedUser = await this.validate({ userIdentifier: email || username, password });
-
-		if (password === newPassword) {
-			throw new HTTPError(400, 'new password cannot be the same as the old one');
+	async update(user: IJwtPayload, dto: UpdateUserDto): Promise<UserModel> {
+		let updatedPassword: string | undefined;
+		if (dto.password) {
+			await this.validate({ userIdentifier: user.email, password: dto.password.currentPassword });
+			updatedPassword = await this.userFactory
+				.create({ ...user, password: dto.password.newPassword })
+				.then(({ password }) => password);
 		}
 
-		const user = await this.userFactory.create({ ...validatedUser, password: newPassword });
-		return this.usersRepository.update(id, {
-			password: user.password,
-			passwordUpdatedAt: new Date(),
-		});
-	}
-
-	async changeEmail({ id, email }: IJwtPayload, { newEmail }: ChangeEmailDto): Promise<UserModel> {
-		if (newEmail === email) {
-			throw new HTTPError(400, 'new email cannot be the same as the old one');
+		if (dto.updateViaOtp) {
+			await this.otpService.validate({
+				email: dto.updateViaOtp.email ?? user.email,
+				code: dto.updateViaOtp.code,
+			});
 		}
 
-		const userWithSameEmail = await this.usersRepository.findBy({ email: newEmail });
-		if (userWithSameEmail) {
-			throw new HTTPError(400, `account with this email already exists`);
+		try {
+			return await this.usersRepository.update(user.id, {
+				username: dto.username,
+				email: dto.updateViaOtp?.email,
+				verified: dto.updateViaOtp?.verified,
+				password: updatedPassword,
+			});
+		} catch (err: any) {
+			if (err.code === 'P2002') {
+				throw new HTTPError(400, `User with this ${err.meta.target} already exists`);
+			}
+			throw new Error();
 		}
-
-		return this.usersRepository.update(id, {
-			email: newEmail,
-		});
-	}
-
-	async changeUsername(
-		{ id, username }: IJwtPayload,
-		{ newUsername }: ChangeUsernameDto
-	): Promise<UserModel> {
-		if (newUsername === username) {
-			throw new HTTPError(400, 'new username cannot be the same as the old one');
-		}
-
-		const userWithSameUsername = await this.usersRepository.findBy({ username: newUsername });
-		if (userWithSameUsername) {
-			throw new HTTPError(400, `account with this username already exists`);
-		}
-
-		return this.usersRepository.update(id, {
-			username: newUsername,
-		});
 	}
 }

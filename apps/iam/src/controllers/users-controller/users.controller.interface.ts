@@ -1,13 +1,7 @@
 import { Router } from 'express';
 
 import { TController } from '~libs/express-core';
-import {
-	ChangeEmailDto,
-	ChangePasswordDto,
-	ChangeUsernameDto,
-	LoginDto,
-	RegistrationDto,
-} from '~libs/dto/iam';
+import { LoginDto, RegistrationDto, UpdateUserDto } from '~libs/dto/iam';
 
 export interface IUsersController {
 	router: Router;
@@ -18,7 +12,5 @@ export interface IUsersController {
 	register: TController<null, RegistrationDto>;
 	logout: TController;
 
-	changePassword: TController<null, ChangePasswordDto>;
-	changeEmail: TController<null, ChangeEmailDto>;
-	changeUsername: TController<null, ChangeUsernameDto>;
+	update: TController<null, UpdateUserDto>;
 }

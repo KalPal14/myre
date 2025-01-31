@@ -1,11 +1,12 @@
 import { User } from '../user';
 
-export interface IUserFactoryCreateArgs
-	extends Omit<User, 'comperePassword' | 'setPassword' | 'passwordUpdatedAt'> {
+export interface IUserData
+	extends Omit<User, 'comperePassword' | 'setPassword' | 'passwordUpdatedAt' | 'verified'> {
 	passwordUpdatedAt?: Date | null;
+	verified?: boolean;
 }
 
 export interface IUserFactory {
-	create: (userData: IUserFactoryCreateArgs) => Promise<User>;
-	createWithHashPassword: (userData: IUserFactoryCreateArgs) => User;
+	create: (userData: IUserData) => Promise<User>;
+	createWithHashPassword: (userData: IUserData) => User;
 }
