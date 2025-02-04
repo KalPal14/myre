@@ -2,15 +2,9 @@ import 'reflect-metadata';
 import request from 'supertest';
 
 import { configEnv } from '~libs/express-core/config';
-import {
-	ChangeEmailDto,
-	ChangePasswordDto,
-	ChangeUsernameDto,
-	LoginDto,
-	RegistrationDto,
-} from '~libs/dto/iam';
+import { LoginDto, RegistrationDto, UpdateUserDto, UpsertOtpDto } from '~libs/dto/iam';
 import { hideEmailUsername } from '~libs/common';
-import { USERS_URLS } from '~libs/routes/iam';
+import { OTP_URLS, USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
 import { bootstrap as hExtBootstrap } from '~/highlight-extension/main';
@@ -54,20 +48,16 @@ describe('Users', () => {
 
 				expect(res.statusCode).toBe(201);
 				expect(res.body.jwt).toBeDefined();
-				expect(res.body).toMatchObject({
-					user: {
+				expect(res.body.user).toEqual(
+					expect.objectContaining({
 						username: DTO.username,
 						email: hideEmailUsername(DTO.email),
-					},
-					workspace: {
-						name: `${DTO.username}'s workspace`,
-						colors: [],
-					},
-				});
+					})
+				);
 			});
 		});
 
-		describe('pass email address of existing user', () => {
+		describe('pass username and email of existing user', () => {
 			it('return error message', async () => {
 				const DTO: RegistrationDto = {
 					email: USER.email,
@@ -78,7 +68,7 @@ describe('Users', () => {
 				const res = await request(app).post(USERS_URLS.register).send(DTO);
 
 				expect(res.statusCode).toBe(400);
-				expect(res.body).toEqual({ err: 'user with this email already exists' });
+				expect(res.body).toEqual({ err: 'User with this username already exists' });
 			});
 		});
 
@@ -123,6 +113,7 @@ describe('Users', () => {
 					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
+					verified: USER_MODEL.verified,
 				});
 			});
 		});
@@ -139,6 +130,7 @@ describe('Users', () => {
 					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
+					verified: USER_MODEL.verified,
 				});
 			});
 		});
@@ -224,82 +216,138 @@ describe('Users', () => {
 		});
 	});
 
-	describe('change password', () => {
-		describe('pass correct new and current passwords', () => {
-			const NEW_USER = CREATE_USER_DTO();
-			const CHANGE_PASSWORD_DTO: ChangePasswordDto = {
-				password: NEW_USER.password,
-				newPassword: NEW_USER.password + '123',
-			};
-
-			it('return new passwordUpdatedAt', async () => {
-				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
-
-				const res = await request(app)
-					.patch(USERS_URLS.changePassword)
-					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
-					.send(CHANGE_PASSWORD_DTO);
-
-				expect(res.statusCode).toBe(200);
-				expect(res.body.passwordUpdatedAt).not.toBeNull();
-			}, 6000);
-		});
-	});
-
-	describe('change email', () => {
-		describe('pass correct new email', () => {
-			it('return new email and jwt token', async () => {
-				const NEW_USER = CREATE_USER_DTO();
-				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
-				const CHANGE_EMAIL_DTO: ChangeEmailDto = {
-					newEmail: CREATE_USER_DTO().email,
-				};
-
-				const res = await request(app)
-					.patch(USERS_URLS.changeEmail)
-					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
-					.send(CHANGE_EMAIL_DTO);
-
-				expect(res.statusCode).toBe(200);
-				expect(res.body.jwt).not.toBe(newUserRes.body.jwt);
-				expect(res.body.email).toBe(CHANGE_EMAIL_DTO.newEmail);
-			});
-		});
-	});
-
-	describe('change username', () => {
-		describe('pass correct new username', () => {
-			it('return new username and jwt token', async () => {
-				const NEW_USER = CREATE_USER_DTO();
-				const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
-				const CHANGE_USERNAME_DTO: ChangeUsernameDto = {
-					newUsername: CREATE_USER_DTO().username,
-				};
-
-				const res = await request(app)
-					.patch(USERS_URLS.changeUsername)
-					.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
-					.send(CHANGE_USERNAME_DTO);
-
-				expect(res.statusCode).toBe(200);
-				expect(res.body.jwt).not.toBe(newUserRes.body.jwt);
-				expect(res.body.username).toBe(CHANGE_USERNAME_DTO.newUsername);
-			});
-		});
-	});
-
 	describe('get user info', () => {
 		describe('a logged in user is trying to retrieve their data', () => {
 			it('return user info', async () => {
 				const loginRes = await request(app).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 				const { jwt, ...loggedUserInfo } = loginRes.body;
-
 				const res = await request(app)
 					.get(USERS_URLS.getUserInfo)
 					.set('Authorization', `Bearer ${jwt}`);
-
 				expect(res.statusCode).toBe(200);
 				expect(res.body).toEqual(loggedUserInfo);
+			});
+		});
+	});
+
+	describe('update', () => {
+		describe('change password', () => {
+			describe('pass correct new and current passwords', () => {
+				it('return user info', async () => {
+					const NEW_USER = CREATE_USER_DTO();
+					const dto: UpdateUserDto = {
+						password: {
+							currentPassword: NEW_USER.password,
+							newPassword: NEW_USER.password + '123',
+						},
+					};
+					const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
+
+					const res = await request(app)
+						.patch(USERS_URLS.update)
+						.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
+						.send(dto);
+
+					expect(res.statusCode).toBe(200);
+					expect(res.body.passwordUpdatedAt).not.toBeNull();
+				}, 6000);
+			});
+
+			describe('pass incorrect current password', () => {
+				it('return err msg', async () => {
+					const NEW_USER = CREATE_USER_DTO();
+					const dto: UpdateUserDto = {
+						password: {
+							currentPassword: 'wrong_password',
+							newPassword: NEW_USER.password + '123',
+						},
+					};
+					const newUserRes = await request(app).post(USERS_URLS.register).send(NEW_USER);
+
+					const res = await request(app)
+						.patch(USERS_URLS.update)
+						.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
+						.send(dto);
+
+					expect(res.statusCode).toBe(400);
+					expect(res.body).toEqual({ err: 'Incorrect password' });
+				});
+			});
+		});
+
+		describe('change email', () => {
+			describe('pass correct new email and otp', () => {
+				it('return user info and jwt', async () => {
+					const upsertOtpDto: UpsertOtpDto = {
+						email: CREATE_USER_DTO().email,
+					};
+					const newUserDto = CREATE_USER_DTO();
+					const { body: upsertOtpBody } = await request(app)
+						.patch(OTP_URLS.upsert)
+						.send(upsertOtpDto);
+					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
+					const dto: UpdateUserDto = {
+						updateViaOtp: {
+							code: upsertOtpBody.otp.code,
+							email: upsertOtpDto.email,
+						},
+					};
+
+					const res = await request(app)
+						.patch(USERS_URLS.update)
+						.set('Authorization', `Bearer ${newUser.jwt}`)
+						.send(dto);
+
+					expect(res.statusCode).toBe(200);
+					expect(res.body.jwt).not.toBe(newUser.jwt);
+					expect(res.body.email).toBe(hideEmailUsername(dto.updateViaOtp?.email ?? ''));
+				});
+			});
+
+			describe('pass wrong otp', () => {
+				it('return err msg', async () => {
+					const upsertOtpDto: UpsertOtpDto = {
+						email: CREATE_USER_DTO().email,
+					};
+					const newUserDto = CREATE_USER_DTO();
+					await request(app).patch(OTP_URLS.upsert).send(upsertOtpDto);
+					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
+					const dto: UpdateUserDto = {
+						updateViaOtp: {
+							code: 123123,
+							email: upsertOtpDto.email,
+						},
+					};
+
+					const res = await request(app)
+						.patch(USERS_URLS.update)
+						.set('Authorization', `Bearer ${newUser.jwt}`)
+						.send(dto);
+
+					expect(res.statusCode).toBe(400);
+					expect(res.body).toEqual({ err: 'One-time password is incorrect or outdated' });
+				});
+			});
+		});
+
+		describe('change username', () => {
+			describe('pass correct username', () => {
+				it('return user info and jwt', async () => {
+					const createUserDto = CREATE_USER_DTO();
+					const newUserRes = await request(app).post(USERS_URLS.register).send(createUserDto);
+					const dto: UpdateUserDto = {
+						username: CREATE_USER_DTO().username,
+					};
+
+					const res = await request(app)
+						.patch(USERS_URLS.update)
+						.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
+						.send(dto);
+
+					expect(res.statusCode).toBe(200);
+					expect(res.body.jwt).not.toBe(newUserRes.body.jwt);
+					expect(res.body.username).toBe(dto.username);
+				});
 			});
 		});
 	});

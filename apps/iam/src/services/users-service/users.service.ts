@@ -76,11 +76,13 @@ export class UsersService implements IUsersService {
 
 	async update(user: IJwtPayload, dto: UpdateUserDto): Promise<UserModel> {
 		let updatedPassword: string | undefined;
+		let passwordUpdatedAt: Date | undefined;
 		if (dto.password) {
 			await this.validate({ userIdentifier: user.email, password: dto.password.currentPassword });
 			updatedPassword = await this.userFactory
 				.create({ ...user, password: dto.password.newPassword })
 				.then(({ password }) => password);
+			passwordUpdatedAt = new Date();
 		}
 
 		if (dto.updateViaOtp) {
@@ -96,6 +98,7 @@ export class UsersService implements IUsersService {
 				email: dto.updateViaOtp?.email,
 				verified: dto.updateViaOtp?.verified,
 				password: updatedPassword,
+				passwordUpdatedAt,
 			});
 		} catch (err: any) {
 			if (err.code === 'P2002') {

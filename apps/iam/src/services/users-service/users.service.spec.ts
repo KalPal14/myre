@@ -241,10 +241,8 @@ describe('UsersService', () => {
 
 					const result = await usersService.update(JWT_PAYLOAD, dto);
 
-					expect(result).toEqual({
-						...USER_MODEL,
-						password: dto.password?.newPassword,
-					});
+					expect(result.password).toBe(dto.password?.newPassword);
+					expect(result.passwordUpdatedAt).not.toBe(null);
 				});
 			});
 
