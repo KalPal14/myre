@@ -9,5 +9,5 @@ export const OTP_ENDPOINTS = {
 
 export const OTP_URLS = {
 	upsert: `${IAM_URL}${OTP_BASE_ROUTE}/upsert`,
-	validate: `${IAM_URL}${OTP_BASE_ROUTE}/upsert`,
+	validate: `${IAM_URL}${OTP_BASE_ROUTE}/validate`,
 };

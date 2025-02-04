@@ -17,7 +17,7 @@ export class OtpController extends BaseController implements IOtpController {
 		this.bindRoutes([
 			{
 				path: OTP_ENDPOINTS.upsert,
-				method: 'patch',
+				method: 'post',
 				func: this.upsert,
 				middlewares: [new RoleGuard('*'), new ValidateMiddleware(UpsertOtpDto)],
 			},

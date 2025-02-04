@@ -7,7 +7,6 @@ import { hideEmailUsername } from '~libs/common';
 import { OTP_URLS, USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
-import { bootstrap as hExtBootstrap } from '~/highlight-extension/main';
 import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
 
 import type { Express } from 'express';
@@ -15,27 +14,10 @@ import type { Express } from 'express';
 configEnv();
 
 let app: Express;
-let hExtApp: Express;
-
-jest.mock('~libs/common', () => ({
-	...jest.requireActual('~libs/common'),
-	api: {
-		post: jest.fn().mockImplementation(async (url, data, options) => {
-			const resp = await request(hExtApp)
-				.post(url)
-				.set(options?.headers || {})
-				.send(data);
-			return resp.body;
-		}),
-	},
-}));
 
 beforeAll(async () => {
 	const application = await bootstrap();
-	const hExtApplication = await hExtBootstrap();
 	app = application.app;
-
-	hExtApp = hExtApplication.app;
 });
 
 describe('Users', () => {
@@ -283,7 +265,7 @@ describe('Users', () => {
 					};
 					const newUserDto = CREATE_USER_DTO();
 					const { body: upsertOtpBody } = await request(app)
-						.patch(OTP_URLS.upsert)
+						.post(OTP_URLS.upsert)
 						.send(upsertOtpDto);
 					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
 					const dto: UpdateUserDto = {
@@ -310,7 +292,7 @@ describe('Users', () => {
 						email: CREATE_USER_DTO().email,
 					};
 					const newUserDto = CREATE_USER_DTO();
-					await request(app).patch(OTP_URLS.upsert).send(upsertOtpDto);
+					await request(app).post(OTP_URLS.upsert).send(upsertOtpDto);
 					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
 					const dto: UpdateUserDto = {
 						updateViaOtp: {
