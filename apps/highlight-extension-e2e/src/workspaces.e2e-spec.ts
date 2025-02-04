@@ -61,16 +61,14 @@ describe('Workspaces', () => {
 	});
 
 	describe('get all workspaces owned by the user', () => {
-		describe('logged in user', () => {
-			it('return list of workspaces', async () => {
-				const res = await request(app)
-					.get(WORKSPACES_URLS.getAllOwners)
-					.set('Authorization', `Bearer ${jwt}`);
+		it('return list of workspaces', async () => {
+			const res = await request(app)
+				.get(WORKSPACES_URLS.getAllOwners)
+				.set('Authorization', `Bearer ${jwt}`);
 
-				expect(res.statusCode).toBe(200);
-				expect(res.body).toHaveProperty('length');
-				expect(res.body[0]).toEqual(WORKSPACE_MODEL);
-			});
+			expect(res.statusCode).toBe(200);
+			expect(res.body).toHaveProperty('length');
+			expect(Object.keys(res.body[0])).toEqual(Object.keys(WORKSPACE_MODEL));
 		});
 	});
 

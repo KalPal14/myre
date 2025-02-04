@@ -52,7 +52,7 @@ describe('Translator (e2e)', () => {
 				expect(resp.body.definitionTo.synonyms).toEqual(expect.arrayContaining(['был']));
 				expect(resp.body.definitionTo.description).toBeDefined();
 				expect(resp.body.definitionTo.examples.length).toBeGreaterThan(1);
-			});
+			}, 10000);
 		});
 
 		describe('pass the sentence', () => {
@@ -68,7 +68,7 @@ describe('Translator (e2e)', () => {
 				expect(resp.statusCode).toBe(200);
 				expect(resp.body.type).toBe('translation');
 				expect(resp.body.translation).toBeDefined();
-			});
+			}, 10000);
 		});
 	});
 });

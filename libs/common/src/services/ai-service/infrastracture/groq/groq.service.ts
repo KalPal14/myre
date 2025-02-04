@@ -24,7 +24,7 @@ export class GroqService extends AiService {
 						content: prompt,
 					},
 				],
-				model: 'llama-3.1-70b-versatile',
+				model: 'llama-3.3-70b-versatile',
 				...groqOptions,
 			});
 			const response = completions.choices[0].message.content;
