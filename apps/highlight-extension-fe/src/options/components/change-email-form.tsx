@@ -3,8 +3,8 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { USERS_URLS } from '~libs/routes/iam';
-import { ChangeEmailDto } from '~libs/dto/iam';
-import { IChangeEmailRo } from '~libs/ro/iam';
+import { UpdateUserDto } from '~libs/dto/iam';
+import { IUpdateUserRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 import { TextField, AccordionForm } from '~libs/react-core';
 
@@ -25,7 +25,7 @@ export default function ChangeEmailForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<ChangeEmailDto>();
+	const useFormReturnValue = useForm<UpdateUserDto>();
 	const {
 		register,
 		formState: { errors },
@@ -34,9 +34,9 @@ export default function ChangeEmailForm({
 
 	const [, setJwt] = useCrossExtState('jwt');
 
-	async function onSubmit(formValues: ChangeEmailDto): Promise<boolean> {
-		const resp = await chromeExtApi.patch<ChangeEmailDto, IChangeEmailRo>(
-			USERS_URLS.changeEmail,
+	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
+		const resp = await chromeExtApi.patch<UpdateUserDto, IUpdateUserRo>(
+			USERS_URLS.update,
 			formValues
 		);
 
@@ -45,7 +45,7 @@ export default function ChangeEmailForm({
 			return false;
 		}
 
-		setJwt(resp.jwt);
+		setJwt(resp.jwt!);
 		onSuccess(resp.email);
 		toast({
 			title: 'Email has been successfully changed',
@@ -58,7 +58,7 @@ export default function ChangeEmailForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof ChangeEmailDto, {
+				setError(property as keyof UpdateUserDto, {
 					message: errors.join(),
 				});
 			},
@@ -88,8 +88,8 @@ export default function ChangeEmailForm({
 			<>
 				<TextField
 					register={register}
-					errors={errors.newEmail}
-					name="newEmail"
+					errors={errors.updateViaOtp?.email}
+					name="updateViaOtp.email"
 					label="New email"
 					placeholder="Please enter your new email"
 				/>

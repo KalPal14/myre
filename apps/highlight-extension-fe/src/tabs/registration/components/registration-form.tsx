@@ -7,6 +7,10 @@ import { RegistrationDto } from '~libs/dto/iam';
 import { IRegistrationRo } from '~libs/ro/iam';
 import { chromeExtApi, HTTPError, httpErrHandler } from '~libs/common';
 import { TextField, OutsideClickAlert } from '~libs/react-core';
+import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
+import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
+import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
+import { openTab } from '~libs/client-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
@@ -25,19 +29,31 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: RegistrationDto): Promise<void> {
-		const resp = await chromeExtApi.post<RegistrationDto, IRegistrationRo>(
+		const registrationRo = await chromeExtApi.post<RegistrationDto, IRegistrationRo>(
 			USERS_URLS.register,
 			formValues
 		);
-		if (resp instanceof HTTPError) {
-			handleErr(resp);
+		if (registrationRo instanceof HTTPError) {
+			handleErr(registrationRo);
+			return;
+		}
+		const { jwt, user, testMailUrl } = registrationRo;
+
+		const workspace = await chromeExtApi.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
+			WORKSPACES_URLS.create,
+			{ name: `${user.username}'s workspace`, colors: [] }
+		);
+		if (workspace instanceof HTTPError) {
+			setErrAlertMsg('Something went wrong. Reload the page or try again later');
 			return;
 		}
 
-		const { jwt, user, workspace } = resp;
 		setJwt(jwt);
 		setCurrentUser(user);
 		setCurrentWorkspace(workspace);
+		if (testMailUrl) {
+			openTab(testMailUrl);
+		}
 	}
 
 	function handleErr(err: HTTPError): void {

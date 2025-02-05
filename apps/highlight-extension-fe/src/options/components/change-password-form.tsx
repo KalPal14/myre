@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import date from 'date-and-time';
 
 import { USERS_URLS } from '~libs/routes/iam';
-import { ChangePasswordDto } from '~libs/dto/iam';
-import { IChangePasswordRo } from '~libs/ro/iam';
+import { UpdateUserDto } from '~libs/dto/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 import { TextField, AccordionForm } from '~libs/react-core';
+import { IUpdateUserRo } from '~libs/ro/iam';
 
 export interface IChangePasswordFormProps {
 	passwordUpdatedAt: Date | null;
@@ -24,23 +24,23 @@ export default function ChangePasswordForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<ChangePasswordDto>();
+	const useFormReturnValue = useForm<UpdateUserDto>();
 	const {
 		register,
 		formState: { errors },
 		setError,
 	} = useFormReturnValue;
 
-	async function onSubmit(formValues: ChangePasswordDto): Promise<boolean> {
-		const resp = await chromeExtApi.patch<ChangePasswordDto, IChangePasswordRo>(
-			USERS_URLS.changePassword,
+	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
+		const resp = await chromeExtApi.patch<UpdateUserDto, IUpdateUserRo>(
+			USERS_URLS.update,
 			formValues
 		);
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return false;
 		}
-		onSuccess(resp.passwordUpdatedAt);
+		onSuccess(resp.passwordUpdatedAt!);
 		toast({
 			title: 'Password has been successfully changed',
 			status: 'success',
@@ -52,7 +52,7 @@ export default function ChangePasswordForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof ChangePasswordDto, {
+				setError(property as keyof UpdateUserDto, {
 					message: errors.join(),
 				});
 			},
@@ -86,16 +86,16 @@ export default function ChangePasswordForm({
 			<>
 				<TextField
 					register={register}
-					errors={errors.password}
-					name="password"
+					errors={errors.password?.currentPassword}
+					name="password.currentPassword"
 					label="Current password"
 					placeholder="Please enter your current password"
 					type="password"
 				/>
 				<TextField
 					register={register}
-					errors={errors.newPassword}
-					name="newPassword"
+					errors={errors.password?.newPassword}
+					name="password.newPassword"
 					label="New password"
 					placeholder="Please enter a new password"
 					type="password"

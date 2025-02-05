@@ -1,14 +1,15 @@
 import { ContainerModule, interfaces } from 'inversify';
 
-import { EtherealNodemailerService, MailerService } from '~libs/common/index';
 import {
 	ConfigService,
+	EtherealNodemailerService,
 	EXPRESS_CORE_TYPES,
 	IConfigService,
 	IJwtService,
 	IMiddleware,
 	JwtAuthMiddleware,
 	JwtService,
+	MailerService,
 } from '~libs/express-core';
 import { ExceptionFilter } from '~libs/express-core/exceptions/exception-filter/exception.filter';
 import { IExceptionFilter } from '~libs/express-core/exceptions/exception-filter/exception.filter.interface';

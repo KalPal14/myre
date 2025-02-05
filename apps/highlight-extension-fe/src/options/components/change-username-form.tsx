@@ -3,10 +3,10 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { USERS_URLS } from '~libs/routes/iam';
-import { ChangeUsernameDto } from '~libs/dto/iam';
-import { IChangeUsernameRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
 import { TextField, AccordionForm } from '~libs/react-core';
+import { UpdateUserDto } from '~libs/dto/iam';
+import { IUpdateUserRo } from '~libs/ro/iam';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
@@ -25,7 +25,7 @@ export default function ChangeUsernameForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<ChangeUsernameDto>();
+	const useFormReturnValue = useForm<UpdateUserDto>();
 	const {
 		register,
 		formState: { errors },
@@ -34,9 +34,9 @@ export default function ChangeUsernameForm({
 
 	const [, setJwt] = useCrossExtState('jwt');
 
-	async function onSubmit(formValues: ChangeUsernameDto): Promise<boolean> {
-		const resp = await chromeExtApi.patch<ChangeUsernameDto, IChangeUsernameRo>(
-			USERS_URLS.changeUsername,
+	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
+		const resp = await chromeExtApi.patch<UpdateUserDto, IUpdateUserRo>(
+			USERS_URLS.update,
 			formValues
 		);
 
@@ -45,7 +45,9 @@ export default function ChangeUsernameForm({
 			return false;
 		}
 
-		setJwt(resp.jwt);
+		if (resp.jwt) {
+			setJwt(resp.jwt);
+		}
 		onSuccess(resp.username);
 		toast({
 			title: 'Username has been successfully changed',
@@ -58,7 +60,7 @@ export default function ChangeUsernameForm({
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof ChangeUsernameDto, {
+				setError(property as keyof UpdateUserDto, {
 					message: errors.join(),
 				});
 			},
@@ -88,8 +90,8 @@ export default function ChangeUsernameForm({
 			<>
 				<TextField
 					register={register}
-					errors={errors.newUsername}
-					name="newUsername"
+					errors={errors.username}
+					name="username"
 					label="New username"
 					placeholder="Please enter your new username"
 				/>

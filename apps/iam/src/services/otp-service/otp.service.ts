@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 
-import { HTTPError, MailerService } from '~libs/common/index';
+import { HTTPError } from '~libs/common';
 import { UpsertOtpDto, ValidateOtpDto } from '~libs/dto/iam';
 import { IUpsertOtpRo, IValidateOtpRo } from '~libs/ro/iam';
+import { MailerService } from '~libs/express-core';
 
 import { TYPES } from '~/iam/common/constants/types';
 import { IOtpRepository } from '~/iam/repositories/otp-repository/otp.repository.interface';

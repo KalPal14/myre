@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { MailerService } from '~libs/common';
+import { MailerService } from '~libs/express-core';
 import { ValidateOtpDto } from '~libs/dto/iam';
 
 import { TYPES } from '~/iam/common/constants/types';

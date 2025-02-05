@@ -20,6 +20,8 @@ export * from './services/config-service/config.service';
 export * from './services/config-service/config.service.interface';
 export * from './services/logger-service/logger.service';
 export * from './services/logger-service/logger.service.interface';
+export * from './services/mailer-service/infrastracture/nodemailer/ethereal-nodemailer.service';
+export * from './services/mailer-service/port/mailer.service';
 export * from './services/prisma-service/prisma.service';
 export * from './services/prisma-service/base-prisma.service.interface';
 
