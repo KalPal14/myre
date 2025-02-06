@@ -7,9 +7,10 @@ import { LoginDto } from '~libs/dto/iam';
 import { ILoginRo } from '~libs/ro/iam';
 import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
-import { chromeExtApi, httpErrHandler, HTTPError } from '~libs/common';
+import { httpErrHandler, HTTPError } from '~libs/common';
 import { TextField, OutsideClickAlert } from '~libs/react-core';
 
+import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export default function LoginForm(): JSX.Element {
@@ -27,7 +28,7 @@ export default function LoginForm(): JSX.Element {
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
-		const loginResp = await chromeExtApi.post<LoginDto, ILoginRo>(USERS_URLS.login, formValues);
+		const loginResp = await api.post<LoginDto, ILoginRo>(USERS_URLS.login, formValues);
 		if (loginResp instanceof HTTPError) {
 			handleErr(loginResp);
 			return;
@@ -35,7 +36,7 @@ export default function LoginForm(): JSX.Element {
 
 		const { jwt, ...userData } = loginResp;
 
-		const workspacesResp = await chromeExtApi.get<null, TGetOwnersWorkspacesRo>(
+		const workspacesResp = await api.get<null, TGetOwnersWorkspacesRo>(
 			WORKSPACES_URLS.getAllOwners,
 			null,
 			{ headers: { Authorization: `Bearer ${jwt}` } }

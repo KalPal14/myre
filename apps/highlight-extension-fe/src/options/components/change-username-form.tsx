@@ -3,11 +3,12 @@ import { useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { USERS_URLS } from '~libs/routes/iam';
-import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
+import { httpErrHandler, HTTPError } from '~libs/common';
 import { TextField, AccordionForm } from '~libs/react-core';
 import { UpdateUserDto } from '~libs/dto/iam';
 import { IUpdateUserRo } from '~libs/ro/iam';
 
+import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
 export interface IChangeusernameFormProps {
@@ -35,10 +36,7 @@ export default function ChangeUsernameForm({
 	const [, setJwt] = useCrossExtState('jwt');
 
 	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
-		const resp = await chromeExtApi.patch<UpdateUserDto, IUpdateUserRo>(
-			USERS_URLS.update,
-			formValues
-		);
+		const resp = await api.patch<UpdateUserDto, IUpdateUserRo>(USERS_URLS.update, formValues);
 
 		if (resp instanceof HTTPError) {
 			handleErr(resp);

@@ -5,9 +5,11 @@ import date from 'date-and-time';
 
 import { USERS_URLS } from '~libs/routes/iam';
 import { UpdateUserDto } from '~libs/dto/iam';
-import { httpErrHandler, HTTPError, chromeExtApi } from '~libs/common';
+import { httpErrHandler, HTTPError } from '~libs/common';
 import { TextField, AccordionForm } from '~libs/react-core';
 import { IUpdateUserRo } from '~libs/ro/iam';
+
+import { api } from '~/highlight-extension-fe/common/api/api';
 
 export interface IChangePasswordFormProps {
 	passwordUpdatedAt: Date | null;
@@ -32,10 +34,7 @@ export default function ChangePasswordForm({
 	} = useFormReturnValue;
 
 	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
-		const resp = await chromeExtApi.patch<UpdateUserDto, IUpdateUserRo>(
-			USERS_URLS.update,
-			formValues
-		);
+		const resp = await api.patch<UpdateUserDto, IUpdateUserRo>(USERS_URLS.update, formValues);
 		if (resp instanceof HTTPError) {
 			handleErr(resp);
 			return false;

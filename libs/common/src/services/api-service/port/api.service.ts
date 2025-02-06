@@ -1,23 +1,25 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
 
-import { IBaseApiService } from './base-api-servise.interface';
+export interface IApiServiceReqOptions extends RequestInit {
+	jwt?: string;
+}
 
-export abstract class BaseApiService implements IBaseApiService {
+export abstract class ApiService {
 	protected abstract getJwt(): Promise<string | undefined>;
 
-	get<DTO, RO>(url: string, data?: DTO, init?: RequestInit): Promise<RO | HTTPError> {
+	get<DTO, RO>(url: string, data?: DTO, init?: IApiServiceReqOptions): Promise<RO | HTTPError> {
 		return this.fetchLayout('GET', url, undefined, data, init);
 	}
 
-	post<DTO, RO>(url: string, data?: DTO, init?: RequestInit): Promise<RO | HTTPError> {
+	post<DTO, RO>(url: string, data?: DTO, init?: IApiServiceReqOptions): Promise<RO | HTTPError> {
 		return this.fetchLayout('POST', url, data, undefined, init);
 	}
 
-	patch<DTO, RO>(url: string, data?: DTO, init?: RequestInit): Promise<RO | HTTPError> {
+	patch<DTO, RO>(url: string, data?: DTO, init?: IApiServiceReqOptions): Promise<RO | HTTPError> {
 		return this.fetchLayout('PATCH', url, data, undefined, init);
 	}
 
-	delete<DTO, RO>(url: string, data?: DTO, init?: RequestInit): Promise<RO | HTTPError> {
+	delete<DTO, RO>(url: string, data?: DTO, init?: IApiServiceReqOptions): Promise<RO | HTTPError> {
 		return this.fetchLayout('DELETE', url, data, undefined, init);
 	}
 
@@ -26,10 +28,10 @@ export abstract class BaseApiService implements IBaseApiService {
 		url: string,
 		body?: DTO,
 		query?: DTO,
-		init?: RequestInit
+		init?: IApiServiceReqOptions
 	): Promise<RO | HTTPError> {
 		try {
-			const jwt = await this.getJwt();
+			const jwt = init?.jwt ?? (await this.getJwt());
 			const params = query ? `?${this.createSearchParams(query)}` : '';
 			const resp = await fetch(`${url}${params}`, {
 				...init,

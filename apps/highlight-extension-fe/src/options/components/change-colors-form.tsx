@@ -5,10 +5,11 @@ import { useToast } from '@chakra-ui/react';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { UpdateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
-import { httpErrHandler, chromeExtApi, HTTPError } from '~libs/common';
+import { httpErrHandler, HTTPError } from '~libs/common';
 import { AccordionForm, DraggableFields, ColorField } from '~libs/react-core';
 
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import { api } from '~/highlight-extension-fe/common/api/api';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';
 
@@ -45,7 +46,7 @@ export default function ChangeColorsForm({
 		if (!currentWorkspace) return false;
 
 		const newColors = formValues.colors.map(({ color }) => color);
-		const resp = await chromeExtApi.patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
+		const resp = await api.patch<UpdateWorkspaceDto, IUpdateWorkspaceRo>(
 			WORKSPACES_URLS.update(currentWorkspace.id),
 			{
 				colors: newColors,

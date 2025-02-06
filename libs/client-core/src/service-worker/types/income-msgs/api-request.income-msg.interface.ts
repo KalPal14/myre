@@ -1,11 +1,11 @@
-import type { ChromeExtApiService } from '~libs/common/services/api-service/chrome-ext-api.service';
+import type { ChromeStorageBaseAoiService } from '~libs/common';
 
 import { IBaseMsg } from '../base.msg.interface';
 
 export interface IApiRequestIncomeMsg<DTO = undefined> extends IBaseMsg {
 	serviceWorkerHandler: 'apiRequest';
 	contentScriptsHandler: string;
-	method: keyof ChromeExtApiService;
+	method: keyof ChromeStorageBaseAoiService;
 	url: string;
 	data?: DTO;
 }
