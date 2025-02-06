@@ -10,7 +10,7 @@ import { TextField, OutsideClickAlert } from '~libs/react-core';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
-import { openTab } from '~libs/client-core';
+import { openTabDispatcher } from '~libs/client-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
@@ -42,10 +42,13 @@ export default function LoginForm(): JSX.Element {
 
 		const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
 			WORKSPACES_URLS.create,
-			{ name: `${user.username}'s workspace`, colors: [] }
+			{ name: `${user.username}'s workspace`, colors: [] },
+			{ jwt }
 		);
 		if (workspace instanceof HTTPError) {
-			setErrAlertMsg('Something went wrong. Reload the page or try again later');
+			setErrAlertMsg(
+				'Your account was created successfully, but there was an error setting up your workspace. Please log in to try creating the workspace again.'
+			);
 			return;
 		}
 
@@ -53,7 +56,7 @@ export default function LoginForm(): JSX.Element {
 		setCurrentUser(user);
 		setCurrentWorkspace(workspace);
 		if (testMailUrl) {
-			openTab(testMailUrl);
+			openTabDispatcher({ url: testMailUrl });
 		}
 	}
 

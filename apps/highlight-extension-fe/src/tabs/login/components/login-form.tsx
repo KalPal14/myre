@@ -5,10 +5,11 @@ import { Button, Collapse } from '@chakra-ui/react';
 import { USERS_URLS } from '~libs/routes/iam';
 import { LoginDto } from '~libs/dto/iam';
 import { ILoginRo } from '~libs/ro/iam';
-import { TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
+import { ICreateWorkspaceRo, TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
 import { TextField, OutsideClickAlert } from '~libs/react-core';
+import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
@@ -36,19 +37,36 @@ export default function LoginForm(): JSX.Element {
 
 		const { jwt, ...userData } = loginResp;
 
-		const workspacesResp = await api.get<null, TGetOwnersWorkspacesRo>(
+		const workspaces = await api.get<null, TGetOwnersWorkspacesRo>(
 			WORKSPACES_URLS.getAllOwners,
 			null,
-			{ headers: { Authorization: `Bearer ${jwt}` } }
+			{ jwt }
 		);
-		if (workspacesResp instanceof HTTPError) {
-			handleErr(workspacesResp);
+		if (workspaces instanceof HTTPError) {
+			handleErr(workspaces);
+			return;
+		}
+
+		if (!workspaces.length) {
+			const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
+				WORKSPACES_URLS.create,
+				{ name: `${userData.username}'s workspace`, colors: [] },
+				{ jwt }
+			);
+			if (workspace instanceof HTTPError) {
+				setErrAlertMsg('Something went wrong. Reload the page or try again later');
+				return;
+			}
+
+			setJwt(jwt);
+			setCurrentUser(userData);
+			setCurrentWorkspace(workspace);
 			return;
 		}
 
 		setJwt(jwt);
 		setCurrentUser(userData);
-		setCurrentWorkspace(workspacesResp[0]);
+		setCurrentWorkspace(workspaces[0]);
 	}
 
 	function handleErr(err: HTTPError): void {
