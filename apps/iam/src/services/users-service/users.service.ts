@@ -8,7 +8,6 @@ import { UserModel } from '~/iam/prisma/client';
 import { TYPES } from '~/iam/common/constants/types';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
-import { TPrismaService } from '~/iam/common/types/prisma-service.interface';
 
 import { IOtpService } from '../otp-service/otp.service.interface';
 
@@ -19,7 +18,6 @@ export class UsersService implements IUsersService {
 	constructor(
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
-		@inject(TYPES.PrismaService) private prismaService: TPrismaService,
 		@inject(TYPES.OtpService) private otpService: IOtpService
 	) {}
 
@@ -36,18 +34,10 @@ export class UsersService implements IUsersService {
 		return this.usersRepository.findBy(data);
 	}
 
-	async create(
-		registerDto: RegistrationDto
-	): Promise<{ user: UserModel; testMailUrl: string | null }> {
+	async create(registerDto: RegistrationDto): Promise<UserModel> {
 		try {
-			return await this.prismaService.client.$transaction(async (tx) => {
-				const newUser = await this.userFactory.create(registerDto);
-				const newUserEntity = await tx.userModel.create({ data: newUser });
-
-				const { testMailUrl } = await this.otpService.upsert(newUser);
-
-				return { user: newUserEntity, testMailUrl };
-			});
+			const newUser = await this.userFactory.create(registerDto);
+			return await this.usersRepository.create(newUser);
 		} catch (err: any) {
 			if (err.code === 'P2002') {
 				throw new HTTPError(400, `User with this ${err.meta.target} already exists`);

@@ -13,6 +13,6 @@ import { IOtpService } from '~/iam/services/otp-service/otp.service.interface';
 export const otpBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IOtpController>(TYPES.OtpController).to(OtpController);
 	bind<IOtpRepository>(TYPES.OtpRepository).to(OtpRepository);
-	bind<IOtpService>(TYPES.OtpService).to(OtpService);
+	bind<IOtpService>(TYPES.OtpService).to(OtpService).inSingletonScope();
 	bind<IOtpFactory>(TYPES.OtpFactory).to(OtpFactory);
 });

@@ -34,15 +34,6 @@ const otpServiceMock: IOtpService = {
 	validate: jest.fn(),
 };
 
-const prismaServiceMock = {
-	client: {
-		userModel: {
-			create: jest.fn(),
-		},
-		$transaction: jest.fn().mockImplementation((callback) => callback(prismaServiceMock.client)),
-	},
-};
-
 jest.mock('~libs/common', () => ({
 	...jest.requireActual('~libs/common'),
 	api: {
@@ -61,7 +52,6 @@ beforeAll(() => {
 	container.bind<IUserFactory>(TYPES.UserFactory).toConstantValue(userFactoryMock);
 	container.bind<IUsersRepository>(TYPES.UsersRepository).toConstantValue(usersRepositoryMock);
 	container.bind<IOtpService>(TYPES.OtpService).toConstantValue(otpServiceMock);
-	container.bind<typeof prismaServiceMock>(TYPES.PrismaService).toConstantValue(prismaServiceMock);
 
 	usersService = container.get<IUsersService>(TYPES.UsersService);
 	userFactory = container.get<IUserFactory>(TYPES.UserFactory);
@@ -78,10 +68,10 @@ describe('UsersService', () => {
 		const CREATE_DTO = CREATE_USER_DTO();
 
 		describe('pass new email and username', () => {
-			it('return created user and test mail url', async () => {
+			it('return created user', async () => {
 				const testMailUrl = 'mock-test-mail-url';
 				userFactory.create = jest.fn().mockReturnValue({ ...USER, password: USER_MODEL.password });
-				prismaServiceMock.client.userModel.create.mockImplementation(({ data }) => ({
+				usersRepository.create = jest.fn().mockImplementation((data) => ({
 					...data,
 					id: USER_MODEL.id,
 				}));
@@ -89,14 +79,14 @@ describe('UsersService', () => {
 
 				const result = await usersService.create(CREATE_DTO);
 
-				expect(result).toEqual({ user: USER_MODEL, testMailUrl });
+				expect(result).toEqual(USER_MODEL);
 			});
 		});
 
 		describe('pass existing email or username', () => {
 			it('throw error', async () => {
 				userFactory.create = jest.fn().mockReturnValue({ ...USER, password: USER_MODEL.password });
-				prismaServiceMock.client.userModel.create.mockImplementation(() => {
+				usersRepository.create = jest.fn().mockImplementation(() => {
 					throw new PrismaClientKnownRequestError('', {
 						clientVersion: '0',
 						code: 'P2002',
@@ -269,7 +259,7 @@ describe('UsersService', () => {
 			it('should call otp validation', async () => {
 				const dto: UpdateUserDto = {
 					updateViaOtp: {
-						code: OTP.code,
+						code: OTP.code.toString(),
 						verified: true,
 					},
 				};
@@ -286,7 +276,7 @@ describe('UsersService', () => {
 		describe('change email', () => {
 			const dto: UpdateUserDto = {
 				updateViaOtp: {
-					code: OTP.code,
+					code: OTP.code.toString(),
 					email: 'updated@test.com',
 				},
 			};

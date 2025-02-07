@@ -68,7 +68,7 @@ describe('OtpService', () => {
 	});
 
 	describe('validate', () => {
-		const dto: ValidateOtpDto = { ...OTP };
+		const dto: ValidateOtpDto = { ...OTP, code: OTP.code.toString() };
 
 		describe('pass email for which otp has not yet been generated', () => {
 			it('should throw an error', async () => {

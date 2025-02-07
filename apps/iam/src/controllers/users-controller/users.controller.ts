@@ -89,12 +89,12 @@ export class UsersController extends BaseController implements IUsersController 
 	register: TController<null, RegistrationDto> = async ({ body }, res) => {
 		const result = await this.usersService.create(body);
 		this.jwtService
-			.generate(result.user)
+			.generate(result)
 			.then((jwt) => {
 				this.created(res, {
 					...result,
 					jwt,
-					user: this.layoutUserInfoRes(result.user),
+					user: this.layoutUserInfoRes(result),
 				});
 			})
 			.catch((err) => this.send(res, 500, { err }));
