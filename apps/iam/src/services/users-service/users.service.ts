@@ -9,16 +9,13 @@ import { TYPES } from '~/iam/common/constants/types';
 import { IUsersRepository } from '~/iam/repositories/users-repository/users.repository.interface';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
 
-import { IOtpService } from '../otp-service/otp.service.interface';
-
 import { IUsersService } from './users.service.interface';
 
 @injectable()
 export class UsersService implements IUsersService {
 	constructor(
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
-		@inject(TYPES.UserFactory) private userFactory: IUserFactory,
-		@inject(TYPES.OtpService) private otpService: IOtpService
+		@inject(TYPES.UserFactory) private userFactory: IUserFactory
 	) {}
 
 	async get(id: number): Promise<UserModel> {
@@ -79,18 +76,10 @@ export class UsersService implements IUsersService {
 			passwordUpdatedAt = new Date();
 		}
 
-		if (dto.updateViaOtp) {
-			await this.otpService.validate({
-				email: dto.updateViaOtp.email ?? user.email,
-				code: dto.updateViaOtp.code.toString(),
-			});
-		}
-
 		try {
 			return await this.usersRepository.update(user.id, {
 				username: dto.username,
-				email: dto.updateViaOtp?.email,
-				verified: dto.updateViaOtp?.verified,
+				email: dto.email,
 				password: updatedPassword,
 				passwordUpdatedAt,
 			});

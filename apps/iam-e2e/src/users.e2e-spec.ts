@@ -2,26 +2,22 @@ import 'reflect-metadata';
 import request from 'supertest';
 
 import { configEnv } from '~libs/express-core/config';
-import { LoginDto, RegistrationDto, UpdateUserDto, UpsertOtpDto } from '~libs/dto/iam';
+import { LoginDto, RegistrationDto, UpdateUserDto } from '~libs/dto/iam';
 import { hideEmailUsername } from '~libs/common';
-import { OTP_URLS, USERS_URLS } from '~libs/routes/iam';
+import { USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
 import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
-import { IOtpService } from '~/iam/services/otp-service/otp.service.interface';
-import { OtpModel } from '~/iam/prisma/client';
 
 import type { Express } from 'express';
 
 configEnv();
 
 let app: Express;
-let otpService: IOtpService;
 
 beforeAll(async () => {
 	const inst = await bootstrap();
 	app = inst.app.app;
-	otpService = inst.otpService;
 });
 
 describe('Users', () => {
@@ -99,7 +95,6 @@ describe('Users', () => {
 					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
-					verified: USER_MODEL.verified,
 				});
 			});
 		});
@@ -116,7 +111,6 @@ describe('Users', () => {
 					email: hideEmailUsername(USER_MODEL.email),
 					username: USER_MODEL.username,
 					passwordUpdatedAt: USER_MODEL.passwordUpdatedAt,
-					verified: USER_MODEL.verified,
 				});
 			});
 		});
@@ -262,23 +256,13 @@ describe('Users', () => {
 		});
 
 		describe('change email', () => {
-			describe('pass correct new email and otp', () => {
+			describe('pass correct email', () => {
 				it('return user info and jwt', async () => {
-					const upsertOtpDto: UpsertOtpDto = {
-						email: CREATE_USER_DTO().email,
-					};
-					const newUserDto = CREATE_USER_DTO();
-					const otpServiceUpsert = jest.spyOn(otpService, 'upsert');
-					await request(app).post(OTP_URLS.upsert).send(upsertOtpDto);
-					const otp: OtpModel = await otpServiceUpsert.mock.results[0].value.then(
-						({ otp }: { otp: OtpModel }) => otp
-					);
-					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
+					const { body: newUser } = await request(app)
+						.post(USERS_URLS.register)
+						.send(CREATE_USER_DTO());
 					const dto: UpdateUserDto = {
-						updateViaOtp: {
-							code: otp.code.toString(),
-							email: upsertOtpDto.email,
-						},
+						email: CREATE_USER_DTO().email,
 					};
 
 					const res = await request(app)
@@ -288,32 +272,7 @@ describe('Users', () => {
 
 					expect(res.statusCode).toBe(200);
 					expect(res.body.jwt).not.toBe(newUser.jwt);
-					expect(res.body.email).toBe(hideEmailUsername(dto.updateViaOtp?.email ?? ''));
-				});
-			});
-
-			describe('pass wrong otp', () => {
-				it('return err msg', async () => {
-					const upsertOtpDto: UpsertOtpDto = {
-						email: CREATE_USER_DTO().email,
-					};
-					const newUserDto = CREATE_USER_DTO();
-					await request(app).post(OTP_URLS.upsert).send(upsertOtpDto);
-					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
-					const dto: UpdateUserDto = {
-						updateViaOtp: {
-							code: '123123',
-							email: upsertOtpDto.email,
-						},
-					};
-
-					const res = await request(app)
-						.patch(USERS_URLS.update)
-						.set('Authorization', `Bearer ${newUser.jwt}`)
-						.send(dto);
-
-					expect(res.statusCode).toBe(400);
-					expect(res.body).toEqual({ err: 'One-time password is incorrect or outdated' });
+					expect(res.body.email).toBe(hideEmailUsername(dto.email ?? ''));
 				});
 			});
 		});
@@ -321,19 +280,20 @@ describe('Users', () => {
 		describe('change username', () => {
 			describe('pass correct username', () => {
 				it('return user info and jwt', async () => {
-					const createUserDto = CREATE_USER_DTO();
-					const newUserRes = await request(app).post(USERS_URLS.register).send(createUserDto);
+					const { body: newUser } = await request(app)
+						.post(USERS_URLS.register)
+						.send(CREATE_USER_DTO());
 					const dto: UpdateUserDto = {
 						username: CREATE_USER_DTO().username,
 					};
 
 					const res = await request(app)
 						.patch(USERS_URLS.update)
-						.set('Authorization', `Bearer ${newUserRes.body.jwt}`)
+						.set('Authorization', `Bearer ${newUser.jwt}`)
 						.send(dto);
 
 					expect(res.statusCode).toBe(200);
-					expect(res.body.jwt).not.toBe(newUserRes.body.jwt);
+					expect(res.body.jwt).not.toBe(newUser.jwt);
 					expect(res.body.username).toBe(dto.username);
 				});
 			});

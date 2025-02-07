@@ -7,7 +7,6 @@ export class User {
 		readonly username: string,
 		readonly email: string,
 		readonly passwordUpdatedAt: Date | null = null,
-		readonly verified: boolean = false,
 		passwordHash?: string
 	) {
 		if (passwordHash) {

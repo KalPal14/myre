@@ -9,7 +9,6 @@ import { User } from '~/iam/domain/user/user';
 export const USER: Omit<User, 'setPassword' | 'comperePassword'> = {
 	email: JWT_PAYLOAD.email,
 	username: JWT_PAYLOAD.username,
-	verified: true,
 	password: '123123',
 	passwordUpdatedAt: null,
 };

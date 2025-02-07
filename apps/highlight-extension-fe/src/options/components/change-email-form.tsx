@@ -82,8 +82,8 @@ export default function ChangeEmailForm({
 			<>
 				<TextField
 					register={register}
-					errors={errors.updateViaOtp?.email}
-					name="updateViaOtp.email"
+					errors={errors.email}
+					name="email"
 					label="New email"
 					placeholder="Please enter your new email"
 				/>

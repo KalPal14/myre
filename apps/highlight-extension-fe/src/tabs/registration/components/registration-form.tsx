@@ -10,7 +10,6 @@ import { TextField } from '~libs/react-core';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
-import { openTabDispatcher } from '~libs/client-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
@@ -42,7 +41,7 @@ export default function RegistrationForm({ email }: IRegistrationFormProps): JSX
 			handleErr(registrationRo);
 			return;
 		}
-		const { jwt, user, testMailUrl } = registrationRo;
+		const { jwt, user } = registrationRo;
 
 		const workspace = await api.post<CreateWorkspaceDto, ICreateWorkspaceRo>(
 			WORKSPACES_URLS.create,
@@ -60,9 +59,6 @@ export default function RegistrationForm({ email }: IRegistrationFormProps): JSX
 		setJwt(jwt);
 		setCurrentUser(user);
 		setCurrentWorkspace(workspace);
-		if (testMailUrl) {
-			openTabDispatcher({ url: testMailUrl });
-		}
 	}
 
 	function handleErr(err: HTTPError): void {

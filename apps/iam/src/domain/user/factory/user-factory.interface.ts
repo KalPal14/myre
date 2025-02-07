@@ -1,9 +1,8 @@
 import { User } from '../user';
 
 export interface IUserData
-	extends Omit<User, 'comperePassword' | 'setPassword' | 'passwordUpdatedAt' | 'verified'> {
+	extends Omit<User, 'comperePassword' | 'setPassword' | 'passwordUpdatedAt'> {
 	passwordUpdatedAt?: Date | null;
-	verified?: boolean;
 }
 
 export interface IUserFactory {

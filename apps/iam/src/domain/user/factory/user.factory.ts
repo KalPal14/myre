@@ -19,13 +19,7 @@ export class UserFactory implements IUserFactory {
 		return user;
 	}
 
-	createWithHashPassword({
-		username,
-		email,
-		password,
-		verified = false,
-		passwordUpdatedAt = null,
-	}: IUserData): User {
-		return new User(username, email, passwordUpdatedAt, verified, password);
+	createWithHashPassword({ username, email, password, passwordUpdatedAt = null }: IUserData): User {
+		return new User(username, email, passwordUpdatedAt, password);
 	}
 }

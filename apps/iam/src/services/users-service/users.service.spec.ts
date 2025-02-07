@@ -11,9 +11,6 @@ import { IUsersRepository } from '~/iam/repositories/users-repository/users.repo
 import { User } from '~/iam/domain/user/user';
 import { IUserFactory } from '~/iam/domain/user/factory/user-factory.interface';
 import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
-import { OTP } from '~/iam/common/stubs/otp';
-
-import { IOtpService } from '../otp-service/otp.service.interface';
 
 import { IUsersService } from './users.service.interface';
 import { UsersService } from './users.service';
@@ -29,11 +26,6 @@ const userFactoryMock: IUserFactory = {
 	createWithHashPassword: jest.fn(),
 };
 
-const otpServiceMock: IOtpService = {
-	upsert: jest.fn(),
-	validate: jest.fn(),
-};
-
 jest.mock('~libs/common', () => ({
 	...jest.requireActual('~libs/common'),
 	api: {
@@ -45,18 +37,15 @@ const container = new Container();
 let usersService: IUsersService;
 let userFactory: IUserFactory;
 let usersRepository: IUsersRepository;
-let otpService: IOtpService;
 
 beforeAll(() => {
 	container.bind<IUsersService>(TYPES.UsersService).to(UsersService);
 	container.bind<IUserFactory>(TYPES.UserFactory).toConstantValue(userFactoryMock);
 	container.bind<IUsersRepository>(TYPES.UsersRepository).toConstantValue(usersRepositoryMock);
-	container.bind<IOtpService>(TYPES.OtpService).toConstantValue(otpServiceMock);
 
 	usersService = container.get<IUsersService>(TYPES.UsersService);
 	userFactory = container.get<IUserFactory>(TYPES.UserFactory);
 	usersRepository = container.get<IUsersRepository>(TYPES.UsersRepository);
-	otpService = container.get<IOtpService>(TYPES.OtpService);
 });
 
 beforeEach(() => {
@@ -69,13 +58,11 @@ describe('UsersService', () => {
 
 		describe('pass new email and username', () => {
 			it('return created user', async () => {
-				const testMailUrl = 'mock-test-mail-url';
 				userFactory.create = jest.fn().mockReturnValue({ ...USER, password: USER_MODEL.password });
 				usersRepository.create = jest.fn().mockImplementation((data) => ({
 					...data,
 					id: USER_MODEL.id,
 				}));
-				otpService.upsert = jest.fn().mockReturnValue({ testMailUrl });
 
 				const result = await usersService.create(CREATE_DTO);
 
@@ -255,46 +242,16 @@ describe('UsersService', () => {
 			});
 		});
 
-		describe('change verified status', () => {
-			it('should call otp validation', async () => {
-				const dto: UpdateUserDto = {
-					updateViaOtp: {
-						code: OTP.code.toString(),
-						verified: true,
-					},
-				};
-
-				await usersService.update(JWT_PAYLOAD, dto);
-
-				expect(otpService.validate).toHaveBeenCalledWith({
-					email: JWT_PAYLOAD.email,
-					code: dto.updateViaOtp?.code,
-				});
-			});
-		});
-
 		describe('change email', () => {
 			const dto: UpdateUserDto = {
-				updateViaOtp: {
-					code: OTP.code.toString(),
-					email: 'updated@test.com',
-				},
+				email: 'updated@test.com',
 			};
-
-			it('should call otp validation', async () => {
-				await usersService.update(JWT_PAYLOAD, dto);
-
-				expect(otpService.validate).toHaveBeenCalledWith({
-					email: dto.updateViaOtp?.email,
-					code: dto.updateViaOtp?.code,
-				});
-			});
 
 			describe('pass correct email', () => {
 				it('return updated user', async () => {
 					const result = await usersService.update(JWT_PAYLOAD, dto);
 
-					expect(result).toEqual({ ...USER_MODEL, email: dto.updateViaOtp?.email });
+					expect(result).toEqual({ ...USER_MODEL, email: dto.email });
 				});
 			});
 

@@ -114,7 +114,7 @@ export class UsersController extends BaseController implements IUsersController 
 	update: TController<null, UpdateUserDto> = async ({ user, body }, res) => {
 		const result = await this.usersService.update(user, body);
 
-		if (body.username || body.updateViaOtp?.email) {
+		if (body.username || body.email) {
 			this.jwtService
 				.generate(result)
 				.then((jwt) => {

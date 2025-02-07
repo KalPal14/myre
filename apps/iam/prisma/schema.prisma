@@ -13,7 +13,6 @@ model UserModel {
   username          String    @unique
   email             String    @unique
   password          String
-  verified          Boolean   @default(false)
   passwordUpdatedAt DateTime?
 }
 
