@@ -21,7 +21,7 @@ export interface ITextFieldProps<FormFields extends FieldValues> {
 	name: Path<FormFields>;
 	placeholder?: string;
 	label?: string;
-	type?: 'text' | 'password';
+	type?: 'text' | 'password' | 'number';
 	helperText?: string;
 }
 
@@ -52,7 +52,7 @@ export function TextField<FormFields extends FieldValues>({
 					placeholder={placeholder}
 					{...register(name, validationOptions)}
 					borderWidth={2}
-					type={hideText ? 'password' : 'type'}
+					type={hideText ? 'password' : type === 'password' ? 'text' : type}
 				></Input>
 				{type === 'password' && (
 					<InputRightElement onClick={setHideText.toggle}>

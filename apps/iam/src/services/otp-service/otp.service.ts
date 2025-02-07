@@ -3,12 +3,13 @@ import { inject, injectable } from 'inversify';
 
 import { HTTPError } from '~libs/common';
 import { UpsertOtpDto, ValidateOtpDto } from '~libs/dto/iam';
-import { IUpsertOtpRo, IValidateOtpRo } from '~libs/ro/iam';
+import { IValidateOtpRo } from '~libs/ro/iam';
 import { MailerService } from '~libs/express-core';
 
 import { TYPES } from '~/iam/common/constants/types';
 import { IOtpRepository } from '~/iam/repositories/otp-repository/otp.repository.interface';
 import { IOtpFactory } from '~/iam/domain/otp/factory/otp.factory.interface';
+import { OtpModel } from '~/iam/prisma/client';
 
 import { IOtpService } from './otp.service.interface';
 
@@ -20,7 +21,7 @@ export class OtpService implements IOtpService {
 		@inject(TYPES.MailerService) private mailerService: MailerService
 	) {}
 
-	async upsert({ email }: UpsertOtpDto): Promise<IUpsertOtpRo> {
+	async upsert({ email }: UpsertOtpDto): Promise<{ otp: OtpModel; testMailUrl: string | null }> {
 		const otp = this.otpFactory.create({ email });
 		const testMailUrl = await this.mailerService.sendMail({
 			to: email,
@@ -32,13 +33,15 @@ export class OtpService implements IOtpService {
 		return { otp: otpEntity, testMailUrl };
 	}
 
-	async validate(dto: ValidateOtpDto): Promise<IValidateOtpRo> {
-		const existingOtp = await this.otpRepository.findBy({ email: dto.email });
+	async validate({ email, code }: ValidateOtpDto): Promise<IValidateOtpRo> {
+		const existingOtp = await this.otpRepository.findBy({ email });
 		if (!existingOtp) {
-			throw new HTTPError(404, `One-time password for ${dto.email} does not exist`);
+			throw new HTTPError(404, `One-time password for ${email} does not exist`);
 		}
 
-		const isValid = this.otpFactory.create(dto).compereOtp(existingOtp.code, existingOtp.updatedAt);
+		const isValid = this.otpFactory
+			.create({ email, code: +code })
+			.compereOtp(existingOtp.code, existingOtp.updatedAt);
 		if (!isValid) {
 			throw new HTTPError(400, 'One-time password is incorrect or outdated');
 		}

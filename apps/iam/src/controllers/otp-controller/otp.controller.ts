@@ -31,8 +31,8 @@ export class OtpController extends BaseController implements IOtpController {
 	}
 
 	upsert: TController<null, UpsertOtpDto> = async ({ body }, res) => {
-		const result = await this.otpService.upsert(body);
-		this.ok(res, result);
+		const { testMailUrl } = await this.otpService.upsert(body);
+		this.ok(res, { testMailUrl });
 	};
 
 	validate: TController<null, ValidateOtpDto> = async ({ body }, res) => {

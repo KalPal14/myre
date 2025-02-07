@@ -8,6 +8,7 @@ export const USERS_ENDPOINTS = {
 	logout: `/logout`,
 	update: '/update',
 	getUserInfo: `/get-info`,
+	exictanceCheck: '/existence-check',
 };
 
 export const USERS_URLS = {
@@ -16,4 +17,5 @@ export const USERS_URLS = {
 	logout: `${IAM_URL}${USERS_BASE_ROUTE}/logout`,
 	update: `${IAM_URL}${USERS_BASE_ROUTE}/update`,
 	getUserInfo: `${IAM_URL}${USERS_BASE_ROUTE}/get-info`,
+	exictanceCheck: `${IAM_URL}${USERS_BASE_ROUTE}/existence-check`,
 };

@@ -15,13 +15,21 @@ import { openTabDispatcher } from '~libs/client-core';
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 
-export default function LoginForm(): JSX.Element {
+export interface IRegistrationFormProps {
+	email: string;
+	onChangeEmailClick: () => void;
+}
+
+export default function RegistrationForm({
+	email,
+	onChangeEmailClick,
+}: IRegistrationFormProps): JSX.Element {
 	const {
 		handleSubmit,
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<RegistrationDto>();
+	} = useForm<Omit<RegistrationDto, 'email'>>();
 
 	const [, setJwt] = useCrossExtState('jwt');
 	const [, setCurrentUser] = useCrossExtState('currentUser');
@@ -29,11 +37,11 @@ export default function LoginForm(): JSX.Element {
 
 	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
-	async function onSubmit(formValues: RegistrationDto): Promise<void> {
-		const registrationRo = await api.post<RegistrationDto, IRegistrationRo>(
-			USERS_URLS.register,
-			formValues
-		);
+	async function onSubmit(formValues: Omit<RegistrationDto, 'email'>): Promise<void> {
+		const registrationRo = await api.post<RegistrationDto, IRegistrationRo>(USERS_URLS.register, {
+			email,
+			...formValues,
+		});
 		if (registrationRo instanceof HTTPError) {
 			handleErr(registrationRo);
 			return;
@@ -64,7 +72,7 @@ export default function LoginForm(): JSX.Element {
 		httpErrHandler({
 			err,
 			onValidationErr(property, errors) {
-				setError(property as keyof RegistrationDto, {
+				setError(property as keyof Omit<RegistrationDto, 'email'>, {
 					message: errors.join(),
 				});
 			},
@@ -84,16 +92,9 @@ export default function LoginForm(): JSX.Element {
 
 	return (
 		<form
-			className="loginPage_form"
+			className="registrationPage_form"
 			onSubmit={handleSubmit(onSubmit)}
 		>
-			<TextField
-				register={register}
-				errors={errors.email}
-				name="email"
-				label="Email"
-				placeholder="Please enter email"
-			/>
 			<TextField
 				register={register}
 				errors={errors.username}
@@ -126,6 +127,15 @@ export default function LoginForm(): JSX.Element {
 				type="submit"
 			>
 				Submit
+			</Button>
+			<Button
+				mt={2}
+				ml={1}
+				colorScheme="gray"
+				isLoading={isSubmitting}
+				onClick={onChangeEmailClick}
+			>
+				Change Email
 			</Button>
 		</form>
 	);

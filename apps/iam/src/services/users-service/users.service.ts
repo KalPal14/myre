@@ -32,6 +32,10 @@ export class UsersService implements IUsersService {
 		return user;
 	}
 
+	async find(data: Partial<UserModel>): Promise<UserModel | null> {
+		return this.usersRepository.findBy(data);
+	}
+
 	async create(
 		registerDto: RegistrationDto
 	): Promise<{ user: UserModel; testMailUrl: string | null }> {
@@ -88,7 +92,7 @@ export class UsersService implements IUsersService {
 		if (dto.updateViaOtp) {
 			await this.otpService.validate({
 				email: dto.updateViaOtp.email ?? user.email,
-				code: dto.updateViaOtp.code,
+				code: dto.updateViaOtp.code.toString(),
 			});
 		}
 

@@ -27,6 +27,8 @@ export * from './utils/dto-validation-rules/is-user-identifier';
 
 // /utils/helper-functions
 export * from './utils/helper-functions/hide-email-username/hide-email-username';
+export * from './utils/helper-functions/shift-time/shift-time';
+export * from './utils/helper-functions/to-where-in/to-where-in';
 
 // /utils/obj-conventers
 export * from './utils/helper-functions/to-where-in/to-where-in';

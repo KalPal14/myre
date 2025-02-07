@@ -9,7 +9,7 @@ import {
 	BaseController,
 } from '~libs/express-core';
 import { hideEmailUsername, HTTPError } from '~libs/common';
-import { LoginDto, RegistrationDto, UpdateUserDto } from '~libs/dto/iam';
+import { LoginDto, RegistrationDto, UpdateUserDto, UserExistenceCheckDto } from '~libs/dto/iam';
 import { USERS_ENDPOINTS } from '~libs/routes/iam';
 
 import { UserModel } from '~/iam/prisma/client';
@@ -30,6 +30,12 @@ export class UsersController extends BaseController implements IUsersController 
 				path: USERS_ENDPOINTS.getUserInfo,
 				method: 'get',
 				func: this.getUserInfo,
+			},
+			{
+				path: USERS_ENDPOINTS.exictanceCheck,
+				method: 'get',
+				func: this.exictanceCheck,
+				middlewares: [new RoleGuard('*'), new ValidateMiddleware(UserExistenceCheckDto, 'query')],
 			},
 			{
 				path: USERS_ENDPOINTS.login,
@@ -60,6 +66,11 @@ export class UsersController extends BaseController implements IUsersController 
 	getUserInfo: TController = async ({ user }, res) => {
 		const result = await this.usersService.get(user.id);
 		this.ok(res, this.layoutUserInfoRes(result));
+	};
+
+	exictanceCheck: TController<null, null, UserExistenceCheckDto> = async ({ query }, res) => {
+		const result = await this.usersService.find(query);
+		this.ok(res, Boolean(result));
 	};
 
 	login: TController<null, LoginDto> = async ({ body }, res) => {
