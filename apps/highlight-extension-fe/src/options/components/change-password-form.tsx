@@ -10,6 +10,7 @@ import { TextField, AccordionForm } from '~libs/react-core';
 import { IUpdateUserRo } from '~libs/ro/iam';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export interface IChangePasswordFormProps {
 	passwordUpdatedAt: Date | null;
@@ -20,12 +21,7 @@ export default function ChangePasswordForm({
 	passwordUpdatedAt,
 	onSuccess,
 }: IChangePasswordFormProps): JSX.Element {
-	const toast = useToast({
-		duration: 4000,
-		isClosable: true,
-		status: 'error',
-		position: 'top',
-	});
+	const toast = useToast(toastDefOptions);
 	const useFormReturnValue = useForm<UpdateUserDto>();
 	const {
 		register,

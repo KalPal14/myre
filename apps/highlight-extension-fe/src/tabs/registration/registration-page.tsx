@@ -51,12 +51,7 @@ export default function RegistrationPage(): JSX.Element {
 					</>
 				);
 			default:
-				return (
-					<RegistrationForm
-						email={email}
-						onChangeEmailClick={() => setRegistrationStep(0)}
-					/>
-				);
+				return <RegistrationForm email={email} />;
 		}
 	}
 

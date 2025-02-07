@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Collapse } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 
 import { USERS_URLS } from '~libs/routes/iam';
 import { LoginDto } from '~libs/dto/iam';
@@ -8,11 +8,12 @@ import { ILoginRo } from '~libs/ro/iam';
 import { ICreateWorkspaceRo, TGetOwnersWorkspacesRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
-import { TextField, OutsideClickAlert } from '~libs/react-core';
+import { TextField } from '~libs/react-core';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export default function LoginForm(): JSX.Element {
 	const {
@@ -21,12 +22,11 @@ export default function LoginForm(): JSX.Element {
 		formState: { errors, isSubmitting },
 		setError,
 	} = useForm<LoginDto>();
+	const toast = useToast(toastDefOptions);
 
 	const [, setJwt] = useCrossExtState('jwt');
 	const [, setCurrentUser] = useCrossExtState('currentUser');
 	const [, setCurrentWorkspace] = useCrossExtState('currentWorkspace');
-
-	const [errAlerMsg, setErrAlertMsg] = useState<string | null>(null);
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
 		const loginResp = await api.post<LoginDto, ILoginRo>(USERS_URLS.login, formValues);
@@ -54,7 +54,7 @@ export default function LoginForm(): JSX.Element {
 				{ jwt }
 			);
 			if (workspace instanceof HTTPError) {
-				setErrAlertMsg('Something went wrong. Reload the page or try again later');
+				toast({ title: 'Something went wrong. Reload the page or try again later' });
 				return;
 			}
 
@@ -78,17 +78,13 @@ export default function LoginForm(): JSX.Element {
 				});
 			},
 			onErrWithMsg(msg) {
-				setErrAlertMsg(msg);
+				toast({ title: msg });
 				return;
 			},
 			onUnhandledErr() {
-				setErrAlertMsg('Something went wrong. Please try again');
+				toast({ title: 'Something went wrong. Please try again' });
 			},
 		});
-	}
-
-	function closeErrAlert(): void {
-		setErrAlertMsg(null);
 	}
 
 	return (
@@ -111,16 +107,6 @@ export default function LoginForm(): JSX.Element {
 				placeholder="Please enter your password"
 				type="password"
 			/>
-			<Collapse
-				in={Boolean(errAlerMsg)}
-				animateOpacity
-			>
-				<OutsideClickAlert
-					msg={errAlerMsg ?? ''}
-					onClose={closeErrAlert}
-					mb={5}
-				/>
-			</Collapse>
 			<Button
 				mt={2}
 				colorScheme="teal"

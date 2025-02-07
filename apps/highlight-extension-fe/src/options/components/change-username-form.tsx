@@ -10,6 +10,7 @@ import { IUpdateUserRo } from '~libs/ro/iam';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export interface IChangeusernameFormProps {
 	currentUsername: string;
@@ -20,12 +21,7 @@ export default function ChangeUsernameForm({
 	currentUsername,
 	onSuccess,
 }: IChangeusernameFormProps): JSX.Element {
-	const toast = useToast({
-		duration: 4000,
-		isClosable: true,
-		status: 'error',
-		position: 'top',
-	});
+	const toast = useToast(toastDefOptions);
 	const useFormReturnValue = useForm<UpdateUserDto>();
 	const {
 		register,

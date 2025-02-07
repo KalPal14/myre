@@ -9,6 +9,8 @@ import { HTTPError, shiftTime, httpErrHandler } from '~libs/common';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 
+import { toastDefOptions } from '../../constants/default-values/toast-options';
+
 export interface IResendOtpBtnProps {
 	email: string;
 }
@@ -17,12 +19,7 @@ export default function ResendOtpBtn({ email }: IResendOtpBtnProps): JSX.Element
 	const { seconds, isRunning, restart } = useTimer({
 		expiryTimestamp: shiftTime(30),
 	});
-	const toast = useToast({
-		duration: 4000,
-		isClosable: true,
-		status: 'error',
-		position: 'top',
-	});
+	const toast = useToast(toastDefOptions);
 
 	async function resendCode(): Promise<void> {
 		restart(shiftTime(30));

@@ -20,6 +20,7 @@ import { getPageUrl } from '~libs/client-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 import IDataForPageUpdating from '../types/data-for-page-updating.interface';
 import IChangePageUrlForm from '../types/change-page-url-form.interface';
@@ -30,12 +31,7 @@ export interface IPageItemProps {
 }
 
 export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.Element {
-	const toast = useToast({
-		duration: 4000,
-		isClosable: true,
-		status: 'error',
-		position: 'top',
-	});
+	const toast = useToast(toastDefOptions);
 	const useFormReturnValue = useForm<IChangePageUrlForm>();
 	const {
 		register,

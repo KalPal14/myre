@@ -10,6 +10,8 @@ import { TextField } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 
+import { toastDefOptions } from '../../constants/default-values/toast-options';
+
 interface IRequestOtpFormProps {
 	email: string;
 	onSuccess: (email: string) => void;
@@ -27,12 +29,7 @@ export default function RequestOtpForm({
 		formState: { errors, isSubmitting },
 		setError,
 	} = useForm<UpsertOtpDto>({ defaultValues: { email } });
-	const toast = useToast({
-		duration: 4000,
-		isClosable: true,
-		status: 'error',
-		position: 'top',
-	});
+	const toast = useToast(toastDefOptions);
 
 	async function onSubmit(formValues: UpsertOtpDto): Promise<void> {
 		if (email && email === formValues.email) {
