@@ -31,7 +31,9 @@ describe('Workspaces (e2e)', () => {
 		app = moduleFixture.createNestApplication();
 		await app.init();
 
-		const { app: iamApp } = await bootstrap();
+		const {
+			app: { app: iamApp },
+		} = await bootstrap();
 		const loginRes = await request(iamApp).post(USERS_URLS.login).send(LOGIN_USER_DTO);
 		jwt = loginRes.body.jwt;
 	});

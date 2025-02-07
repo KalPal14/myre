@@ -8,16 +8,20 @@ import { OTP_URLS, USERS_URLS } from '~libs/routes/iam';
 
 import { bootstrap } from '~/iam/main';
 import { CREATE_USER_DTO, LOGIN_USER_DTO, USER, USER_MODEL } from '~/iam/common/stubs/users';
+import { IOtpService } from '~/iam/services/otp-service/otp.service.interface';
+import { OtpModel } from '~/iam/prisma/client';
 
 import type { Express } from 'express';
 
 configEnv();
 
 let app: Express;
+let otpService: IOtpService;
 
 beforeAll(async () => {
-	const application = await bootstrap();
-	app = application.app;
+	const inst = await bootstrap();
+	app = inst.app.app;
+	otpService = inst.otpService;
 });
 
 describe('Users', () => {
@@ -264,13 +268,15 @@ describe('Users', () => {
 						email: CREATE_USER_DTO().email,
 					};
 					const newUserDto = CREATE_USER_DTO();
-					const { body: upsertOtpBody } = await request(app)
-						.post(OTP_URLS.upsert)
-						.send(upsertOtpDto);
+					const otpServiceUpsert = jest.spyOn(otpService, 'upsert');
+					await request(app).post(OTP_URLS.upsert).send(upsertOtpDto);
+					const otp: OtpModel = await otpServiceUpsert.mock.results[0].value.then(
+						({ otp }: { otp: OtpModel }) => otp
+					);
 					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
 					const dto: UpdateUserDto = {
 						updateViaOtp: {
-							code: upsertOtpBody.otp.code,
+							code: otp.code.toString(),
 							email: upsertOtpDto.email,
 						},
 					};
@@ -296,7 +302,7 @@ describe('Users', () => {
 					const { body: newUser } = await request(app).post(USERS_URLS.register).send(newUserDto);
 					const dto: UpdateUserDto = {
 						updateViaOtp: {
-							code: 123123,
+							code: '123123',
 							email: upsertOtpDto.email,
 						},
 					};
