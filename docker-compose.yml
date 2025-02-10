@@ -11,6 +11,9 @@ services:
       - POSTGRES_DB=freq-words-dev
     ports:
       - "5430:5432"
+    volumes:
+      - freq_words_dev_data:/var/lib/postgresql/data
+
   freq-words-test-db:
     container_name: freq-words-test-db
     image: postgres
@@ -21,6 +24,8 @@ services:
       - POSTGRES_DB=freq-words-test
     ports:
       - "5431:5432"
+    volumes:
+      - freq_words_test_data:/var/lib/postgresql/data
 
   highlight-extension-dev-db:
     container_name: highlight-extension-dev-db
@@ -32,6 +37,9 @@ services:
       - POSTGRES_DB=highlight-extension-dev
     ports:
       - "5433:5432"
+    volumes:
+      - highlight_extension_dev_data:/var/lib/postgresql/data
+
   highlight-extension-test-db:
     container_name: highlight-extension-test-db
     image: postgres
@@ -42,6 +50,8 @@ services:
       - POSTGRES_DB=highlight-extension-test
     ports:
       - "5434:5432"
+    volumes:
+      - highlight_extension_test_data:/var/lib/postgresql/data
 
   iam-dev-db:
     container_name: iam-dev-db
@@ -53,6 +63,9 @@ services:
       - POSTGRES_DB=iam-dev
     ports:
       - "5435:5432"
+    volumes:
+      - iam_dev_data:/var/lib/postgresql/data
+
   iam-test-db:
     container_name: iam-test-db
     image: postgres
@@ -63,3 +76,13 @@ services:
       - POSTGRES_DB=iam-test
     ports:
       - "5436:5432"
+    volumes:
+      - iam_test_data:/var/lib/postgresql/data
+
+volumes:
+  freq_words_dev_data:
+  freq_words_test_data:
+  highlight_extension_dev_data:
+  highlight_extension_test_data:
+  iam_dev_data:
+  iam_test_data:
