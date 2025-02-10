@@ -114,13 +114,11 @@ describe('HighlightsService', () => {
 						endContainer: END_NODE_MODEL,
 					})
 				);
-				const createNodeSpy = jest.spyOn(nodesServise, 'create');
-				const createPageSpy = jest.spyOn(pagesServise, 'create');
 
 				const result = await highlightsService.create(CREATE_HIGHLIGHT_DTO);
 
-				expect(createPageSpy).toHaveBeenCalledWith(CREATE_PAGE_DTO);
-				expect(createNodeSpy).toHaveBeenCalledTimes(2);
+				expect(pagesServise.create).toHaveBeenCalledWith(CREATE_PAGE_DTO);
+				expect(nodesServise.create).toHaveBeenCalledTimes(2);
 				expect(result).toEqual({
 					...HIGHLIGHT_DEEP_MODEL,
 					startOffset: CREATE_HIGHLIGHT_DTO.startOffset,
@@ -149,13 +147,11 @@ describe('HighlightsService', () => {
 						endContainer: END_NODE_MODEL,
 					})
 				);
-				const createNodeSpy = jest.spyOn(nodesServise, 'create');
-				const createPageSpy = jest.spyOn(pagesServise, 'create');
 
 				const result = await highlightsService.create(CREATE_HIGHLIGHT_DTO);
 
-				expect(createPageSpy).not.toHaveBeenCalled();
-				expect(createNodeSpy).toHaveBeenCalledTimes(2);
+				expect(pagesServise.create).not.toHaveBeenCalled();
+				expect(nodesServise.create).toHaveBeenCalledTimes(2);
 				expect(result).toEqual({
 					...HIGHLIGHT_DEEP_MODEL,
 					startOffset: CREATE_HIGHLIGHT_DTO.startOffset,
@@ -189,12 +185,14 @@ describe('HighlightsService', () => {
 						},
 					})
 				);
-				const updateNodeSpy = jest.spyOn(nodesServise, 'update');
 
 				const result = await highlightsService.update(HIGHLIGHT_MODEL.id, UPDATE_DTO);
 
-				expect(updateNodeSpy).toHaveBeenCalledTimes(1);
-				expect(updateNodeSpy).toHaveBeenCalledWith(START_NODE_MODEL.id, UPDATE_DTO.startContainer);
+				expect(nodesServise.update).toHaveBeenCalledTimes(1);
+				expect(nodesServise.update).toHaveBeenCalledWith(
+					START_NODE_MODEL.id,
+					UPDATE_DTO.startContainer
+				);
 				expect(result).toEqual({
 					...HIGHLIGHT_DEEP_MODEL,
 					...UPDATE_DTO,
@@ -220,11 +218,10 @@ describe('HighlightsService', () => {
 						...payload,
 					})
 				);
-				const updateNodeSpy = jest.spyOn(nodesServise, 'update');
 
 				const result = await highlightsService.update(HIGHLIGHT_MODEL.id, UPDATE_DTO);
 
-				expect(updateNodeSpy).not.toHaveBeenCalled();
+				expect(nodesServise.update).not.toHaveBeenCalled();
 				expect(result).toEqual({
 					...HIGHLIGHT_DEEP_MODEL,
 					...UPDATE_DTO,
@@ -255,13 +252,18 @@ describe('HighlightsService', () => {
 						},
 					})
 				);
-				const updateNodeSpy = jest.spyOn(nodesServise, 'update');
 
 				const result = await highlightsService.update(HIGHLIGHT_MODEL.id, UPDATE_DTO);
 
-				expect(updateNodeSpy).toHaveBeenCalledTimes(2);
-				expect(updateNodeSpy).toHaveBeenCalledWith(START_NODE_MODEL.id, UPDATE_DTO.startContainer);
-				expect(updateNodeSpy).toHaveBeenCalledWith(END_NODE_MODEL.id, UPDATE_DTO.endContainer);
+				expect(nodesServise.update).toHaveBeenCalledTimes(2);
+				expect(nodesServise.update).toHaveBeenCalledWith(
+					START_NODE_MODEL.id,
+					UPDATE_DTO.startContainer
+				);
+				expect(nodesServise.update).toHaveBeenCalledWith(
+					END_NODE_MODEL.id,
+					UPDATE_DTO.endContainer
+				);
 				expect(result).toEqual({
 					...HIGHLIGHT_DEEP_MODEL,
 					...UPDATE_DTO,
@@ -304,11 +306,10 @@ describe('HighlightsService', () => {
 				highlightsRepositoryMock.deepFindManyIn = jest
 					.fn()
 					.mockReturnValue([{ ...HIGHLIGHT_DEEP_MODEL }, { ...HIGHLIGHT_DEEP_MODEL, id: 2 }]);
-				const individualUpdateManySpy = jest.spyOn(highlightsRepository, 'individualUpdateMany');
 
 				await highlightsService.individualUpdateMany(DTO);
 
-				expect(individualUpdateManySpy).toHaveBeenCalledWith({
+				expect(highlightsRepository.individualUpdateMany).toHaveBeenCalledWith({
 					highlights: [DTO.highlights[0], DTO.highlights[1]],
 				});
 			});
@@ -317,11 +318,10 @@ describe('HighlightsService', () => {
 		describe('pass all unexisting highlights', () => {
 			it('call highlightsRepository.individualUpdateMany with empty highlights list', async () => {
 				highlightsRepositoryMock.deepFindManyIn = jest.fn().mockReturnValue([]);
-				const individualUpdateManySpy = jest.spyOn(highlightsRepository, 'individualUpdateMany');
 
 				await highlightsService.individualUpdateMany(DTO);
 
-				expect(individualUpdateManySpy).toHaveBeenCalledWith({
+				expect(highlightsRepository.individualUpdateMany).toHaveBeenCalledWith({
 					highlights: [],
 				});
 			});

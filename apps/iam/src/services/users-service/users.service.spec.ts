@@ -101,7 +101,6 @@ describe('UsersService', () => {
 			describe('pass correct email and password', () => {
 				it('return user', async () => {
 					usersRepositoryMock.findBy = jest.fn().mockReturnValue(USER_MODEL);
-					const findBySpy = jest.spyOn(usersRepository, 'findBy');
 					userFactory.createWithHashPassword = jest.fn().mockReturnValue({
 						...USER,
 						password: USER_MODEL.password,
@@ -110,7 +109,7 @@ describe('UsersService', () => {
 
 					const result = await usersService.validate(LOGIN_DTO);
 
-					expect(findBySpy).toHaveBeenCalledWith({ email: LOGIN_DTO.userIdentifier });
+					expect(usersRepository.findBy).toHaveBeenCalledWith({ email: LOGIN_DTO.userIdentifier });
 					expect(result).toBe(USER_MODEL);
 				});
 			});
@@ -133,7 +132,6 @@ describe('UsersService', () => {
 			describe('pass correct username and password', () => {
 				it('validate user - success: by username', async () => {
 					usersRepository.findBy = jest.fn().mockReturnValue(USER_MODEL);
-					const findBySpy = jest.spyOn(usersRepository, 'findBy');
 					userFactory.createWithHashPassword = jest.fn().mockReturnValue({
 						...USER,
 						password: USER_MODEL.password,
@@ -142,7 +140,9 @@ describe('UsersService', () => {
 
 					const result = await usersService.validate(LOGIN_USER_DTO);
 
-					expect(findBySpy).toHaveBeenCalledWith({ username: LOGIN_USER_DTO.userIdentifier });
+					expect(usersRepository.findBy).toHaveBeenCalledWith({
+						username: LOGIN_USER_DTO.userIdentifier,
+					});
 					expect(result).toBe(USER_MODEL);
 				});
 			});

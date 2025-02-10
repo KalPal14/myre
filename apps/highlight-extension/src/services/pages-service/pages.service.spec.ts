@@ -110,11 +110,10 @@ describe('PagesServise', () => {
 					.fn()
 					.mockReturnValueOnce({ ...PAGE_MODEL, highlights: [HIGHLIGHT_MODEL] })
 					.mockReturnValueOnce(null);
-				const updateSpy = jest.spyOn(pagesRepositoryMock, 'update');
 
 				await pagesServise.update(PAGE_MODEL.id, UPDATE_DTO);
 
-				expect(updateSpy).toHaveBeenCalledWith(PAGE_MODEL.id, { url: UPDATE_DTO.url });
+				expect(pagesRepository.update).toHaveBeenCalledWith(PAGE_MODEL.id, { url: UPDATE_DTO.url });
 			});
 		});
 
@@ -132,25 +131,18 @@ describe('PagesServise', () => {
 							{ ...HIGHLIGHT_MODEL, id: HIGHLIGHT_MODEL.id + 2, order: HIGHLIGHT_MODEL.order + 1 },
 						],
 					});
-				const individualUpdateManyHighlightsSpy = jest.spyOn(
-					highlightsRepositoryMock,
-					'individualUpdateMany'
-				);
-				const updateManyHighlightsSpy = jest.spyOn(highlightsRepositoryMock, 'updateMany');
-				const deletePageSpy = jest.spyOn(pagesRepositoryMock, 'delete');
-				const updatePageSpy = jest.spyOn(pagesRepositoryMock, 'update');
 
 				await pagesServise.update(PAGE_MODEL.id, UPDATE_DTO);
 
-				expect(individualUpdateManyHighlightsSpy).toHaveBeenCalledWith({
+				expect(highlightsRepository.individualUpdateMany).toHaveBeenCalledWith({
 					highlights: [{ id: HIGHLIGHT_MODEL.id, payload: { order: 3 } }],
 				});
-				expect(updateManyHighlightsSpy).toHaveBeenCalledWith(
+				expect(highlightsRepository.updateMany).toHaveBeenCalledWith(
 					[HIGHLIGHT_MODEL.id + 1, HIGHLIGHT_MODEL.id + 2],
 					{ pageId: PAGE_MODEL.id }
 				);
-				expect(deletePageSpy).toHaveBeenCalledWith(pageToMergeId);
-				expect(updatePageSpy).toHaveBeenCalledWith(PAGE_MODEL.id, { url: UPDATE_DTO.url });
+				expect(pagesRepository.delete).toHaveBeenCalledWith(pageToMergeId);
+				expect(pagesRepository.update).toHaveBeenCalledWith(PAGE_MODEL.id, { url: UPDATE_DTO.url });
 			});
 		});
 

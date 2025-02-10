@@ -123,14 +123,13 @@ describe('UsersService', () => {
 		describe('pass ID of non-existing workspace', () => {
 			it('throw an error', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(null);
-				const updateSpy = jest.spyOn(workspacesRepository, 'update');
 
 				try {
 					await workspacesService.update(WORKSPACE_MODEL.id, DTO);
 				} catch (err: any) {
 					expect(err).toBeInstanceOf(HTTPError);
 					expect(err.message).toBe(`workspace #${WORKSPACE_MODEL.id} not found`);
-					expect(updateSpy).not.toHaveBeenCalled();
+					expect(workspacesRepository.update).not.toHaveBeenCalled();
 				}
 			});
 		});
@@ -151,14 +150,13 @@ describe('UsersService', () => {
 		describe('pass ID of non-existing workspace', () => {
 			it('throw an error', async () => {
 				workspacesRepository.deepFindBy = jest.fn().mockReturnValue(null);
-				const deleteSpy = jest.spyOn(workspacesRepository, 'delete');
 
 				try {
 					await workspacesService.delete(WORKSPACE_MODEL.id);
 				} catch (err: any) {
 					expect(err).toBeInstanceOf(HTTPError);
 					expect(err.message).toBe(`workspace #${WORKSPACE_MODEL.id} not found`);
-					expect(deleteSpy).not.toHaveBeenCalled();
+					expect(workspacesRepository.delete).not.toHaveBeenCalled();
 				}
 			});
 		});
