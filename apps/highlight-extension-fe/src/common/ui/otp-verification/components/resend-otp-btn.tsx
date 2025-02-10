@@ -8,8 +8,7 @@ import { IUpsertOtpRo } from '~libs/ro/iam';
 import { HTTPError, shiftTime, httpErrHandler } from '~libs/common';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-
-import { toastDefOptions } from '../../constants/default-values/toast-options';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export interface IResendOtpBtnProps {
 	email: string;

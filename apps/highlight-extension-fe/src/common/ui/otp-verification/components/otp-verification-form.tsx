@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { Button, useToast } from '@chakra-ui/react';
 
 import { OTP_URLS } from '~libs/routes/iam';
@@ -10,32 +10,32 @@ import { TextField } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 
-import { toastDefOptions } from '../../constants/default-values/toast-options';
+import { toastDefOptions } from '../../../constants/default-values/toast-options';
 
-export interface IEmailVerificationFormProps {
-	email: string;
+export interface IOtpVerificationFormProps {
+	formControls: UseFormReturn<ValidateOtpDto>;
 	onSuccess: () => void;
 	onChangeEmailClick: () => void;
 }
 
 export default function OtpVerificationForm({
-	email,
+	formControls,
 	onSuccess,
 	onChangeEmailClick,
-}: IEmailVerificationFormProps): JSX.Element {
+}: IOtpVerificationFormProps): JSX.Element {
 	const {
 		handleSubmit,
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<Omit<ValidateOtpDto, 'email'>>();
+	} = formControls;
 	const toast = useToast(toastDefOptions);
 
-	async function onSubmit({ code }: Omit<ValidateOtpDto, 'email'>): Promise<void> {
-		const validateOtpRo = await api.post<ValidateOtpDto, IValidateOtpRo>(OTP_URLS.validate, {
-			code,
-			email,
-		});
+	async function onSubmit(formValue: ValidateOtpDto): Promise<void> {
+		const validateOtpRo = await api.post<ValidateOtpDto, IValidateOtpRo>(
+			OTP_URLS.validate,
+			formValue
+		);
 		if (validateOtpRo instanceof HTTPError) {
 			handleErr(validateOtpRo);
 			return;

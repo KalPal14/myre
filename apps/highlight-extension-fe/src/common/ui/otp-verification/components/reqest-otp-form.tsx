@@ -1,25 +1,24 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { Button, useToast } from '@chakra-ui/react';
 
 import { OTP_URLS, USERS_URLS } from '~libs/routes/iam';
-import { UpsertOtpDto, UserExistenceCheckDto } from '~libs/dto/iam';
+import { UpsertOtpDto, UserExistenceCheckDto, ValidateOtpDto } from '~libs/dto/iam';
 import { IUpsertOtpRo, TUserExictanceCheck } from '~libs/ro/iam';
 import { HTTPError, httpErrHandler } from '~libs/common';
 import { TextField } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-
-import { toastDefOptions } from '../../constants/default-values/toast-options';
+import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 interface IRequestOtpFormProps {
-	email: string;
-	onSuccess: (email: string) => void;
+	formControls: UseFormReturn<ValidateOtpDto>;
+	onSuccess: () => void;
 	showErrIfUser?: 'exists' | 'not exists';
 }
 
 export default function RequestOtpForm({
-	email,
+	formControls,
 	showErrIfUser,
 	onSuccess,
 }: IRequestOtpFormProps): JSX.Element {
@@ -28,18 +27,13 @@ export default function RequestOtpForm({
 		register,
 		formState: { errors, isSubmitting },
 		setError,
-	} = useForm<UpsertOtpDto>({ defaultValues: { email } });
+	} = formControls;
 	const toast = useToast(toastDefOptions);
 
-	async function onSubmit(formValues: UpsertOtpDto): Promise<void> {
-		if (email && email === formValues.email) {
-			onSuccess(formValues.email);
-			return;
-		}
+	async function onSubmit({ email }: UpsertOtpDto): Promise<void> {
+		if (await checkUser({ email })) return;
 
-		if (await checkUser(formValues)) return;
-
-		const upsertOtpRo = await api.post<UpsertOtpDto, IUpsertOtpRo>(OTP_URLS.upsert, formValues);
+		const upsertOtpRo = await api.post<UpsertOtpDto, IUpsertOtpRo>(OTP_URLS.upsert, { email });
 		if (upsertOtpRo instanceof HTTPError) {
 			handleErr(upsertOtpRo);
 			return;
@@ -48,7 +42,7 @@ export default function RequestOtpForm({
 		if (upsertOtpRo.testMailUrl) {
 			window.open(upsertOtpRo.testMailUrl, '_blank');
 		}
-		onSuccess(formValues.email);
+		onSuccess();
 	}
 
 	async function checkUser(data: UserExistenceCheckDto): Promise<boolean> {

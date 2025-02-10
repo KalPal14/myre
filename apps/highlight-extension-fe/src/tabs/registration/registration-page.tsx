@@ -8,52 +8,20 @@ import { HighAlert } from '~libs/react-core';
 
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import RequestOtpForm from '~/highlight-extension-fe/common/ui/forms/reqest-otp-form';
-
-import OtpVerificationForm from '../../common/ui/forms/otp-verification-form';
-import ResendOtpBtn from '../../common/ui/btn/resend-otp-btn';
+import OtpVerificationForm from '~/highlight-extension-fe/common/ui/otp-verification/otp-verification-form';
 
 import RegistrationForm from './components/registration-form';
 
 export default function RegistrationPage(): JSX.Element {
 	const [jwt] = useCrossExtState('jwt');
 
-	const [registrationStep, setRegistrationStep] = useState(0);
+	const [isOtpVerified, setIsOtpVerified] = useState(false);
 	const [email, setEmail] = useState('');
 
 	useEffect(() => {
-		setRegistrationStep(0);
+		setIsOtpVerified(false);
 		setEmail('');
 	}, [jwt]);
-
-	function renderRegistrationStep(): JSX.Element {
-		switch (registrationStep) {
-			case 0:
-				return (
-					<RequestOtpForm
-						email={email}
-						onSuccess={(email) => {
-							setEmail(email);
-							setRegistrationStep(1);
-						}}
-						showErrIfUser="exists"
-					/>
-				);
-			case 1:
-				return (
-					<>
-						<OtpVerificationForm
-							email={email}
-							onSuccess={() => setRegistrationStep(2)}
-							onChangeEmailClick={() => setRegistrationStep(0)}
-						/>
-						<ResendOtpBtn email={email} />
-					</>
-				);
-			default:
-				return <RegistrationForm email={email} />;
-		}
-	}
 
 	return (
 		<div className="registrationPage">
@@ -70,7 +38,16 @@ export default function RegistrationPage(): JSX.Element {
 							<Link to={TABS_ROUTES.login}>Please login here</Link>
 						</Text>
 					</Text>
-					{renderRegistrationStep()}
+					{isOtpVerified ? (
+						<RegistrationForm email={email} />
+					) : (
+						<OtpVerificationForm
+							onSuccess={(email) => {
+								setEmail(email);
+								setIsOtpVerified(true);
+							}}
+						/>
+					)}
 				</section>
 			)}
 			{Boolean(jwt) && (
