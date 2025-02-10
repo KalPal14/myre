@@ -22,12 +22,12 @@ export default function ChangeUsernameForm({
 	onSuccess,
 }: IChangeusernameFormProps): JSX.Element {
 	const toast = useToast(toastDefOptions);
-	const useFormReturnValue = useForm<UpdateUserDto>();
+	const formControls = useForm<UpdateUserDto>();
 	const {
 		register,
 		formState: { errors },
 		setError,
-	} = useFormReturnValue;
+	} = formControls;
 
 	const [, setJwt] = useCrossExtState('jwt');
 
@@ -75,7 +75,7 @@ export default function ChangeUsernameForm({
 
 	return (
 		<AccordionForm
-			useFormReturnValue={useFormReturnValue}
+			formControls={formControls}
 			onSubmitHandler={onSubmit}
 			accordionButtonText={currentUsername}
 			tooltipLabel="Edit"

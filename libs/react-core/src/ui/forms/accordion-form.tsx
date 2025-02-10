@@ -25,12 +25,12 @@ interface IAccordionFormProps<Form extends FieldValues> {
 
 interface IChildrenTypeFields<Form extends FieldValues> extends IAccordionFormProps<Form> {
 	childrenType?: 'fields';
-	useFormReturnValue: UseFormReturn<Form>;
+	formControls: UseFormReturn<Form>;
 }
 
 interface IChildrenTypeForm<Form extends FieldValues> extends IAccordionFormProps<Form> {
 	childrenType: 'form';
-	useFormReturnValue?: undefined;
+	formControls?: undefined;
 }
 
 export function AccordionForm<Form extends FieldValues>(
@@ -42,7 +42,7 @@ export function AccordionForm<Form extends FieldValues>(
 
 export function AccordionForm<Form extends FieldValues>({
 	childrenType,
-	useFormReturnValue,
+	formControls,
 	children,
 	accordionButtonText,
 	tooltipLabel,
@@ -55,7 +55,7 @@ export function AccordionForm<Form extends FieldValues>({
 		reset,
 		handleSubmit,
 		formState: { isSubmitting },
-	} = childrenType !== 'form' ? useFormReturnValue : { formState: {} };
+	} = childrenType !== 'form' ? formControls : { formState: {} };
 
 	async function onSubmit(formValue: Form): Promise<void> {
 		const isSuccess = await onSubmitHandler(formValue);

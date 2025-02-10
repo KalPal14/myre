@@ -22,12 +22,12 @@ export default function ChangePasswordForm({
 	onSuccess,
 }: IChangePasswordFormProps): JSX.Element {
 	const toast = useToast(toastDefOptions);
-	const useFormReturnValue = useForm<UpdateUserDto>();
+	const formControls = useForm<UpdateUserDto>();
 	const {
 		register,
 		formState: { errors },
 		setError,
-	} = useFormReturnValue;
+	} = formControls;
 
 	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
 		const resp = await api.patch<UpdateUserDto, IUpdateUserRo>(USERS_URLS.update, formValues);
@@ -72,7 +72,7 @@ export default function ChangePasswordForm({
 
 	return (
 		<AccordionForm
-			useFormReturnValue={useFormReturnValue}
+			formControls={formControls}
 			onSubmitHandler={onSubmit}
 			accordionButtonText={accordionButtonText}
 			tooltipLabel="Edit"

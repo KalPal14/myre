@@ -28,12 +28,12 @@ export default function ChangeColorsForm({
 		status: 'error',
 		position: 'top',
 	});
-	const useFormReturnValue = useForm<IChangeColorsForm>({
+	const formControls = useForm<IChangeColorsForm>({
 		values: {
 			colors: currentColors.map((color) => ({ color })),
 		},
 	});
-	const { register, control, setError } = useFormReturnValue;
+	const { register, control, setError } = formControls;
 	const useFieldArrayReturn = useFieldArray({
 		control,
 		name: 'colors',
@@ -103,7 +103,7 @@ export default function ChangeColorsForm({
 
 	return (
 		<AccordionForm
-			useFormReturnValue={useFormReturnValue}
+			formControls={formControls}
 			onSubmitHandler={onSubmit}
 			accordionButtonText={accordionButtonText}
 			tooltipLabel="Edit"

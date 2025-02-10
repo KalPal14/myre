@@ -32,12 +32,12 @@ export interface IPageItemProps {
 
 export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.Element {
 	const toast = useToast(toastDefOptions);
-	const useFormReturnValue = useForm<IChangePageUrlForm>();
+	const formControls = useForm<IChangePageUrlForm>();
 	const {
 		register,
 		formState: { errors },
 		setError,
-	} = useFormReturnValue;
+	} = formControls;
 
 	const [currentWorkspace] = useCrossExtState('currentWorkspace');
 	const [, setUpdatedPages] = useCrossExtState('updatedPages');
@@ -139,7 +139,7 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 				<AccordionPanel pb={4}>
 					<div>
 						<AccordionForm
-							useFormReturnValue={useFormReturnValue}
+							formControls={formControls}
 							onSubmitHandler={async (formValues) => {
 								return await onSubmit(page.id, formValues);
 							}}
