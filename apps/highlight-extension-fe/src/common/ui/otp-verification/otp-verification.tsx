@@ -7,11 +7,11 @@ import RequestOtpForm from './components/reqest-otp-form';
 import OtpVerificationForm from './components/otp-verification-form';
 import ResendOtpBtn from './components/resend-otp-btn';
 
-export interface IOtpVerificationFormPtops {
-	onSuccess: (email: string) => void;
+export interface IOtpVerificationFormProps {
+	onSuccess: (data: Pick<ValidateOtpDto, 'email'>) => void;
 }
 
-export default function OtpVerification({ onSuccess }: IOtpVerificationFormPtops): JSX.Element {
+export default function OtpVerification({ onSuccess }: IOtpVerificationFormProps): JSX.Element {
 	const formControls = useForm<ValidateOtpDto>();
 	const { getValues } = formControls;
 
@@ -31,7 +31,7 @@ export default function OtpVerification({ onSuccess }: IOtpVerificationFormPtops
 				<>
 					<OtpVerificationForm
 						formControls={formControls}
-						onSuccess={() => onSuccess(getValues('email'))}
+						onSuccess={() => onSuccess({ email: getValues('email') })}
 						onChangeEmailClick={() => setStep(0)}
 					/>
 					<ResendOtpBtn email={getValues('email')} />

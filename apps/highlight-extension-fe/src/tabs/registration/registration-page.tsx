@@ -8,7 +8,7 @@ import { HighAlert } from '~libs/react-core';
 
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
-import OtpVerificationForm from '~/highlight-extension-fe/common/ui/otp-verification/otp-verification-form';
+import OtpVerification from '~/highlight-extension-fe/common/ui/otp-verification/otp-verification';
 
 import RegistrationForm from './components/registration-form';
 
@@ -41,8 +41,8 @@ export default function RegistrationPage(): JSX.Element {
 					{isOtpVerified ? (
 						<RegistrationForm email={email} />
 					) : (
-						<OtpVerificationForm
-							onSuccess={(email) => {
+						<OtpVerification
+							onSuccess={({ email }) => {
 								setEmail(email);
 								setIsOtpVerified(true);
 							}}

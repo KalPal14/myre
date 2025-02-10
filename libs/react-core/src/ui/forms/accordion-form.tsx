@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import {
 	Accordion,
 	AccordionItem,
@@ -15,36 +15,53 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 import './forms.scss';
 import { AngleUpSVG, PencilSquareSVG } from '~libs/react-core';
 
-export interface IAccordionFormProps<Form extends FieldValues> {
+interface IAccordionFormProps<Form extends FieldValues> {
 	children: JSX.Element;
-	useFormReturnValue: UseFormReturn<Form>;
-	onSubmitHandler: (formValue: Form) => Promise<boolean | void>;
 	accordionButtonText: JSX.Element | string;
 	tooltipLabel?: string;
 	labelText?: string;
+	onSubmitHandler: (formValue: Form) => Promise<boolean | void>;
 }
 
+interface IChildrenTypeFields<Form extends FieldValues> extends IAccordionFormProps<Form> {
+	childrenType?: 'fields';
+	useFormReturnValue: UseFormReturn<Form>;
+}
+
+interface IChildrenTypeForm<Form extends FieldValues> extends IAccordionFormProps<Form> {
+	childrenType: 'form';
+	useFormReturnValue?: undefined;
+}
+
+export function AccordionForm<Form extends FieldValues>(
+	props: IChildrenTypeFields<Form>
+): JSX.Element;
+export function AccordionForm<Form extends FieldValues>(
+	props: IChildrenTypeForm<Form>
+): JSX.Element;
+
 export function AccordionForm<Form extends FieldValues>({
-	children,
+	childrenType,
 	useFormReturnValue,
-	onSubmitHandler,
+	children,
 	accordionButtonText,
 	tooltipLabel,
 	labelText,
-}: IAccordionFormProps<Form>): JSX.Element {
-	const [isNeedToExpand, setIsNeedToExpand] = useBoolean(false);
+	onSubmitHandler,
+}: IChildrenTypeFields<Form> | IChildrenTypeForm<Form>): JSX.Element {
+	const [editMode, setEditMode] = useBoolean(false);
 
 	const {
 		reset,
 		handleSubmit,
 		formState: { isSubmitting },
-	} = useFormReturnValue;
+	} = childrenType !== 'form' ? useFormReturnValue : { formState: {} };
 
 	async function onSubmit(formValue: Form): Promise<void> {
 		const isSuccess = await onSubmitHandler(formValue);
 		if (isSuccess) {
-			reset();
-			setIsNeedToExpand.off();
+			reset?.();
+			setEditMode.off();
 		}
 	}
 
@@ -52,7 +69,7 @@ export function AccordionForm<Form extends FieldValues>({
 		<Accordion
 			pb={5}
 			className="accordionForm"
-			index={isNeedToExpand ? 0 : -1}
+			index={editMode ? 0 : -1}
 		>
 			<FormLabel
 				mb={1}
@@ -68,7 +85,7 @@ export function AccordionForm<Form extends FieldValues>({
 							fontSize="md"
 							placement="top-end"
 						>
-							<AccordionButton onClick={setIsNeedToExpand.toggle}>
+							<AccordionButton onClick={setEditMode.toggle}>
 								<Box
 									as="span"
 									flex="1"
@@ -80,29 +97,38 @@ export function AccordionForm<Form extends FieldValues>({
 							</AccordionButton>
 						</Tooltip>
 						<AccordionPanel pb={4}>
-							<form onSubmit={handleSubmit(onSubmit)}>
-								{children}
-								<div className="accordionForm_formBtnsContainer">
-									<Button
-										onClick={() => {
-											reset();
-											setIsNeedToExpand.off();
-										}}
-										colorScheme="gray"
-										variant="outline"
-									>
-										Cancel
-									</Button>
-									<Button
-										ml={2}
-										colorScheme="teal"
-										isLoading={isSubmitting}
-										type="submit"
-									>
-										Save
-									</Button>
-								</div>
-							</form>
+							{childrenType === 'form' ? (
+								<>
+									{cloneElement(children, {
+										onSuccess: async (data: Form) => onSubmit(data),
+									})}
+								</>
+							) : (
+								<form onSubmit={handleSubmit && handleSubmit(onSubmit)}>
+									{children}
+									<div>
+										<Button
+											mt={2}
+											colorScheme="teal"
+											isLoading={isSubmitting}
+											type="submit"
+										>
+											Save
+										</Button>
+										<Button
+											mt={2}
+											ml={2}
+											onClick={() => {
+												reset?.();
+												setEditMode.off();
+											}}
+											colorScheme="gray"
+										>
+											Cancel
+										</Button>
+									</div>
+								</form>
+							)}
 						</AccordionPanel>
 					</>
 				)}

@@ -86,7 +86,7 @@ export default function OtpVerificationForm({
 			</Button>
 			<Button
 				mt={2}
-				ml={1}
+				ml={2}
 				colorScheme="gray"
 				isLoading={isSubmitting}
 				onClick={onChangeEmailClick}

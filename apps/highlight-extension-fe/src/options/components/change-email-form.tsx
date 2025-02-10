@@ -1,16 +1,16 @@
 import React from 'react';
 import { useToast } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
 
 import { USERS_URLS } from '~libs/routes/iam';
 import { UpdateUserDto } from '~libs/dto/iam';
 import { IUpdateUserRo } from '~libs/ro/iam';
 import { httpErrHandler, HTTPError } from '~libs/common';
-import { TextField, AccordionForm } from '~libs/react-core';
+import { AccordionForm } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
 import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
 import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
+import OtpVerification from '~/highlight-extension-fe/common/ui/otp-verification/otp-verification';
 
 export interface IChangeEmailFormProps {
 	currentEmail: string;
@@ -22,12 +22,6 @@ export default function ChangeEmailForm({
 	onSuccess,
 }: IChangeEmailFormProps): JSX.Element {
 	const toast = useToast(toastDefOptions);
-	const useFormReturnValue = useForm<UpdateUserDto>();
-	const {
-		register,
-		formState: { errors },
-		setError,
-	} = useFormReturnValue;
 
 	const [, setJwt] = useCrossExtState('jwt');
 
@@ -51,11 +45,6 @@ export default function ChangeEmailForm({
 	function handleErr(err: HTTPError): void {
 		httpErrHandler({
 			err,
-			onValidationErr(property, errors) {
-				setError(property as keyof UpdateUserDto, {
-					message: errors.join(),
-				});
-			},
 			onErrWithMsg(msg) {
 				toast({
 					title: 'Failed to change email',
@@ -73,21 +62,13 @@ export default function ChangeEmailForm({
 
 	return (
 		<AccordionForm
-			useFormReturnValue={useFormReturnValue}
+			childrenType="form"
 			onSubmitHandler={onSubmit}
 			accordionButtonText={currentEmail}
 			tooltipLabel="Edit"
 			labelText="Email"
 		>
-			<>
-				<TextField
-					register={register}
-					errors={errors.email}
-					name="email"
-					label="New email"
-					placeholder="Please enter your new email"
-				/>
-			</>
+			<OtpVerification onSuccess={onSubmit} />
 		</AccordionForm>
 	);
 }
