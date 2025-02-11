@@ -1,5 +1,5 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
-import { ChromeStorageBaseAoiService } from '~libs/common';
+import { ChromeStorageBaseAoiService } from '~libs/common/services/api-service/infrastracture/chrome-storage-base-api.service';
 import { IApiRequestIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/api-request.income-msg.interface';
 import { IApiRequestOutcomeMsg } from '~libs/client-core/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
 
@@ -10,7 +10,7 @@ export async function apiRequestHandler<DTO>(
 	if (!sender.tab?.id) return;
 
 	const api = new ChromeStorageBaseAoiService();
-	const resp = api[method](url, data);
+	const resp = await api[method](url, data);
 
 	chrome.tabs.sendMessage<IApiRequestOutcomeMsg>(sender.tab.id, {
 		serviceWorkerHandler,
