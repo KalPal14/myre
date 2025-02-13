@@ -1,6 +1,5 @@
+import { IBaseMsg } from '~libs/client-core/service-worker/types/base.msg.interface';
 import type { ApiService } from '~libs/common/services/api-service/port/api.service';
-
-import { IBaseMsg } from '../base.msg.interface';
 
 export interface IApiRequestIncomeMsg<DTO = undefined> extends IBaseMsg {
 	serviceWorkerHandler: 'apiRequest';

@@ -8,7 +8,7 @@ import { httpErrHandler, HTTPError } from '~libs/common';
 import { AccordionForm } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 import OtpVerification from '~/highlight-extension-fe/common/ui/otp-verification/otp-verification';
 
@@ -23,7 +23,7 @@ export default function ChangeEmailForm({
 }: IChangeEmailFormProps): JSX.Element {
 	const toast = useToast(toastDefOptions);
 
-	const [, setJwt] = useCrossExtState('jwt');
+	const [, setJwt] = useCrossBrowserState('jwt');
 
 	async function onSubmit(formValues: UpdateUserDto): Promise<boolean> {
 		const resp = await api.patch<UpdateUserDto, IUpdateUserRo>(USERS_URLS.update, formValues);

@@ -1,3 +1,3 @@
-import { ChromeStorageBaseAoiService } from '~libs/common/index';
+import { ChromeStorageBaseApiService } from '~libs/common/index';
 
-export const api = new ChromeStorageBaseAoiService();
+export const api = new ChromeStorageBaseApiService();

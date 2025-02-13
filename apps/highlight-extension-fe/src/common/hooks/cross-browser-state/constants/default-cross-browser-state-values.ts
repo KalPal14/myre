@@ -1,6 +1,6 @@
-import { ICrossExtStateDescriptor } from './types/cross-ext-state-descriptor.interface';
+import { ICrossBrowserStateDescriptor } from '../types/cross-browser-state-values.interface';
 
-export const DEFAULT_VALUES: ICrossExtStateDescriptor = {
+export const defaultCrossBrowserStateValues: ICrossBrowserStateDescriptor = {
 	jwt: null,
 	currentUser: null,
 	currentWorkspace: null,

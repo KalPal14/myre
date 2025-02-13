@@ -12,7 +12,7 @@ import { TextField } from '~libs/react-core';
 import { CreateWorkspaceDto } from '~libs/dto/highlight-extension';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export default function LoginForm(): JSX.Element {
@@ -24,9 +24,9 @@ export default function LoginForm(): JSX.Element {
 	} = useForm<LoginDto>();
 	const toast = useToast(toastDefOptions);
 
-	const [, setJwt] = useCrossExtState('jwt');
-	const [, setCurrentUser] = useCrossExtState('currentUser');
-	const [, setCurrentWorkspace] = useCrossExtState('currentWorkspace');
+	const [, setJwt] = useCrossBrowserState('jwt');
+	const [, setCurrentUser] = useCrossBrowserState('currentUser');
+	const [, setCurrentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	async function onSubmit(formValues: LoginDto): Promise<void> {
 		const loginResp = await api.post<LoginDto, ILoginRo>(USERS_URLS.login, formValues);

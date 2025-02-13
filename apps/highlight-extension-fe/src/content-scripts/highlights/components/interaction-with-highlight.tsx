@@ -8,9 +8,9 @@ import {
 	TGetHighlightsRo,
 } from '~libs/ro/highlight-extension';
 import { GetHighlightsDto, UpdateHighlightDto } from '~libs/dto/highlight-extension';
-import { apiHandler, getPageUrl } from '~libs/client-core';
+import { getPageUrl, dispatchApiRequest } from '~libs/client-core';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import getNestedHighlightsIds from '../helpers/to-receive-DOM-data/get-nested-highlights-Ids.helper';
 import drawHighlight from '../helpers/for-DOM-changes/draw-highlight.helper';
@@ -21,9 +21,9 @@ import IHighlightElementData from '../types/highlight-element-data-interface';
 import HighlightsController from './highlights-controller';
 
 export default function InteractionWithHighlight(): JSX.Element {
-	const [, setUpdatdHighlight] = useCrossExtState('updatedHighlight');
-	const [deletedHighlight, setDeletedHighlight] = useCrossExtState('deletedHighlight');
-	const [scrollHighlightId, setScrollHighlightId] = useCrossExtState('scrollHighlightId');
+	const [, setUpdatdHighlight] = useCrossBrowserState('updatedHighlight');
+	const [deletedHighlight, setDeletedHighlight] = useCrossBrowserState('deletedHighlight');
+	const [scrollHighlightId, setScrollHighlightId] = useCrossBrowserState('scrollHighlightId');
 
 	const highlightElementRef = useRef<IHighlightElementData | null>(null);
 	const highlightElementToSetRef = useRef<IHighlightElementData | null>(null);
@@ -31,7 +31,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 	const [currentHighlightElement, setCurrentHighlightElement] =
 		useState<IHighlightElementData | null>(null);
 	const [highlightElementSetDispatcher, setHighlightElementSetDispatcher] = useState(false);
-	const [mouseСoordinates, setMouseСoordinates] = useState({
+	const [mouseCoordinates, setMouseCoordinates] = useState({
 		x: 0,
 		y: 0,
 	});
@@ -111,7 +111,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 			note: higlightElement.getAttribute('data-higlight-note'),
 		};
 		setHighlightElementSetDispatcher((prevState) => !prevState);
-		setMouseСoordinates({
+		setMouseCoordinates({
 			x: clientX,
 			y: pageY,
 		});
@@ -120,7 +120,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 	async function changeHighlightColor(color: string): Promise<void> {
 		if (!currentHighlightElement) return;
 
-		apiHandler<UpdateHighlightDto, IUpdateHighlightRo>({
+		dispatchApiRequest<UpdateHighlightDto, IUpdateHighlightRo>({
 			msg: {
 				url: HIGHLIGHTS_URLS.update(currentHighlightElement.highlightId),
 				method: 'patch',
@@ -135,7 +135,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 		if (!note && !highlightElementRef.current.note) return;
 		if (note === highlightElementRef.current.note) return;
 
-		apiHandler<UpdateHighlightDto, IUpdateHighlightRo>({
+		dispatchApiRequest<UpdateHighlightDto, IUpdateHighlightRo>({
 			msg: {
 				url: HIGHLIGHTS_URLS.update(highlightElementRef.current.highlightId),
 				method: 'patch',
@@ -165,7 +165,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 	function onDeleteHighlight(): void {
 		if (!currentHighlightElement) return;
 
-		apiHandler<null, IDeleteHighlightRo>({
+		dispatchApiRequest<null, IDeleteHighlightRo>({
 			msg: {
 				url: HIGHLIGHTS_URLS.delete(currentHighlightElement.highlightId),
 				method: 'delete',
@@ -191,7 +191,7 @@ export default function InteractionWithHighlight(): JSX.Element {
 			nestedHighlightsIds.push(nestedToThisHighlightIds);
 		});
 
-		apiHandler<GetHighlightsDto, TGetHighlightsRo>({
+		dispatchApiRequest<GetHighlightsDto, TGetHighlightsRo>({
 			msg: {
 				url: HIGHLIGHTS_URLS.getMany,
 				method: 'get',
@@ -214,8 +214,8 @@ export default function InteractionWithHighlight(): JSX.Element {
 	if (currentHighlightElement) {
 		return (
 			<HighlightsController
-				clientX={mouseСoordinates.x}
-				pageY={mouseСoordinates.y}
+				clientX={mouseCoordinates.x}
+				pageY={mouseCoordinates.y}
 				note={currentHighlightElement.note ?? undefined}
 				forExistingHighlight={true}
 				onSelectColor={changeHighlightColor}

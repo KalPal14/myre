@@ -12,13 +12,13 @@ import {
 
 import { getUrlSearchParam, setUrlSearchParam } from '~libs/client-core';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import tabsList from './constants/tabs-list';
 
 const OptionsPage = (): JSX.Element => {
-	const [currentUser] = useCrossExtState('currentUser');
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [currentUser] = useCrossBrowserState('currentUser');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 	const [activeTabIndex, setActiveTabIndex] = useState(0);
 
 	useEffect(() => {

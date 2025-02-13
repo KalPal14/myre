@@ -73,7 +73,7 @@ export default class App {
 		this.useExceptions();
 		await this.prismaService.connect();
 
-		if (this.configService.get('NODE_ENV') === 'test') return;
+		if (process.env.NODE_ENV === 'test') return;
 
 		const port = this.configService.get('H_EXT_PORT');
 		const certKey = this.configService.get('CERT_KEY');

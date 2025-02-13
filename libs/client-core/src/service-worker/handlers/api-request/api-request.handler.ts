@@ -1,7 +1,8 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
-import { ChromeStorageBaseAoiService } from '~libs/common/services/api-service/infrastracture/chrome-storage-base-api.service';
-import { IApiRequestIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/api-request.income-msg.interface';
-import { IApiRequestOutcomeMsg } from '~libs/client-core/service-worker/types/outcome-msgs/api-request.outcome-msg.interface';
+import { ChromeStorageBaseApiService } from '~libs/common/services/api-service/infrastracture/chrome-storage-base-api.service';
+
+import { IApiRequestIncomeMsg } from './types/api-request.income-msg.interface';
+import { IApiRequestOutcomeMsg } from './types/api-request.outcome-msg.interface';
 
 export async function apiRequestHandler<DTO>(
 	{ method, url, data, contentScriptsHandler, serviceWorkerHandler }: IApiRequestIncomeMsg<DTO>,
@@ -9,7 +10,7 @@ export async function apiRequestHandler<DTO>(
 ): Promise<void> {
 	if (!sender.tab?.id) return;
 
-	const api = new ChromeStorageBaseAoiService();
+	const api = new ChromeStorageBaseApiService();
 	const resp = await api[method](url, data);
 
 	chrome.tabs.sendMessage<IApiRequestOutcomeMsg>(sender.tab.id, {

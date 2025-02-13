@@ -19,7 +19,7 @@ import { AccordionForm, TextField, ConfirmationModal } from '~libs/react-core';
 import { getPageUrl } from '~libs/client-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 import IDataForPageUpdating from '../types/data-for-page-updating.interface';
@@ -39,8 +39,8 @@ export default function PageItem({ page, onUpdatePage }: IPageItemProps): JSX.El
 		setError,
 	} = formControls;
 
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
-	const [, setUpdatedPages] = useCrossExtState('updatedPages');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
+	const [, setUpdatedPages] = useCrossBrowserState('updatedPages');
 
 	const [dataForPageUpdating, setDataForPageUpdating] = useState<IDataForPageUpdating | null>();
 

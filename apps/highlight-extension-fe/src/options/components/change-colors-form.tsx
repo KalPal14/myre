@@ -8,7 +8,7 @@ import { IUpdateWorkspaceRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
 import { AccordionForm, DraggableFields, ColorField } from '~libs/react-core';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 import { api } from '~/highlight-extension-fe/common/api/api';
 
 import IChangeColorsForm from '../types/change-colors-form.interface';
@@ -40,7 +40,7 @@ export default function ChangeColorsForm({
 	});
 	const { fields } = useFieldArrayReturn;
 
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	async function onSubmit(formValues: IChangeColorsForm): Promise<boolean> {
 		if (!currentWorkspace) return false;

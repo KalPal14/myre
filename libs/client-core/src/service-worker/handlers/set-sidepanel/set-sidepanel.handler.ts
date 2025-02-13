@@ -1,4 +1,4 @@
-import { ISetSidepanelIncomeMsg } from '~libs/client-core/service-worker/types/income-msgs/set-sidepanel.income-msg.interface';
+import { ISetSidepanelIncomeMsg } from './types/set-sidepanel.income-msg.interface';
 
 export async function setSidepanelHandler(
 	{ url, enabled }: ISetSidepanelIncomeMsg,

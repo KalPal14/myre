@@ -1,4 +1,4 @@
-import { IBaseMsg } from '../base.msg.interface';
+import { IBaseMsg } from '~libs/client-core/service-worker/types/base.msg.interface';
 
 export interface IApiRequestOutcomeMsg extends IBaseMsg {
 	serviceWorkerHandler: 'apiRequest';

@@ -6,10 +6,10 @@ import { PAGES_URLS } from '~libs/routes/highlight-extension';
 import { GetPageDto } from '~libs/dto/highlight-extension';
 import { TGetPageRo, IBaseHighlightRo } from '~libs/ro/highlight-extension';
 import { httpErrHandler, HTTPError } from '~libs/common';
-import { apiHandler, getPageUrl, setSidepanelDispatcher } from '~libs/client-core';
+import { dispatchApiRequest, getPageUrl, dispatchSetSidepanel } from '~libs/client-core';
 import { Toast } from '~libs/react-core';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import InteractionWithHighlight from './components/interaction-with-highlight';
 import drawHighlight from './helpers/for-DOM-changes/draw-highlight.helper';
@@ -21,11 +21,11 @@ export default function Highlights(): JSX.Element {
 	const updatedPagesUrlsRerendersCount = useRef(0);
 	const prevHighlights = useRef<IBaseHighlightRo[] | null>(null);
 
-	const [jwt] = useCrossExtState('jwt', null);
-	const [, setUnfoundHighlightsIds] = useCrossExtState('unfoundHighlightsIds', []);
-	const [updatedPages] = useCrossExtState('updatedPages');
-	const [isExtActive] = useCrossExtState('isExtActive');
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [jwt] = useCrossBrowserState('jwt', null);
+	const [, setUnfoundHighlightsIds] = useCrossBrowserState('unfoundHighlightsIds', []);
+	const [updatedPages] = useCrossBrowserState('updatedPages');
+	const [isExtActive] = useCrossBrowserState('isExtActive');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	useEffect(() => {
 		if (!isExtActive || !currentWorkspace) return;
@@ -39,7 +39,7 @@ export default function Highlights(): JSX.Element {
 		}
 
 		if (!isExtActive) {
-			setSidepanelDispatcher({ url: getPageUrl(), enabled: false });
+			dispatchSetSidepanel({ url: getPageUrl(), enabled: false });
 		}
 		if (!jwt || !isExtActive) {
 			const highlights = document.getElementsByTagName('WEB-HIGHLIGHT');
@@ -63,13 +63,13 @@ export default function Highlights(): JSX.Element {
 		}
 		const pageUrl = getPageUrl();
 		if (updatedPages.urls.includes(pageUrl)) {
-			setSidepanelDispatcher({ url: getPageUrl(), enabled: false });
+			dispatchSetSidepanel({ url: getPageUrl(), enabled: false });
 			window.location.reload();
 		}
 	}, [updatedPages]);
 
 	function getPage(workspaceId: number): void {
-		apiHandler<GetPageDto, TGetPageRo>({
+		dispatchApiRequest<GetPageDto, TGetPageRo>({
 			msg: {
 				method: 'get',
 				url: PAGES_URLS.get,

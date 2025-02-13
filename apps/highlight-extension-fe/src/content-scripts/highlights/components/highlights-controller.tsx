@@ -4,11 +4,11 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import cl from 'classnames';
 
 import { TrashSVG, ArrowRightToLineSVG, AlignTextJustifySVG, CogSVG } from '~libs/react-core';
-import { getPageUrl, openTabDispatcher, setSidepanelDispatcher } from '~libs/client-core';
+import { getPageUrl, dispatchOpenTab, dispatchSetSidepanel } from '~libs/client-core';
 
 import { DEF_COLORS } from '~/highlight-extension-fe/common/constants/default-values/colors';
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import IHighlightControllerDynamicStyles from '../types/highlight-controller-dynamic-styles.interface';
 
@@ -38,7 +38,7 @@ export default function HighlightsController({
 			note,
 		},
 	});
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	const [showNoteField, setShowNoteField] = useState(Boolean(note));
 	const [colors, setColors] = useState(DEF_COLORS);
@@ -114,7 +114,7 @@ export default function HighlightsController({
 				<ArrowRightToLineSVG
 					width={22}
 					height={22}
-					onClick={(): void => setSidepanelDispatcher({ url: getPageUrl(), enabled: true })}
+					onClick={(): void => dispatchSetSidepanel({ url: getPageUrl(), enabled: true })}
 				/>
 			</section>
 
@@ -165,7 +165,7 @@ export default function HighlightsController({
 						<CogSVG
 							width={26}
 							height={26}
-							onClick={() => openTabDispatcher({ url: FULL_OPTIONS_ROUTES.colors })}
+							onClick={() => dispatchOpenTab({ url: FULL_OPTIONS_ROUTES.colors })}
 						/>
 					</div>
 				</div>

@@ -11,6 +11,9 @@ export * from './assets/imgs/svg/grip-vertical';
 export * from './assets/imgs/svg/pencil-square';
 export * from './assets/imgs/svg/trash';
 
+// hooks
+export * from './hooks/cross-browser-state/infrastracture/cross-chrome-state';
+
 // ui
 export * from './ui/alerts/high-alert';
 export * from './ui/alerts/outside-click-alert';

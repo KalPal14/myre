@@ -12,7 +12,7 @@ import { ICreateWorkspaceRo } from '~libs/ro/highlight-extension';
 import { WORKSPACES_URLS } from '~libs/routes/highlight-extension';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 import { toastDefOptions } from '~/highlight-extension-fe/common/constants/default-values/toast-options';
 
 export interface IRegistrationFormProps {
@@ -28,9 +28,9 @@ export default function RegistrationForm({ email }: IRegistrationFormProps): JSX
 	} = useForm<Omit<RegistrationDto, 'email'>>();
 	const toast = useToast(toastDefOptions);
 
-	const [, setJwt] = useCrossExtState('jwt');
-	const [, setCurrentUser] = useCrossExtState('currentUser');
-	const [, setCurrentWorkspace] = useCrossExtState('currentWorkspace');
+	const [, setJwt] = useCrossBrowserState('jwt');
+	const [, setCurrentUser] = useCrossBrowserState('currentUser');
+	const [, setCurrentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	async function onSubmit(formValues: Omit<RegistrationDto, 'email'>): Promise<void> {
 		const registrationRo = await api.post<RegistrationDto, IRegistrationRo>(USERS_URLS.register, {

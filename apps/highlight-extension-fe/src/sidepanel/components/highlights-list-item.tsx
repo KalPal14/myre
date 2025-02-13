@@ -5,7 +5,7 @@ import { Divider, Text, Tooltip } from '@chakra-ui/react';
 import { IBaseHighlightRo } from '~libs/ro/highlight-extension';
 import { ExclamationOctagonSVG } from '~libs/react-core';
 
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import IChangeHighlightForm from '../types/change-highlight-form.interface';
 
@@ -20,8 +20,8 @@ export default function HighlightsListItem({
 	highlight,
 	index,
 }: IHighlightsListItemProps): JSX.Element {
-	const [, setScrollHighlightId] = useCrossExtState('scrollHighlightId');
-	const [unfoundHighlightsIds] = useCrossExtState('unfoundHighlightsIds');
+	const [, setScrollHighlightId] = useCrossBrowserState('scrollHighlightId');
+	const [unfoundHighlightsIds] = useCrossBrowserState('unfoundHighlightsIds');
 
 	const unfoundHighlight = unfoundHighlightsIds.includes(highlight.id);
 

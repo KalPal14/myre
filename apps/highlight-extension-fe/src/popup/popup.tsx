@@ -7,15 +7,15 @@ import { CogSVG } from '~libs/react-core';
 import { openTab } from '~libs/client-core';
 
 import { FULL_OPTIONS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/options';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import LoginSection from './components/login-section';
 
 export default function Popup(): JSX.Element {
-	const [jwt, setJwt] = useCrossExtState('jwt');
-	const [, setCurrentUser] = useCrossExtState('currentUser');
-	const [, setCurrentWorkspace] = useCrossExtState('currentWorkspace');
-	const [isExtActive, setIsExtActive] = useCrossExtState('isExtActive');
+	const [jwt, setJwt] = useCrossBrowserState('jwt');
+	const [, setCurrentUser] = useCrossBrowserState('currentUser');
+	const [, setCurrentWorkspace] = useCrossBrowserState('currentWorkspace');
+	const [isExtActive, setIsExtActive] = useCrossBrowserState('isExtActive');
 
 	async function logout(): Promise<void> {
 		setJwt(null);

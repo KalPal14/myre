@@ -7,12 +7,12 @@ import './login.scss';
 import { HighAlert } from '~libs/react-core';
 
 import { TABS_ROUTES } from '~/highlight-extension-fe/common/constants/routes/tabs';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import LoginForm from './components/login-form';
 
 export default function LoginPage(): JSX.Element {
-	const [jwt] = useCrossExtState('jwt');
+	const [jwt] = useCrossBrowserState('jwt');
 
 	return (
 		<div className="loginPage">

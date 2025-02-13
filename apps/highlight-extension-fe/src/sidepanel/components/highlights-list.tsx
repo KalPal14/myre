@@ -9,7 +9,7 @@ import { HTTPError } from '~libs/common';
 import { DraggableFields } from '~libs/react-core';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import THighlightsTabName from '../types/highlights-tab-name.type';
 import IChangeHighlightForm from '../types/change-highlight-form.interface';
@@ -24,11 +24,11 @@ export default function HighlightsList({ tabName }: IHighlightsListProps): JSX.E
 	const pageUrl = new URL(window.location.href).searchParams.get('url');
 	const createdHighlightRerendersCount = useRef(0);
 
-	const [createdHighlight] = useCrossExtState('createdHighlight');
-	const [deletedHighlight, setDeletedHighlight] = useCrossExtState('deletedHighlight');
-	const [updatedHighlight] = useCrossExtState('updatedHighlight');
-	const [unfoundHighlightsIds] = useCrossExtState('unfoundHighlightsIds');
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [createdHighlight] = useCrossBrowserState('createdHighlight');
+	const [deletedHighlight, setDeletedHighlight] = useCrossBrowserState('deletedHighlight');
+	const [updatedHighlight] = useCrossBrowserState('updatedHighlight');
+	const [unfoundHighlightsIds] = useCrossBrowserState('unfoundHighlightsIds');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	const { control, register, setValue, watch } = useForm<IChangeHighlightForm>({
 		values: {

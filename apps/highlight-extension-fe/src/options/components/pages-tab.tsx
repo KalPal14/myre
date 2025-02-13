@@ -6,12 +6,12 @@ import { TGetPagesRo } from '~libs/ro/highlight-extension';
 import { GetPagesDto } from '~libs/dto/highlight-extension';
 
 import { api } from '~/highlight-extension-fe/common/api/api';
-import useCrossExtState from '~/highlight-extension-fe/common/hooks/cross-ext-state/cross-ext-state.hook';
+import useCrossBrowserState from '~/highlight-extension-fe/common/hooks/cross-browser-state/cross-browser-state.hook';
 
 import PageItem from './page-item';
 
 export default function PagesTab(): JSX.Element {
-	const [currentWorkspace] = useCrossExtState('currentWorkspace');
+	const [currentWorkspace] = useCrossBrowserState('currentWorkspace');
 
 	const [pages, setPages] = useState<TGetPagesRo>([]);
 
