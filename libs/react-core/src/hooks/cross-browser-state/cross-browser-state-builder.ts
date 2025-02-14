@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { browserAdapter } from '~libs/client-core';
-export abstract class CrossBrowserStateBuilder<State extends Record<string, any>> {
+export class CrossBrowserStateBuilder<State extends Record<string, any>> {
 	constructor(private defaultValues: State) {}
 
 	useCrossBrowserState<Key extends keyof State>(

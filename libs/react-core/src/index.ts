@@ -12,7 +12,7 @@ export * from './assets/imgs/svg/pencil-square';
 export * from './assets/imgs/svg/trash';
 
 // hooks
-export * from './hooks/cross-browser-state/infrastracture/cross-chrome-state';
+export * from './hooks/cross-browser-state/cross-browser-state-builder';
 
 // ui
 export * from './ui/alerts/high-alert';
