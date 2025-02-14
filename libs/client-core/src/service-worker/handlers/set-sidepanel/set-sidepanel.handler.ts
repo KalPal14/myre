@@ -1,14 +1,17 @@
+import { browserAdapter } from '~libs/client-core';
+import { IMessageSender } from '~libs/client-core/adapters/browser/port/types/message-sender.interface';
+
 import { ISetSidepanelIncomeMsg } from './types/set-sidepanel.income-msg.interface';
 
 export async function setSidepanelHandler(
 	{ url, enabled }: ISetSidepanelIncomeMsg,
-	sender: chrome.runtime.MessageSender
+	sender: IMessageSender
 ): Promise<void> {
 	if (!sender.tab?.id) return;
-	chrome.sidePanel.setOptions({
+	browserAdapter.sidePanel.setOptions({
 		tabId: sender.tab.id,
 		path: `sidepanel.html?url=${url}`,
 		enabled,
 	});
-	await chrome.sidePanel.open({ tabId: sender.tab.id });
+	await browserAdapter.sidePanel.open({ tabId: sender.tab.id });
 }

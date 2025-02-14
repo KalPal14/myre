@@ -1,11 +1,12 @@
+import { browserAdapter } from '~libs/client-core';
 import { swHandlerFactory } from '~libs/client-core/service-worker/sw-handler.factory';
 
 swHandlerFactory();
 
-chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
+browserAdapter.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 	if (!tab.url || !tabId) return;
-	await chrome.storage.local.set({ ['unfoundHighlightsIds']: [] });
-	chrome.sidePanel.setOptions({
+	await browserAdapter.storage.local.set({ ['unfoundHighlightsIds']: [] });
+	browserAdapter.sidePanel.setOptions({
 		tabId,
 		path: `sidepanel.html?url=${tab.url}`,
 		enabled: true,

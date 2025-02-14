@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 
+import { browserAdapter } from '~libs/client-core';
 import { HTTPError } from '~libs/common';
 
 import { IApiRequestIncomeMsg } from './types/api-request.income-msg.interface';
@@ -16,10 +17,10 @@ export function dispatchApiRequest<DTO, RO>({
 	onSuccess,
 	onError,
 }: IDispatchApiReqest<DTO, RO>): void {
-	chrome.runtime.onMessage.addListener(apiResponseMsgHandler);
+	browserAdapter.runtime.onMessage.addListener(apiResponseMsgHandler);
 
 	const contentScriptsHandler = `apiHandler_${v4()}`;
-	chrome.runtime.sendMessage<IApiRequestIncomeMsg<DTO>>({
+	browserAdapter.runtime.sendMessage({
 		serviceWorkerHandler: 'apiRequest',
 		contentScriptsHandler,
 		...msg,
@@ -32,6 +33,6 @@ export function dispatchApiRequest<DTO, RO>({
 		} else {
 			onSuccess(outcomeMsg.data as RO);
 		}
-		chrome.runtime.onMessage.removeListener(apiResponseMsgHandler);
+		browserAdapter.runtime.onMessage.removeListener(apiResponseMsgHandler);
 	}
 }

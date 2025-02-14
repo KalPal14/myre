@@ -1,3 +1,7 @@
+// adapters
+export * from './adapters/browser/port/browser.interface';
+export * from './adapters/browser/port/browser.adapter';
+
 // service-worker
 export * from './service-worker/handlers/api-request/api-request.dispatcher';
 export * from './service-worker/handlers/open-tab/open-tab.dispatcher';

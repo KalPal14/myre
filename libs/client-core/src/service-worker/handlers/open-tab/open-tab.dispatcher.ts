@@ -1,7 +1,9 @@
+import { browserAdapter } from '~libs/client-core';
+
 import { IOpenTabIncomeMsg } from './types/open-tab.income-msg.interface';
 
 export function dispatchOpenTab({ url }: Omit<IOpenTabIncomeMsg, 'serviceWorkerHandler'>): void {
-	chrome.runtime.sendMessage<IOpenTabIncomeMsg>({
+	browserAdapter.runtime.sendMessage({
 		serviceWorkerHandler: 'openTab',
 		url,
 	});

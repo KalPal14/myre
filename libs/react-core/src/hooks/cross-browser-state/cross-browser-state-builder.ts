@@ -1,10 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { IBrowserStorage } from './types/browser-storage.interface';
-
+import { browserAdapter } from '~libs/client-core';
 export abstract class CrossBrowserStateBuilder<State extends Record<string, any>> {
-	protected abstract storage: IBrowserStorage;
-
 	constructor(private defaultValues: State) {}
 
 	useCrossBrowserState<Key extends keyof State>(
@@ -20,12 +17,12 @@ export abstract class CrossBrowserStateBuilder<State extends Record<string, any>
 				await setStateForNewSession();
 				return;
 			}
-			await this.storage.set({
+			await browserAdapter.storage.local.set({
 				[stateKey]: state,
 			});
 		};
 		const setStateForNewSession = async (): Promise<void> => {
-			const currentState = await this.storage.get(stateKey.toString());
+			const currentState = await browserAdapter.storage.local.get(stateKey.toString());
 			const currentValue = currentState[stateKey.toString()];
 			if (currentValue !== undefined) {
 				setState(currentValue);
@@ -35,7 +32,8 @@ export abstract class CrossBrowserStateBuilder<State extends Record<string, any>
 
 			isNewSession.current = false;
 		};
-		const onStoreChangeHandler = (key: string, newValue: any): void => {
+		const onStoreChangeHandler = (updatedValue: Record<string, { newValue?: any }>): void => {
+			const [key, { newValue }] = Object.entries(updatedValue)[0];
 			if (key === stateKey) {
 				setState(newValue);
 			}
@@ -46,9 +44,10 @@ export abstract class CrossBrowserStateBuilder<State extends Record<string, any>
 		}, [state, stateKey, defaultValue]);
 
 		useEffect(() => {
-			this.storage.onChanged.addListener(onStoreChangeHandler);
+			browserAdapter.storage.local.onChanged.addListener(onStoreChangeHandler);
 
-			return (): void => this.storage.onChanged.removeListener(onStoreChangeHandler);
+			return (): void =>
+				browserAdapter.storage.local.onChanged.removeListener(onStoreChangeHandler);
 		}, [stateKey, setState]);
 
 		return [state, setState];
