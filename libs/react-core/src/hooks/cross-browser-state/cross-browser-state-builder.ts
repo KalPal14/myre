@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { isEqual } from 'lodash';
 
 import { browserAdapter } from '~libs/client-core';
 export class CrossBrowserStateBuilder<State extends Record<string, any>> {
@@ -13,28 +14,29 @@ export class CrossBrowserStateBuilder<State extends Record<string, any>> {
 		const [state, setState] = useState(defaultValue);
 
 		const setCrossExtState = async (): Promise<void> => {
+			const currentStorageValue = await browserAdapter.storage.local
+				.get(stateKey.toString())
+				.then((state) => state[stateKey.toString()]);
+
 			if (isNewSession.current) {
-				await setStateForNewSession();
+				if (currentStorageValue !== undefined) {
+					setState(currentStorageValue);
+				}
+				isNewSession.current = false;
 				return;
 			}
+
+			if (isEqual(state, currentStorageValue)) return;
 			await browserAdapter.storage.local.set({
 				[stateKey]: state,
 			});
 		};
-		const setStateForNewSession = async (): Promise<void> => {
-			const currentState = await browserAdapter.storage.local.get(stateKey.toString());
-			const currentValue = currentState[stateKey.toString()];
-			if (currentValue !== undefined) {
-				setState(currentValue);
-			} else {
-				setState(defaultValue);
-			}
 
-			isNewSession.current = false;
-		};
-		const onStoreChangeHandler = (updatedValue: Record<string, { newValue?: any }>): void => {
-			const [key, { newValue }] = Object.entries(updatedValue)[0];
-			if (key === stateKey) {
+		const onStoreChangeHandler = (
+			updatedValue: Record<string, { newValue?: any; oldValue?: any }>
+		): void => {
+			const [key, { newValue, oldValue }] = Object.entries(updatedValue)[0];
+			if (key === stateKey && !isEqual(newValue, oldValue)) {
 				setState(newValue);
 			}
 		};
