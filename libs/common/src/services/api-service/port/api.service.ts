@@ -48,7 +48,7 @@ export abstract class ApiService {
 			}
 			return new HTTPError(resp.status, await resp.json());
 		} catch {
-			return new HTTPError(500, 'Unknown error');
+			return new HTTPError(500, 'Something went wrong. Please try again');
 		}
 	}
 

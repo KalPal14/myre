@@ -42,11 +42,11 @@ export default class App {
 
 	useMiddleware(): void {
 		const cookieSecret = this.configService.get('COOCKIE_KEY');
-		const clientUrl = this.configService.get('H_EXT_FE_URL');
+		const clientUrls = this.configService.get('H_EXT_FE_URLS').split(', ');
 
 		this.app.use(
 			cors({
-				origin: clientUrl,
+				origin: clientUrls,
 				methods: ['GET', 'PATCH', 'POST', 'DELETE'],
 				allowedHeaders: ['Content-Type', 'Authorization'],
 			})

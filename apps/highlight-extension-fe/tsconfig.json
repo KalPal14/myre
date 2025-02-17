@@ -6,7 +6,8 @@
 		"types": [
 			"@emotion/react/types/css-prop",
 			"chrome",
-			"node"
+			"node",
+			"firefox-webext-browser"
 		]
 	},
 	"include": [
