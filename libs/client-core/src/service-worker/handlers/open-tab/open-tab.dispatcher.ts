@@ -1,4 +1,4 @@
-import { browserAdapter } from '~libs/client-core';
+import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
 
 import { IOpenTabIncomeMsg } from './types/open-tab.income-msg.interface';
 

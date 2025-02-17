@@ -1,4 +1,4 @@
-import { browserAdapter } from '~libs/client-core';
+import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
 
 import { ISetSidepanelIncomeMsg } from './types/set-sidepanel.income-msg.interface';
 

@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
-import { browserAdapter } from '~libs/client-core';
-import { HTTPError } from '~libs/common';
+import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
+import { HTTPError } from '~libs/common/errors/http-error/http-error';
 
 import { IApiRequestIncomeMsg } from './types/api-request.income-msg.interface';
 import { IApiRequestOutcomeMsg } from './types/api-request.outcome-msg.interface';

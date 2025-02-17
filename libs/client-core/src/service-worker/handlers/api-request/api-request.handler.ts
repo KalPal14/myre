@@ -1,6 +1,6 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
 import { BrowserStorageBaseApiService } from '~libs/client-core/services/api-service/infrastracture/browser-storage-base-api.service';
-import { browserAdapter } from '~libs/client-core';
+import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
 import { IMessageSender } from '~libs/client-core/adapters/browser/port/types/message-sender.interface';
 
 import { IApiRequestIncomeMsg } from './types/api-request.income-msg.interface';
