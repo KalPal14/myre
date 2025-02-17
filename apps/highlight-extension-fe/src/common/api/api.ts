@@ -1,3 +1,3 @@
-import { ChromeStorageBaseApiService } from '~libs/common/index';
+import { BrowserStorageBaseApiService } from '~libs/client-core';
 
-export const api = new ChromeStorageBaseApiService();
+export const api = new BrowserStorageBaseApiService();

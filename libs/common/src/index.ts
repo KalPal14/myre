@@ -11,7 +11,6 @@ export * from './errors/http-error/http-err-handler';
 // services
 export * from './services/ai-service/infrastracture/groq/groq.service';
 export * from './services/ai-service/port/ai.service';
-export * from './services/api-service/infrastracture/chrome-storage-base-api.service';
 export * from './services/api-service/port/api.service';
 
 // types

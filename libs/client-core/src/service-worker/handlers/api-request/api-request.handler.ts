@@ -1,5 +1,5 @@
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
-import { ChromeStorageBaseApiService } from '~libs/common/services/api-service/infrastracture/chrome-storage-base-api.service';
+import { BrowserStorageBaseApiService } from '~libs/client-core/services/api-service/infrastracture/browser-storage-base-api.service';
 import { browserAdapter } from '~libs/client-core';
 import { IMessageSender } from '~libs/client-core/adapters/browser/port/types/message-sender.interface';
 
@@ -11,7 +11,7 @@ export async function apiRequestHandler<DTO>(
 ): Promise<void> {
 	if (!sender.tab?.id) return;
 
-	const api = new ChromeStorageBaseApiService();
+	const api = new BrowserStorageBaseApiService();
 	const resp = await api[method](url, data);
 
 	browserAdapter.tabs.sendMessage(sender.tab.id, {
