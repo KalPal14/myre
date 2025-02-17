@@ -1,5 +1,5 @@
-import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
-import { IMessageSender } from '~libs/client-core/adapters/browser/port/types/message-sender.interface';
+import { browserAdapter } from '~libs/client-core/adapters/browser/browser.adapter';
+import { IMessageSender } from '~libs/client-core/adapters/browser/types/message-sender.interface';
 
 import { ISetSidepanelIncomeMsg } from './types/set-sidepanel.income-msg.interface';
 

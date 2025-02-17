@@ -1,4 +1,4 @@
-import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
+import { browserAdapter } from '~libs/client-core/adapters/browser/browser.adapter';
 
 import { apiRequestHandler } from './handlers/api-request/api-request.handler';
 import { openTabHandler } from './handlers/open-tab/open-tab.handler';

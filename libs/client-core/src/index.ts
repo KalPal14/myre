@@ -1,6 +1,6 @@
 // adapters
-export * from './adapters/browser/port/browser.interface';
-export * from './adapters/browser/port/browser.adapter';
+export * from './adapters/browser/browser.interface';
+export * from './adapters/browser/browser.adapter';
 
 // service-worker
 export * from './service-worker/handlers/api-request/api-request.dispatcher';

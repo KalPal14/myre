@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 
-import { browserAdapter } from '~libs/client-core/adapters/browser/port/browser.adapter';
+import { browserAdapter } from '~libs/client-core/adapters/browser/browser.adapter';
 import { HTTPError } from '~libs/common/errors/http-error/http-error';
 
 import { IApiRequestIncomeMsg } from './types/api-request.income-msg.interface';
